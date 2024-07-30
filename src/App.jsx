@@ -1,12 +1,9 @@
 // src/App.jsx
 
 import React, { useState, useEffect } from 'react';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, NavLink as RouterNavLink } from "react-router-dom";
 import { FaBars } from 'react-icons/fa';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 
