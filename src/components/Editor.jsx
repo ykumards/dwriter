@@ -1,24 +1,79 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import styled from 'styled-components';
 import { debounce } from 'lodash';
 import { checkText } from '../mlUtils';
-import './Editor.css';
+import { formatDatetime } from '../uiUtils';
+
+// Styled components
+const EditorContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+    background-color: #f5f5f5;
+    margin: 0;
+`;
+
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+`;
+
+const EntryDatetime = styled.div`
+    font-size: 0.8rem;
+    color: #888;
+    margin-right: 10px;
+`;
+
+const EmojiDisplay = styled.div`
+    font-size: 2em;
+`;
+
+const TextArea = styled.textarea`
+    width: 80%;
+    height: 80%;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    background: none;
+    resize: none;
+    overflow-y: auto;
+    font-family: 'Menlo', Courier, monospace;
+    color: black;
+
+    ::placeholder {
+        color: #ccc;
+    }
+`;
+
 
 const Editor = () => {
-  const [text, setText] = useState('');
-  const [emoji, setEmoji] = useState('');
-  const [resultText, setResultText] = useState('');
-  const [entryDatetime, setEntryDatetime] = useState(null);
+    const [text, setText] = useState('');
+    const [emoji, setEmoji] = useState('');
+    const [resultText, setResultText] = useState('');
+    const [entryDatetime, setEntryDatetime] = useState(null);
 
-  const handleChange = (e) => {
-    const newText = e.target.value;
-    setText(newText);
+    const resetEditor = () => {
+        setText('');
+        setEmoji('');
+        setResultText('');
+        setEntryDatetime(null);
+    };
 
-    if (!entryDatetime) {
-      setEntryDatetime(new Date());
-    }
+    const handleTextChange = (e) => {
+        const newText = e.target.value;
+        setText(newText);
 
-    debouncedCheckText(newText);
-  };
+        if (!entryDatetime) {
+            setEntryDatetime(new Date());
+        }
+
+        debouncedCheckText(newText);
+    };
 
   const debouncedCheckText = useCallback(
     debounce((newText) => {
@@ -29,28 +84,49 @@ const Editor = () => {
     []
   );
 
-  const formatDatetime = (datetime) => {
-    if (!datetime) return '';
-    const options = { day: '2-digit', month: 'long', year: 'numeric' };
-    const date = datetime.toLocaleDateString('en-GB', options);
-    const time = datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-    return `${date}, ${time}`;
+  const saveToLocalStorage = () => {
+    const datetime = formatDatetime(entryDatetime);
+    const newEntry = { datetime, emoji };
+
+    // Get existing entries from local storage
+    const existingEntries = JSON.parse(localStorage.getItem('entries')) || [];
+
+    // Append the new entry
+    const updatedEntries = [...existingEntries, newEntry];
+
+    // Save the updated entries back to local storage
+    localStorage.setItem('entries', JSON.stringify(updatedEntries));
+
+    resetEditor();
   };
 
+  const handleKeyDown = (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      saveToLocalStorage();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [text, emoji, entryDatetime]);
+
   return (
-    <div className="editor-container">
-      <div className="header">
-        <div className="entry-datetime">{formatDatetime(entryDatetime)}</div>
-        <div className="emoji-display" title={resultText}>{emoji}</div>
-      </div>
-      <textarea
+    <EditorContainer>
+      <Header>
+        <EntryDatetime>{formatDatetime(entryDatetime)}</EntryDatetime>
+        <EmojiDisplay title={resultText}>{emoji}</EmojiDisplay>
+      </Header>
+      <TextArea
         value={text}
-        onChange={handleChange}
+        onChange={handleTextChange}
         className="editor-textarea"
         placeholder="Start typing..."
         autoFocus
       />
-    </div>
+    </EditorContainer>
   );
 };
 
