@@ -6,6 +6,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { FaBars } from 'react-icons/fa';
+import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 
 
@@ -24,7 +25,7 @@ const AppContainer = styled.div`
   position: relative;
 `;
 
-const HamburgerIcon = styled.button`
+const HamburgerIcon = styled(motion.div)`
   position: absolute;
   top: 20px;
   left: 20px;
@@ -43,8 +44,8 @@ const FloatingNav = styled.nav`
   top: 20px;
   left: 60px;
   background-color: #1a1a1a;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 5px;
+  border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 `;
 
@@ -72,6 +73,27 @@ const Content = styled.div`
   align-items: center;
   padding: 20px;
 `;
+
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    x: "-100vw",
+  },
+  in: {
+    opacity: 1,
+    x: 0,
+  },
+  out: {
+    opacity: 0,
+    x: "100vw",
+  }
+};
+
+const pageTransition = {
+  type: "tween",
+  ease: "anticipate",
+  duration: 0.5
+};
 
 const router = createBrowserRouter([
   {
@@ -111,12 +133,16 @@ const App = () => {
 
   return (
     <AppContainer>
-      <HamburgerIcon onClick={toggleNav}>
+      <HamburgerIcon
+        onClick={toggleNav}
+        animate={{rotate: showNav ? 90 : 0}}
+        transition={{type: 'spring', stiffness: 260, damping: 20}}
+      >
         <FaBars />
       </HamburgerIcon>
       {showNav && (
         <FloatingNav>
-          <NavLink href="/" onClick={toggleNav}>Home</NavLink>
+          <NavLink href="/" onClick={toggleNav}>Editor</NavLink>
           <NavLink href="/calendar" onClick={toggleNav}>Calendar</NavLink>
         </FloatingNav>
       )}

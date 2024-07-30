@@ -24,6 +24,7 @@ const EntriesContainer = styled.div`
 
 const EntriesHeader = styled.h3`
   margin-bottom: 10px;
+  text-align: center;
 `;
 
 const EntriesList = styled.ul`
@@ -34,6 +35,12 @@ const EntriesList = styled.ul`
 const EntryItem = styled.li`
   padding: 5px 0;
   border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: 1.2em;
+`;
+
+const EmojiSpan = styled.span`
+  font-size: 1.5em;
 `;
 
 const CalendarComponent = () => {
@@ -53,13 +60,16 @@ const CalendarComponent = () => {
     <CalendarContainer>
       <Calendar onChange={handleDateChange} value={date} />
       <EntriesContainer>
-        <EntriesHeader>Entries for {date.toDateString()}</EntriesHeader>
+      <EntriesHeader>
+        Entries for {date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
+      </EntriesHeader>
         <EntriesList>
           {entries
             .filter((entry) => new Date(entry.datetime).toDateString() === date.toDateString())
             .map((entry, index) => (
               <EntryItem key={index}>
-                {entry.datetime}: {entry.emoji}
+                {new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <EmojiSpan>{entry.emoji}</EmojiSpan>
               </EntryItem>
             ))}
         </EntriesList>
