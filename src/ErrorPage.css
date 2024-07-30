@@ -1,0 +1,12 @@
+/* ErrorPage.css */
+
+#error-page {
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+
+#error-page img {
+    width: 200px;
+    height: 200px;
+}
