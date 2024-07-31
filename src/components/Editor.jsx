@@ -67,10 +67,6 @@ const TextArea = styled.textarea`
 `;
 
 const Editor = () => {
-    // const [text, setText] = useState('');
-    // const [emoji, setEmoji] = useState('😐');
-    // const [resultText, setResultText] = useState('');
-    // const [entryDatetime, setEntryDatetime] = useState(new Date());
     const {
         text,
         setText,
@@ -80,16 +76,9 @@ const Editor = () => {
         setResultText,
         entryDatetime,
         setEntryDatetime,
+        resetEditor,
     } = useContext(EditorContext);
     const textAreaRef = useRef(null);
-
-    // Reset editor state
-    const resetEditor = () => {
-        setText('');
-        setEmoji('😐');
-        setResultText('');
-        setEntryDatetime(null);
-    };
 
     // Handle text change and trigger debounce function
     const handleTextChange = (e) => {

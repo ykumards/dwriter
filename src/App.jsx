@@ -1,13 +1,13 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 import Editor from './components/Editor';
 import Calendar from './components/Calendar';
-import ErrorPage from './components/ErrorPage';
+import useToggleShortcut from './hooks/useToggleShortcut';
 
 const AppContainer = styled.div`
   display: flex;
@@ -75,27 +75,15 @@ const Content = styled.div`
 
 const App = () => {
   const [showNav, setShowNav] = useState(false);
-  const navigate = useNavigate();
+  const [currentComponent, setCurrentComponent] = useState('editor');
 
   const toggleNav = () => {
     setShowNav(!showNav);
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === ';') {
-        navigate('/calendar');
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key === "'") {
-        navigate('/');
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [navigate]);
+  useToggleShortcut(';', () => {
+    setCurrentComponent((prevComponent) => (prevComponent === 'editor' ? 'calendar' : 'editor'));
+  });
 
   return (
     <AppContainer>
@@ -117,11 +105,8 @@ const App = () => {
         </FloatingNav>
       )}
       <Content>
-        <Routes>
-          <Route path="/" element={<Editor />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+        {currentComponent === 'editor' && <Editor />}
+        {currentComponent === 'calendar' && <Calendar />}
       </Content>
     </AppContainer>
   );

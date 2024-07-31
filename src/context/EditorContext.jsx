@@ -9,6 +9,14 @@ export const EditorProvider = ({ children }) => {
   const [resultText, setResultText] = useState('');
   const [entryDatetime, setEntryDatetime] = useState(new Date());
 
+  // Reset editor state
+  const resetEditor = () => {
+    setText('');
+    setEmoji('😐');
+    setResultText('');
+    setEntryDatetime(new Date());
+  };
+
   return (
     <EditorContext.Provider
       value={{
@@ -20,6 +28,7 @@ export const EditorProvider = ({ children }) => {
         setResultText,
         entryDatetime,
         setEntryDatetime,
+        resetEditor,
       }}
     >
       {children}
