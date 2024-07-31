@@ -1,13 +1,18 @@
 // src/index.jsx
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 import GlobalStyles from './GlobalStyles.js';
+import { EditorProvider } from './context/EditorContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <GlobalStyles />
-    <App />
-  </React.StrictMode>,
+    <BrowserRouter>
+      <EditorProvider>
+        <App />
+      </EditorProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );

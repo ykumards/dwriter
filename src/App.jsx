@@ -1,16 +1,13 @@
 // src/App.jsx
-
 import React, { useState, useEffect } from 'react';
-import { createBrowserRouter, RouterProvider, NavLink as RouterNavLink } from "react-router-dom";
+import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-
 import Editor from './components/Editor';
 import Calendar from './components/Calendar';
-import ErrorPage from "./error-page";
-// import './App.css';
+import ErrorPage from './components/ErrorPage';
 
 const AppContainer = styled.div`
   display: flex;
@@ -46,7 +43,7 @@ const FloatingNav = styled.nav`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 `;
 
-const NavLink = styled.a`
+const StyledNavLink = styled(NavLink)`
   display: block;
   padding: 10px;
   margin-bottom: 10px;
@@ -56,6 +53,11 @@ const NavLink = styled.a`
   border: none;
   text-align: left;
   cursor: pointer;
+
+  &.active {
+    background-color: #646cff;
+    color: white;
+  }
 
   &:hover {
     background-color: #646cff;
@@ -71,42 +73,9 @@ const Content = styled.div`
   padding: 20px;
 `;
 
-const pageVariants = {
-  initial: {
-    opacity: 0,
-    x: "-100vw",
-  },
-  in: {
-    opacity: 1,
-    x: 0,
-  },
-  out: {
-    opacity: 0,
-    x: "100vw",
-  }
-};
-
-const pageTransition = {
-  type: "tween",
-  ease: "anticipate",
-  duration: 0.5
-};
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Editor />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/calendar",
-    element: <Calendar />,
-    errorElement: <ErrorPage />,
-  },
-]);
-
 const App = () => {
   const [showNav, setShowNav] = useState(false);
+  const navigate = useNavigate();
 
   const toggleNav = () => {
     setShowNav(!showNav);
@@ -115,10 +84,10 @@ const App = () => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === ';') {
-        window.location.pathname = '/calendar';
+        navigate('/calendar');
       }
       if ((e.ctrlKey || e.metaKey) && e.key === "'") {
-        window.location.pathname = '/';
+        navigate('/');
       }
     };
 
@@ -126,25 +95,33 @@ const App = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <AppContainer>
       <HamburgerIcon
         onClick={toggleNav}
-        animate={{rotate: showNav ? 90 : 0}}
-        transition={{type: 'spring', stiffness: 260, damping: 20}}
+        animate={{ rotate: showNav ? 90 : 0 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       >
         <FaBars />
       </HamburgerIcon>
       {showNav && (
         <FloatingNav>
-          <NavLink href="/" onClick={toggleNav}>Editor</NavLink>
-          <NavLink href="/calendar" onClick={toggleNav}>Calendar</NavLink>
+          <StyledNavLink to="/" onClick={toggleNav}>
+            Editor
+          </StyledNavLink>
+          <StyledNavLink to="/calendar" onClick={toggleNav}>
+            Calendar
+          </StyledNavLink>
         </FloatingNav>
       )}
       <Content>
-        <RouterProvider router={router} />
+        <Routes>
+          <Route path="/" element={<Editor />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
       </Content>
     </AppContainer>
   );

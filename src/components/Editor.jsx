@@ -1,8 +1,10 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useContext, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { debounce } from 'lodash';
 import { checkText } from '../mlUtils';
 import { formatDatetime } from '../uiUtils';
+import { EditorContext } from '../context/EditorContext';
+
 
 // Styled components
 const EditorContainer = styled.div`
@@ -65,10 +67,20 @@ const TextArea = styled.textarea`
 `;
 
 const Editor = () => {
-    const [text, setText] = useState('');
-    const [emoji, setEmoji] = useState('😐');
-    const [resultText, setResultText] = useState('');
-    const [entryDatetime, setEntryDatetime] = useState(new Date());
+    // const [text, setText] = useState('');
+    // const [emoji, setEmoji] = useState('😐');
+    // const [resultText, setResultText] = useState('');
+    // const [entryDatetime, setEntryDatetime] = useState(new Date());
+    const {
+        text,
+        setText,
+        emoji,
+        setEmoji,
+        resultText,
+        setResultText,
+        entryDatetime,
+        setEntryDatetime,
+    } = useContext(EditorContext);
     const textAreaRef = useRef(null);
 
     // Reset editor state
