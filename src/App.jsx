@@ -114,10 +114,10 @@ const App = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+      if ((e.ctrlKey || e.metaKey) && e.key === ';') {
         window.location.pathname = '/calendar';
       }
-      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "'") {
         window.location.pathname = '/';
       }
     };
