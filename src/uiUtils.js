@@ -7,4 +7,25 @@ const formatDatetime = (datetime) => {
   };
 
 
-export { formatDatetime };
+const getMostFrequentEmoji = (entries) => {
+  const emojiCount = {};
+  entries.forEach((entry) => {
+    if (emojiCount[entry.emoji]) {
+      emojiCount[entry.emoji]++;
+    } else {
+      emojiCount[entry.emoji] = 1;
+    }
+  });
+  let mostFrequentEmoji = '';
+  let maxCount = 0;
+  for (const emoji in emojiCount) {
+    if (emojiCount[emoji] > maxCount) {
+      mostFrequentEmoji = emoji;
+      maxCount = emojiCount[emoji];
+    }
+  }
+  return mostFrequentEmoji;
+};
+
+
+export { formatDatetime, getMostFrequentEmoji };
