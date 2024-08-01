@@ -1,73 +1,12 @@
-// src/components/Editor.jsx
-import React, { useContext, useCallback, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
-import { checkText } from '../mlUtils';
 import { formatDatetime } from '../uiUtils';
 import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
+import * as Styles from './Editor.styles';
 
-// Styled components
-const EditorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 80%;
-  background-color: #f5f5f5;
-  margin: 0;
-`;
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const EntryDatetime = styled.div`
-  font-size: 0.8rem;
-  color: #888;
-  margin-right: 10px;
-`;
-
-const EmojiDisplay = styled.div`
-  font-size: 2em;
-`;
-
-const TextAreaContainer = styled.div`
-  position: relative;
-  width: 80%;
-  height: 80%;
-  background: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden; /* Prevent overflow outside the container */
-`;
-
-const TextArea = styled.textarea`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  height: auto;
-  max-height: 100%; /* Limit the height of the textarea */
-  border: none;
-  outline: none;
-  font-size: 1.5rem;
-  line-height: 1.6;
-  background: none;
-  resize: none;
-  overflow-y: auto; /* Allow vertical scrolling */
-  color: black;
-
-  ::placeholder {
-    color: #ccc;
-  }
-`;
-
-const Editor = () => {
+const Editor = ({ loading, progress, sendMessageToWorker }) => {
   const {
     text,
     setText,
@@ -76,63 +15,82 @@ const Editor = () => {
     resultText,
     setResultText,
     entryDatetime,
-    setEntryDatetime,
-    saveToLocalStorage, // Use the saveToLocalStorage function from the context
+    saveToLocalStorage,
   } = useContext(EditorContext);
+  const [prediction, setPrediction] = useState(null);
   const textAreaRef = useRef(null);
 
-  // Handle text change and trigger debounce function
   const handleTextChange = (e) => {
     const newText = e.target.value;
     setText(newText);
-
     debouncedCheckText(newText);
     adjustTextareaHeight();
   };
 
-  // Adjust textarea height to keep cursor in the middle
   const adjustTextareaHeight = () => {
     const textArea = textAreaRef.current;
     if (textArea) {
       textArea.style.height = 'auto';
       textArea.style.height = `${textArea.scrollHeight}px`;
-
-      // Scroll the text area to keep the cursor in the middle
       textArea.scrollTop = textArea.scrollHeight / 2 - textArea.clientHeight / 2;
     }
   };
 
-  // Debounce function to check text
+  const sendMessageToWorkerAsync = (message) => {
+    return new Promise((resolve, reject) => {
+      sendMessageToWorker(message, (response) => {
+        if (response) {
+          resolve(response);
+        } else {
+          reject(new Error('Worker response is null'));
+        }
+      });
+    });
+  };
+
   const debouncedCheckText = useCallback(
-    debounce((newText) => {
-      const result = checkText(newText);
-      setResultText(result);
-      setEmoji(result === 'yay' ? '😊' : '😢');
+    debounce(async (sampleText) => {
+      try {
+        console.log('Sending text to worker:', sampleText);
+        const response = await sendMessageToWorkerAsync({ text: sampleText });
+        setPrediction(response); // Update state with the prediction
+      } catch (error) {
+        console.error('Error in worker response:', error);
+      }
     }, 300),
     []
   );
 
-  // Use custom hook to handle keyboard shortcuts
   useShortcut('ctrl+enter', saveToLocalStorage);
-  useShortcut('cmd+enter', saveToLocalStorage); // For Mac users
+  useShortcut('cmd+enter', saveToLocalStorage);
 
   return (
-    <EditorContainer>
-      <Header>
-        <EntryDatetime>{formatDatetime(entryDatetime)}</EntryDatetime>
-        <EmojiDisplay title={resultText}>{emoji}</EmojiDisplay>
-      </Header>
-      <TextAreaContainer>
-        <TextArea
-          ref={textAreaRef}
-          value={text}
-          onChange={handleTextChange}
-          className="editor-textarea"
-          placeholder="Start typing..."
-          autoFocus
-        />
-      </TextAreaContainer>
-    </EditorContainer>
+    <Styles.EditorContainer>
+      {loading ? (
+        <Styles.LoadingMessage>
+          <Styles.LoadingText>Loading Model</Styles.LoadingText>
+          <Styles.RotatingCircle />
+        </Styles.LoadingMessage>
+      ) : (
+        <>
+          <Styles.Header>
+            <Styles.EntryDatetime>{formatDatetime(entryDatetime)}</Styles.EntryDatetime>
+            <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>
+          </Styles.Header>
+          <Styles.TextAreaContainer>
+            <Styles.TextArea
+              ref={textAreaRef}
+              value={text}
+              onChange={handleTextChange}
+              className="editor-textarea"
+              placeholder="Start typing..."
+              autoFocus
+            />
+          </Styles.TextAreaContainer>
+          {prediction && <div>Prediction: {prediction}</div>}
+        </>
+      )}
+    </Styles.EditorContainer>
   );
 };
 
