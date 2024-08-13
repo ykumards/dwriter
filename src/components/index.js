@@ -1,2 +1,2 @@
-export * from './Calendar.styles';
-export * from './Editor.styles';
+export * from './CalendarStyles.jsx';
+export * from './EditorStyles.jsx';

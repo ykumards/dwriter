@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 
 import { getMostFrequentEmoji } from '../uiUtils';
-import * as Styles from './Calendar.styles';
+import * as Styles from './CalendarStyles';
 
 
 const CalendarComponent = () => {

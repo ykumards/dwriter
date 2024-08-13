@@ -4,7 +4,7 @@ import { FaBars } from 'react-icons/fa';
 import Editor from './components/Editor';
 import Calendar from './components/Calendar';
 import useToggleShortcut from './hooks/useToggleShortcut';
-import { AppContainer, HamburgerIcon, FloatingNav, StyledNavLink, Content } from './App.styles.jsx';
+import { AppContainer, HamburgerIcon, FloatingNav, StyledNavLink, Content } from './AppStyles.jsx';
 
 const App = () => {
   const [showNav, setShowNav] = useState(false);
@@ -13,47 +13,6 @@ const App = () => {
   const [progress, setProgress] = useState(0);
   const [classification, setClassification] = useState('');
   const workerRef = useRef(null);
-
-  // useEffect(() => {
-  //   if (!workerRef.current) {
-  //     // Create the worker if it does not yet exist.
-  //     workerRef.current = new Worker(new URL('./modelWorker.js', import.meta.url), {
-  //       type: 'module'
-  //     });
-  //   }
-
-  //   // Create a callback function for messages from the worker thread.
-  //   const onMessageReceived = (e) => {
-  //     switch (e.data.status) {
-  //       case 'initiate':
-  //         setReady(false);
-  //         break;
-  //       case 'ready':
-  //         setReady(true);
-  //         break;
-  //       case 'complete':
-  //         setResult(e.data.output[0])
-  //         break;
-  //     }
-  //   };
-
-  //   // Attach the callback function as an event listener.
-  //   workerRef.current.addEventListener('message', onMessageReceived);
-
-  //   // Define a cleanup function for when the component is unmounted.
-  //   return () => workerRef.current.removeEventListener('message', onMessageReceived);
-  // });
-
-  // const classify = useCallback((text) => {
-  //   if (workerRef.current) {
-  //     workerRef.current.postMessage({ text });
-  //   }
-  // }, []);
-
-  // // Hardcoded example sentence for classification
-  // const sampleText = "I am feeling really happy today!";
-  // console.log('Classifying:', sampleText);
-  // console.log(classify(sampleText));
 
   useEffect(() => {
     const workerInstance = new Worker(new URL('./modelWorker.js', import.meta.url), { type: 'module' });
@@ -101,10 +60,11 @@ const App = () => {
     console.log('Sending message to worker:', message);
     console.log('Worker:', workerRef.current);
     if (workerRef.current) {
-      workerRef.current.callback = callback;
       workerRef.current.postMessage(message);
+      workerRef.current.callback = callback;
     }
   };
+
 
   const toggleNav = () => {
     setShowNav(!showNav);
@@ -142,7 +102,6 @@ const App = () => {
           />
         )}
         {currentComponent === 'calendar' && <Calendar />}
-        {/* {!loading && <div>Classification Result: {classification}</div>} */}
       </Content>
     </AppContainer>
   );

@@ -1,7 +1,23 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-})
+  worker: {
+    format: 'es', // Ensures the format is ES modules
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'tf-models': ['@xenova/transformers']
+        }
+      }
+    }
+  },
+  resolve: {
+    alias: {
+      'transformers': '@xenova/transformers',
+    }
+  },
+});

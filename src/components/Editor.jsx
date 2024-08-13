@@ -3,8 +3,13 @@ import { debounce } from 'lodash';
 import { formatDatetime } from '../uiUtils';
 import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
-import * as Styles from './Editor.styles';
+import * as Styles from './EditorStyles';
 
+const moodToEmoji = {
+  positive: '😊',
+  negative: '😢',
+  neutral: '😐',
+};
 
 const Editor = ({ loading, progress, sendMessageToWorker }) => {
   const {
@@ -39,6 +44,7 @@ const Editor = ({ loading, progress, sendMessageToWorker }) => {
   const sendMessageToWorkerAsync = (message) => {
     return new Promise((resolve, reject) => {
       sendMessageToWorker(message, (response) => {
+        console.log('Received response from worker:', response);
         if (response) {
           resolve(response);
         } else {
@@ -53,12 +59,15 @@ const Editor = ({ loading, progress, sendMessageToWorker }) => {
       try {
         console.log('Sending text to worker:', sampleText);
         const response = await sendMessageToWorkerAsync({ text: sampleText });
-        setPrediction(response); // Update state with the prediction
+        const mood = response[0].label;
+        setPrediction(response);
+        setEmoji(moodToEmoji[mood]);
+        setResultText(mood);
       } catch (error) {
         console.error('Error in worker response:', error);
       }
     }, 300),
-    []
+    [sendMessageToWorker]
   );
 
   useShortcut('ctrl+enter', saveToLocalStorage);
