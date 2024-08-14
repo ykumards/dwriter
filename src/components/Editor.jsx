@@ -8,7 +8,7 @@ import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
 import * as Styles from './EditorStyles';
 
-const Editor = () => {
+const Editor = ({ loading, progress, sendMessageToWorker }) => {
   const {
     text,
     setText,
