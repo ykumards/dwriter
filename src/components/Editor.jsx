@@ -60,7 +60,6 @@ const Editor = ({ loading, progress, worker }) => {
         if (event.data.status === 'complete') {
           console.log('Received classification output:', event.data.output);
           const output = event.data.output[0];
-          console.log('Received classification output:', output);
           setResultText(output.label);
           setEmoji(output.label === 'POSITIVE' ? '😊' : '😢');
         }
