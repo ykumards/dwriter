@@ -1,17 +1,21 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+// src/App.jsx
+import React, { useEffect, useState, useRef } from 'react';
 import { FaBars } from 'react-icons/fa';
 
 import Editor from './components/Editor';
 import Calendar from './components/Calendar';
 import useToggleShortcut from './hooks/useToggleShortcut';
-import { AppContainer, HamburgerIcon, FloatingNav, StyledNavLink, Content } from './AppStyles.jsx';
+import * as Styles from './AppStyles';
+
 
 const App = () => {
   const [showNav, setShowNav] = useState(false);
   const [currentComponent, setCurrentComponent] = useState('editor');
+
+  // model dl related
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [classification, setClassification] = useState('');
+  const [classification, setClassification] = useState(null);
   const workerRef = useRef(null);
 
   useEffect(() => {
@@ -47,24 +51,11 @@ const App = () => {
 
     workerInstance.postMessage({ text: 'initialization' });
 
-    // // Hardcoded example sentence for classification
-    // const sampleText = "I am feeling really happy today!";
-    // workerRef.current.postMessage({ text: sampleText });
-
     return () => {
+      console.log('Terminating worker');
       workerInstance.terminate();
     };
   }, []);
-
-  const sendMessageToWorker = (message, callback) => {
-    console.log('Sending message to worker:', message);
-    console.log('Worker:', workerRef.current);
-    if (workerRef.current) {
-      workerRef.current.postMessage(message);
-      workerRef.current.callback = callback;
-    }
-  };
-
 
   const toggleNav = () => {
     setShowNav(!showNav);
@@ -74,36 +65,41 @@ const App = () => {
     setCurrentComponent((prevComponent) => (prevComponent === 'editor' ? 'calendar' : 'editor'));
   });
 
+  const handleNavClick = (component) => {
+    setCurrentComponent(component);
+    setShowNav(false); // Close the nav after selection
+  };
+
   return (
-    <AppContainer>
-      <HamburgerIcon
+    <Styles.AppContainer>
+      <Styles.HamburgerIcon
         onClick={toggleNav}
         animate={{ rotate: showNav ? 90 : 0 }}
         transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       >
         <FaBars />
-      </HamburgerIcon>
+      </Styles.HamburgerIcon>
       {showNav && (
-        <FloatingNav>
-          <StyledNavLink to="/" onClick={toggleNav}>
+        <Styles.FloatingNav>
+          <Styles.StyledNavLink onClick={() => handleNavClick('editor')}>
             Editor
-          </StyledNavLink>
-          <StyledNavLink to="/calendar" onClick={toggleNav}>
+          </Styles.StyledNavLink>
+          <Styles.StyledNavLink onClick={() => handleNavClick('calendar')}>
             Calendar
-          </StyledNavLink>
-        </FloatingNav>
+          </Styles.StyledNavLink>
+        </Styles.FloatingNav>
       )}
-      <Content>
+      <Styles.Content>
         {currentComponent === 'editor' && (
           <Editor
             loading={loading}
             progress={progress}
-            sendMessageToWorker={sendMessageToWorker}
+            worker={workerRef}
           />
         )}
         {currentComponent === 'calendar' && <Calendar />}
-      </Content>
-    </AppContainer>
+      </Styles.Content>
+    </Styles.AppContainer>
   );
 };
 

@@ -5,13 +5,7 @@ import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
 import * as Styles from './EditorStyles';
 
-const moodToEmoji = {
-  positive: '😊',
-  negative: '😢',
-  neutral: '😐',
-};
-
-const Editor = ({ loading, progress, sendMessageToWorker }) => {
+const Editor = ({ loading, progress, worker }) => {
   const {
     text,
     setText,
@@ -20,9 +14,9 @@ const Editor = ({ loading, progress, sendMessageToWorker }) => {
     resultText,
     setResultText,
     entryDatetime,
+    setEntryDatetime,
     saveToLocalStorage,
   } = useContext(EditorContext);
-  const [prediction, setPrediction] = useState(null);
   const textAreaRef = useRef(null);
 
   const handleTextChange = (e) => {
@@ -41,34 +35,29 @@ const Editor = ({ loading, progress, sendMessageToWorker }) => {
     }
   };
 
-  const sendMessageToWorkerAsync = (message) => {
-    return new Promise((resolve, reject) => {
-      sendMessageToWorker(message, (response) => {
-        console.log('Received response from worker:', response);
-        if (response) {
-          resolve(response);
-        } else {
-          reject(new Error('Worker response is null'));
-        }
-      });
-    });
-  };
-
+  // Debounce function to check text
   const debouncedCheckText = useCallback(
-    debounce(async (sampleText) => {
-      try {
-        console.log('Sending text to worker:', sampleText);
-        const response = await sendMessageToWorkerAsync({ text: sampleText });
-        const mood = response[0].label;
-        setPrediction(response);
-        setEmoji(moodToEmoji[mood]);
-        setResultText(mood);
-      } catch (error) {
-        console.error('Error in worker response:', error);
+    debounce((newText) => {
+      if (worker.current) {
+        worker.current.postMessage({ text: newText });
       }
     }, 300),
-    [sendMessageToWorker]
+    [worker]
   );
+
+  // Listen to the worker's messages
+  useEffect(() => {
+    if (worker.current) {
+      worker.current.onmessage = (event) => {
+        if (event.data.status === 'complete') {
+          console.log('Received classification output:', event.data.output);
+          const output = event.data.output[0];
+          setResultText(output.label);
+          setEmoji(output.label === 'POSITIVE' ? '😊' : '😢');
+        }
+      };
+    }
+  }, [worker, setResultText, setEmoji, loading]);
 
   useShortcut('ctrl+enter', saveToLocalStorage);
   useShortcut('cmd+enter', saveToLocalStorage);
@@ -96,7 +85,6 @@ const Editor = ({ loading, progress, sendMessageToWorker }) => {
               autoFocus
             />
           </Styles.TextAreaContainer>
-          {prediction && <div>Prediction: {prediction}</div>}
         </>
       )}
     </Styles.EditorContainer>

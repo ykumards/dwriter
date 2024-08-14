@@ -55,8 +55,8 @@ const CalendarComponent = () => {
         {filteredEntries.length > 0 ? (
           <>
             <Styles.OverallEntry>
-              <EntryTime>Overall</EntryTime>
-              <EmojiSpan>{mostFrequentEmoji}</EmojiSpan>
+              <Styles.EntryTime>Overall</Styles.EntryTime>
+              <Styles.EmojiSpan>{mostFrequentEmoji}</Styles.EmojiSpan>
             </Styles.OverallEntry>
             <Styles.EntriesList>
               {filteredEntries.map((entry, index) => (
