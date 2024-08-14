@@ -1,71 +1,12 @@
 // src/components/Editor.jsx
 import React, { useContext, useCallback, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+
 import { debounce } from 'lodash';
 import { checkText } from '../mlUtils';
 import { formatDatetime } from '../uiUtils';
 import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
-
-// Styled components
-const EditorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 80%;
-  background-color: #f5f5f5;
-  margin: 0;
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const EntryDatetime = styled.div`
-  font-size: 0.8rem;
-  color: #888;
-  margin-right: 10px;
-`;
-
-const EmojiDisplay = styled.div`
-  font-size: 2em;
-`;
-
-const TextAreaContainer = styled.div`
-  position: relative;
-  width: 80%;
-  height: 80%;
-  background: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden; /* Prevent overflow outside the container */
-`;
-
-const TextArea = styled.textarea`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  height: auto;
-  max-height: 100%; /* Limit the height of the textarea */
-  border: none;
-  outline: none;
-  font-size: 1.5rem;
-  line-height: 1.6;
-  background: none;
-  resize: none;
-  overflow-y: auto; /* Allow vertical scrolling */
-  color: black;
-
-  ::placeholder {
-    color: #ccc;
-  }
-`;
+import * as Styles from './EditorStyles';
 
 const Editor = () => {
   const {
@@ -117,13 +58,13 @@ const Editor = () => {
   useShortcut('cmd+enter', saveToLocalStorage); // For Mac users
 
   return (
-    <EditorContainer>
-      <Header>
-        <EntryDatetime>{formatDatetime(entryDatetime)}</EntryDatetime>
-        <EmojiDisplay title={resultText}>{emoji}</EmojiDisplay>
-      </Header>
-      <TextAreaContainer>
-        <TextArea
+    <Styles.EditorContainer>
+      <Styles.Header>
+        <Styles.EntryDatetime>{formatDatetime(entryDatetime)}</Styles.EntryDatetime>
+        <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>
+      </Styles.Header>
+      <Styles.TextAreaContainer>
+        <Styles.TextArea
           ref={textAreaRef}
           value={text}
           onChange={handleTextChange}
@@ -131,8 +72,8 @@ const Editor = () => {
           placeholder="Start typing..."
           autoFocus
         />
-      </TextAreaContainer>
-    </EditorContainer>
+      </Styles.TextAreaContainer>
+    </Styles.EditorContainer>
   );
 };
 

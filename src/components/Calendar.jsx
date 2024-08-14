@@ -33,10 +33,10 @@ const CalendarComponent = () => {
             {entries
               .filter((entry) => new Date(entry.datetime).toDateString() === date.toDateString())
               .map((entry, index) => (
-                <EntryItem key={index}>
+                <Styles.EntryItem key={index}>
                   {new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  <EmojiSpan>{entry.emoji}</EmojiSpan>
-                </EntryItem>
+                  <Styles.EmojiSpan>{entry.emoji}</Styles.EmojiSpan>
+                </Styles.EntryItem>
               ))}
           </Styles.EntriesList>
         ) : (
