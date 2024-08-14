@@ -8,7 +8,6 @@ import useToggleShortcut from './hooks/useToggleShortcut';
 import * as Styles from './AppStyles';
 
 
-
 const App = () => {
   const [showNav, setShowNav] = useState(false);
   const [currentComponent, setCurrentComponent] = useState('editor');
@@ -21,6 +20,11 @@ const App = () => {
     setCurrentComponent((prevComponent) => (prevComponent === 'editor' ? 'calendar' : 'editor'));
   });
 
+  const handleNavClick = (component) => {
+    setCurrentComponent(component);
+    setShowNav(false); // Close the nav after selection
+  };
+
   return (
     <Styles.AppContainer>
       <Styles.HamburgerIcon
@@ -32,10 +36,10 @@ const App = () => {
       </Styles.HamburgerIcon>
       {showNav && (
         <Styles.FloatingNav>
-          <Styles.StyledNavLink to="/" onClick={toggleNav}>
+          <Styles.StyledNavLink onClick={() => handleNavClick('editor')}>
             Editor
           </Styles.StyledNavLink>
-          <Styles.StyledNavLink to="/calendar" onClick={toggleNav}>
+          <Styles.StyledNavLink onClick={() => handleNavClick('calendar')}>
             Calendar
           </Styles.StyledNavLink>
         </Styles.FloatingNav>

@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 
+import { getMostFrequentEmoji } from '../uiUtils';
 import * as Styles from './CalendarStyles';
 
 
 const CalendarComponent = () => {
   const [date, setDate] = useState(new Date());
   const [entries, setEntries] = useState([]);
+  const [activeStartDate, setActiveStartDate] = useState(new Date());
 
   useEffect(() => {
     const storedEntries = JSON.parse(localStorage.getItem('entries')) || [];
@@ -19,26 +21,52 @@ const CalendarComponent = () => {
     setDate(newDate);
   };
 
+  const handleTodayClick = () => {
+    const today = new Date();
+    setDate(today);
+    setActiveStartDate(today);
+  };
+
+  const handleActiveStartDateChange = ({ activeStartDate }) => {
+    setActiveStartDate(activeStartDate);
+  };
+
+  const filteredEntries = entries.filter(
+    (entry) => new Date(entry.datetime).toDateString() === date.toDateString()
+  );
+
+  const mostFrequentEmoji = getMostFrequentEmoji(filteredEntries);
+
   return (
     <Styles.CalendarPageContainer>
       <Styles.CalendarContainer>
-        <Styles.CustomCalendar onChange={handleDateChange} value={date} />
+        <Styles.CustomCalendar
+          onChange={handleDateChange}
+          value={date}
+          activeStartDate={activeStartDate}
+          onActiveStartDateChange={handleActiveStartDateChange}
+        />
+        <Styles.TodayButton onClick={handleTodayClick}>Today</Styles.TodayButton>
       </Styles.CalendarContainer>
       <Styles.EntriesContainer>
         <Styles.EntriesHeader>
           Entries for {date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
         </Styles.EntriesHeader>
-        {entries.length > 0 ? (
-          <Styles.EntriesList>
-            {entries
-              .filter((entry) => new Date(entry.datetime).toDateString() === date.toDateString())
-              .map((entry, index) => (
+        {filteredEntries.length > 0 ? (
+          <>
+            <Styles.OverallEntry>
+              <Styles.EntryTime>Overall</Styles.EntryTime>
+              <Styles.EmojiSpan>{mostFrequentEmoji}</Styles.EmojiSpan>
+            </Styles.OverallEntry>
+            <Styles.EntriesList>
+              {filteredEntries.map((entry, index) => (
                 <Styles.EntryItem key={index}>
-                  {new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  <Styles.EntryTime>{new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Styles.EntryTime>
                   <Styles.EmojiSpan>{entry.emoji}</Styles.EmojiSpan>
                 </Styles.EntryItem>
               ))}
-          </Styles.EntriesList>
+            </Styles.EntriesList>
+          </>
         ) : (
           <Styles.NoEntriesMessage>No entries for this date.</Styles.NoEntriesMessage>
         )}
