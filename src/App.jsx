@@ -15,6 +15,7 @@ const App = () => {
   // model dl related
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [classification, setClassification] = useState(null);
   const workerRef = useRef(null);
 
   useEffect(() => {
@@ -56,15 +57,6 @@ const App = () => {
     };
   }, []);
 
-  const sendMessageToWorker = (message, callback) => {
-    console.log('Sending message to worker:', message);
-    console.log('Worker:', workerRef.current);
-    if (workerRef.current) {
-      workerRef.current.postMessage(message);
-      workerRef.current.callback = callback;
-    }
-  };
-
   const toggleNav = () => {
     setShowNav(!showNav);
   };
@@ -102,7 +94,7 @@ const App = () => {
           <Editor
             loading={loading}
             progress={progress}
-            sendMessageToWorker={sendMessageToWorker}
+            worker={workerRef}
           />
         )}
         {currentComponent === 'calendar' && <Calendar />}

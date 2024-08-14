@@ -8,7 +8,7 @@ import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
 import * as Styles from './EditorStyles';
 
-const Editor = ({ loading, progress, sendMessageToWorker }) => {
+const Editor = ({ loading, progress, worker }) => {
   const {
     text,
     setText,
@@ -46,12 +46,27 @@ const Editor = ({ loading, progress, sendMessageToWorker }) => {
   // Debounce function to check text
   const debouncedCheckText = useCallback(
     debounce((newText) => {
-      const result = checkText(newText);
-      setResultText(result);
-      setEmoji(result === 'yay' ? '😊' : '😢');
+      if (worker.current) {
+        worker.current.postMessage({ text: newText });
+      }
     }, 300),
-    []
+    [worker]
   );
+
+  // Listen to the worker's messages
+  useEffect(() => {
+    if (worker.current) {
+      worker.current.onmessage = (event) => {
+        if (event.data.status === 'complete') {
+          console.log('Received classification output:', event.data.output);
+          const output = event.data.output[0];
+          console.log('Received classification output:', output);
+          setResultText(output.label);
+          setEmoji(output.label === 'POSITIVE' ? '😊' : '😢');
+        }
+      };
+    }
+  }, [worker, setResultText, setEmoji]);
 
   // Use custom hook to handle keyboard shortcuts
   useShortcut('ctrl+enter', saveToLocalStorage);
