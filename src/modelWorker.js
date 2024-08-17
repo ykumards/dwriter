@@ -1,12 +1,13 @@
 import { pipeline, env } from "@xenova/transformers";
 
-// Skip local model check
-env.allowLocalModels = false;
-env.useBrowserCache = false;
+env.allowRemoteModels = false;
+// Specify the paths to the local model files
+env.localModelPath = './assets/ml_models/';
 
 class PipelineSingleton {
   static task = 'text-classification';
-  static model = 'Xenova/distilbert-base-uncased-finetuned-sst-2-english';
+  // static model = 'Xenova/distilbert-base-uncased-finetuned-sst-2-english';
+  static model = 'distilbert-base-uncased-finetuned-sst-2-english';
   static instance = null;
 
   static async getInstance(progress_callback = null) {
