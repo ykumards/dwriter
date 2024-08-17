@@ -55,7 +55,7 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 1000,
         "resizable": true,
         "title": "Dooms Writer",
         "width": 800
