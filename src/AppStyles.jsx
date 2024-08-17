@@ -32,7 +32,7 @@ export const FloatingNav = styled.nav`
   left: 60px;
   background-color: #1a1a1a;
   padding: 5px;
-  border-radius: 4px;
+  border-radius: 10%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 `;
 
@@ -46,14 +46,15 @@ export const StyledNavLink = styled(NavLink)`
   border: none;
   text-align: left;
   cursor: pointer;
+  border-radius: 10%;
 
   &.active {
-    background-color: #646cff;
+    background-color: #1a1a1a;
     color: white;
   }
 
   &:hover {
-    background-color: #646cff;
+    background-color: #3a3a3a;
     color: white;
   }
 `;
