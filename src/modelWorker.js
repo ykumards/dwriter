@@ -2,8 +2,8 @@ import { pipeline, env } from "@xenova/transformers";
 
 env.allowRemoteModels = false;
 // Specify the paths to the local model files
-env.localModelPath = './assets/ml_models/';
-env.backends.onnx.wasm.wasmPaths = './assets/wasm/';
+env.localModelPath = '/assets/ml_models/';
+env.backends.onnx.wasm.wasmPaths = '/assets/wasm/';
 
 class PipelineSingleton {
   static task = 'text-classification';
