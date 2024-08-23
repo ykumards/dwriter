@@ -35,6 +35,16 @@ const Editor = ({ loading, progress, worker }) => {
     }
   };
 
+  const emojiMap = {
+    anger: '🤬',
+    disgust: '🤢',
+    fear: '😨',
+    joy: '😀',
+    neutral: '😐',
+    sadness: '😭',
+    surprise: '😲'
+  };
+
   // Debounce function to check text
   const debouncedCheckText = useCallback(
     debounce((newText) => {
@@ -53,7 +63,7 @@ const Editor = ({ loading, progress, worker }) => {
           console.log('Received classification output:', event.data.output);
           const output = event.data.output[0];
           setResultText(output.label);
-          setEmoji(output.label === 'POSITIVE' ? '😊' : '😢');
+          setEmoji(emojiMap[output.label.toLowerCase()] || '😐'); // Default to neutral if not found
         }
       };
     }

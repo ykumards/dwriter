@@ -8,7 +8,7 @@ env.backends.onnx.wasm.wasmPaths = './assets/wasm/';
 class PipelineSingleton {
   static task = 'text-classification';
   // static model = 'Xenova/distilbert-base-uncased-finetuned-sst-2-english';
-  static model = 'distilbert-base-uncased-finetuned-sst-2-english';
+  static model = 'emotion-english-distilroberta-base';
   static instance = null;
 
   static async getInstance(progress_callback = null) {
