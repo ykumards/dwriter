@@ -43,6 +43,7 @@ self.addEventListener('message', async (event) => {
   // Actually perform the classification
   if (event.data.text) {
     console.log('Classifying text:', event.data.text);
+
     let output = await classifier(event.data.text);
 
     console.log('Classification output:', output);
@@ -53,6 +54,10 @@ self.addEventListener('message', async (event) => {
     });
     console.log('Posted Classification output:', output);
   } else {
+    self.postMessage({
+      status: 'complete',
+      output: [{ label: 'neutral', score: 1 }],
+    });
     console.log('No text to classify');
   }
 });
