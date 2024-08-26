@@ -137,7 +137,7 @@ export const OverallEntry = styled.div`
   padding: 15px;
   background-color: #3a3a3a;
   border-radius: 8px;
-  font-size: 1.2em;
+  font-size: 1.1em;
   margin-bottom: 20px;
 `;
 
@@ -147,7 +147,7 @@ export const EntryItem = styled.li`
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid #444; /* Cleaner underline */
-  font-size: 1em;
+  font-size: 0.7em;
   width: 80%; /* Added width to control the length of the underline */
   margin: 0 auto; /* Center the underline */
   color: #aaa; /* Subtle color for individual entries */
