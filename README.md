@@ -1,8 +1,23 @@
-# React + Vite
+# DoomsWriter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div style="text-align: center;">
+  <img src="src/assets/dw_logo.png" alt="DoomsWriter Logo" width="300"/>
+</div>
 
-Currently, two official plugins are available:
+## Hello
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+DoomsWriter (DW) is a minimalistic journal app that destroys the text and retains the emotion.
+
+It started as a way for me to learn React but I extended it a bit to embed small [DistilRoberta model](https://huggingface.co/j-hartmann/emotion-english-distilroberta-base) to do real-time emotion detection. The app is completely secure because it uses [transformers.js](https://huggingface.co/docs/transformers.js/index) to serve the model using ONNX Runtime and WASM.
+
+## Features
+
+The app is pretty basic and has two main views (or Components 😉️) -- Editor and Calendar. The shortcut `Cmd + ;` toggles between Editor and Calendar views.
+
+- Type the text in the Editor and get real-time emotion recognition (this can be turned off if its too distracting).
+- Press `Cmd + Enter` to capture the emotion and clear the text.
+- View the emotions in the Calendar
+
+## Inside
+
+The frontend is written in plain-ol Javascript and React. I took a gamble and used [Tauri](https://tauri.app/) instead of [Electron](https://josephg.com/blog/electron-is-flash-for-the-desktop/) for the multi-platform support, and so far it has been very plesant! 
