@@ -18,6 +18,7 @@ const Editor = ({ loading, progress, worker }) => {
     saveToLocalStorage,
   } = useContext(EditorContext);
   const textAreaRef = useRef(null);
+  const [showEmoji, setShowEmoji] = useState(true);
 
   const handleTextChange = (e) => {
     const newText = e.target.value;
@@ -74,6 +75,16 @@ const Editor = ({ loading, progress, worker }) => {
 
   return (
     <Styles.EditorContainer>
+      <Styles.ToggleContainer>
+        <Styles.ToggleSwitch>
+          <input
+            type="checkbox"
+            checked={showEmoji}
+            onChange={() => setShowEmoji(!showEmoji)}
+          />
+          <span className="slider round"></span>
+        </Styles.ToggleSwitch>
+      </Styles.ToggleContainer>
       {loading ? (
         <Styles.LoadingMessage>
           <Styles.LoadingText>Loading Model</Styles.LoadingText>
@@ -83,7 +94,7 @@ const Editor = ({ loading, progress, worker }) => {
         <>
           <Styles.Header>
             <Styles.EntryDatetime>{formatDatetime(entryDatetime)}</Styles.EntryDatetime>
-            <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>
+            {showEmoji && <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>}
           </Styles.Header>
           <Styles.TextAreaContainer>
             <Styles.TextArea
