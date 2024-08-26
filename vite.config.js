@@ -20,4 +20,9 @@ export default defineConfig({
       'transformers': '@xenova/transformers',
     }
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.js',
+  },
 });
