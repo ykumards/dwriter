@@ -26,7 +26,7 @@ jobs:
         run: npm run tauri build
 
       - name: Upload release assets
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2.0.8
         with:
           files: src-tauri/target/release/bundle/dmg/*.dmg
         env:
