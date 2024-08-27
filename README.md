@@ -19,6 +19,11 @@ The app is pretty basic and has two main views (or Components 😉️) -- Editor
 - Press `Cmd + Enter` to capture the emotion and clear the text.
 - View the emotions in the Calendar
 
+<p align="center">
+  <img src="src/assets/editor-screenshot.png" alt="alt text" width="400"/>
+  <img src="src/assets/calendar-screenshot.png" alt="alt text" width="370"/>
+</p>
+
 ## Inside
 
 The frontend is written in plain-ol Javascript and React. I took a gamble and used [Tauri](https://tauri.app/) instead of [Electron](https://josephg.com/blog/electron-is-flash-for-the-desktop/) for the multi-platform support, and so far it has been very plesant!
@@ -29,7 +34,7 @@ The frontend is written in plain-ol Javascript and React. I took a gamble and us
 
 #### MacOS
 
-You can download the `.dmg` from the releases and then remove the quarantine using `xattr -d com.apple.quarantine <dmg-file>`. If you find this sus, you can also build from source.
+You can download the `.dmg` from the releases and then remove the quarantine using `xattr -d com.apple.quarantine <dmg-file>`. Otherwise, MacOS might throw app is "damaged" error. If you find this sus, you can also build from source.
 
 ## Building from source
 
