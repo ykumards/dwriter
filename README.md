@@ -69,3 +69,7 @@ You need to have `node` and `tauri` installed.
 ## Credits
 
 The app uses `j-hartmann/emotion-english-distilroberta-base` with ONNX runtime and WASM to serve. Leave them a  ❤️️!
+
+Am still learning React and benefited greatly from [Full Stack Open course](https://fullstackopen.com/en/) from UoH, specially for introducing me to vite!
+
+And of course, GH Co-pilot, where will I be without you 😍️
