@@ -54,7 +54,7 @@ const Editor = ({ loading, progress, worker }) => {
       if (worker.current) {
         worker.current.postMessage({ text: newText });
       }
-    }, 300),
+    }, 100),
     [worker]
   );
 
@@ -68,9 +68,9 @@ const Editor = ({ loading, progress, worker }) => {
         }
       };
     }
-  }, [worker, setResultText, setEmoji]);
+  }, [worker, setResultText, setEmoji, loading]);
 
-  const triggerEmojiAnimation = () => {
+  const triggerEmojiAnimation = (currentEmoji) => {
     setTriggerAnimation(true);
     setShowCenteredEmoji(true); // Show centered emoji
     setTimeout(() => {
@@ -80,11 +80,11 @@ const Editor = ({ loading, progress, worker }) => {
   };
 
   const handleSaveAndAnimate = () => {
-    // Trigger the animation first, then save and reset
-    triggerEmojiAnimation();
+    // Trigger the animation with the current emoji before resetting the editor
+    triggerEmojiAnimation(emoji);
     setTimeout(() => {
-      saveToLocalStorage(); // Save after the animation
-    }, 1000);
+      saveToLocalStorage(); // Save and reset after the animation
+    }, 1000); // Delay save to match animation duration
   };
 
   useShortcut('ctrl+enter', handleSaveAndAnimate);
