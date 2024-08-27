@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 
-import { getMostFrequentEmoji } from '../uiUtils';
+import { getMostFrequentEmoji, getEmotionByEmoji } from '../uiUtils';
 import * as Styles from './CalendarStyles';
 
 
@@ -56,13 +56,13 @@ const CalendarComponent = () => {
           <>
             <Styles.OverallEntry>
               <Styles.EntryTime>Overall</Styles.EntryTime>
-              <Styles.EmojiSpan>{mostFrequentEmoji}</Styles.EmojiSpan>
+              <Styles.EmojiSpan title={getEmotionByEmoji(mostFrequentEmoji)}>{mostFrequentEmoji}</Styles.EmojiSpan>
             </Styles.OverallEntry>
             <Styles.EntriesList>
               {filteredEntries.map((entry, index) => (
                 <Styles.EntryItem key={index}>
                   <Styles.EntryTime>{new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Styles.EntryTime>
-                  <Styles.EmojiSpan>{entry.emoji}</Styles.EmojiSpan>
+                  <Styles.EmojiSpan title={getEmotionByEmoji(entry.emoji)}>{entry.emoji}</Styles.EmojiSpan>
                 </Styles.EntryItem>
               ))}
             </Styles.EntriesList>

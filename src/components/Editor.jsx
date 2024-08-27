@@ -1,7 +1,7 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import { motion } from 'framer-motion';
-import { formatDatetime } from '../uiUtils';
+import { formatDatetime, getEmojiByEmotion, getEmotionByEmoji } from '../uiUtils';
 import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
 import * as Styles from './EditorStyles';
@@ -39,15 +39,6 @@ const Editor = ({ loading, progress, worker }) => {
     }
   };
 
-  const emojiMap = {
-    anger: '🤬',
-    disgust: '🤢',
-    fear: '😨',
-    joy: '😀',
-    neutral: '😐',
-    sadness: '😭',
-    surprise: '😲',
-  };
 
   const debouncedCheckText = useCallback(
     debounce((newText) => {
@@ -64,7 +55,7 @@ const Editor = ({ loading, progress, worker }) => {
         if (event.data.status === 'complete') {
           const output = event.data.output[0];
           setResultText(output.label);
-          setEmoji(emojiMap[output.label.toLowerCase()] || '😐');
+          setEmoji(getEmojiByEmotion(output.label));
         }
       };
     }
@@ -113,7 +104,7 @@ const Editor = ({ loading, progress, worker }) => {
           <Styles.Header>
             <Styles.EntryDatetime>{formatDatetime(entryDatetime)}</Styles.EntryDatetime>
             {showEmoji && (
-              <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>
+              <Styles.EmojiDisplay title={getEmotionByEmoji(emoji)}>{emoji}</Styles.EmojiDisplay>
             )}
           </Styles.Header>
           <Styles.TextAreaContainer>

@@ -27,5 +27,21 @@ const getMostFrequentEmoji = (entries) => {
   return mostFrequentEmoji;
 };
 
+const emojiMap = {
+  anger: '🤬',
+  disgust: '🤢',
+  fear: '😨',
+  joy: '😀',
+  neutral: '😐',
+  sadness: '😭',
+  surprise: '😲',
+};
 
-export { formatDatetime, getMostFrequentEmoji };
+export const getEmojiByEmotion = (emotion) => emojiMap[emotion.toLowerCase()] || '😐';
+
+export const getEmotionByEmoji = (emoji) => {
+  return Object.keys(emojiMap).find((key) => emojiMap[key] === emoji) || 'neutral';
+};
+
+
+export { formatDatetime, getMostFrequentEmoji};
