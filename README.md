@@ -4,6 +4,8 @@
   <img src="src/assets/dw_logo.png" alt="DoomsWriter Logo" width="300"/>
 </div>
 
+> Note: Still under active development. Expect breaking changes and use with caution.
+
 ## Hello
 
 DoomsWriter (DW) is a minimalistic journal app that destroys the text and retains the emotion.
