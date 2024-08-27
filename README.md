@@ -13,16 +13,35 @@ It started as a way for me to learn React but I extended it a bit to embed small
 
 ## Features
 
-The app is pretty basic and has two main views (or Components 😉️) -- Editor and Calendar. The shortcut `Cmd + ;` toggles between Editor and Calendar views.
+The app is pretty basic and has two main views (or Components 😉️) -- Editor and Calendar.
 
 - Type the text in the Editor and get real-time emotion recognition (this can be turned off if its too distracting).
-- Press `Cmd + Enter` to capture the emotion and clear the text.
-- View the emotions in the Calendar
+- Capture the emotion and clear the text by pressing `Cmd + enter`.
+- View the emotions in the Calendar. You can click the dates in the calendar to view previous emotions.
+
+### Keyboard Shortcuts
+
+DWriter is mostly keyboard driven.
+
+- The shortcut `Cmd + ;` toggles between Editor and Calendar views.
+- The shortcut `Cmd + enter` captures the current text.
 
 <p align="center">
   <img src="src/assets/editor-screenshot.png" alt="alt text" width="400"/>
   <img src="src/assets/calendar-screenshot.png" alt="alt text" width="370"/>
 </p>
+
+### Emotions
+
+DWriter only captures the emotions of your journal entry and forgets the actual text. Emotions are based on *Ekman's 6 basic emotions* and a neutral ([model card](https://huggingface.co/j-hartmann/emotion-english-distilroberta-base))
+
+1. anger 🤬
+2. disgust 🤢
+3. fear 😨
+4. joy 😀
+5. neutral 😐
+6. sadness 😭
+7. surprise 😲
 
 ## Inside
 
@@ -47,3 +66,6 @@ You need to have `node` and `tauri` installed.
 - `npm run tauri dev` opens the app in Tauri dev mode (which is basically Edge browser)
 - `npm run tauri build` to build the tauri app. The packaged app can be found in the releases folder (`src-tauri/target/release/bundle/`)
 
+## Credits
+
+The app uses `j-hartmann/emotion-english-distilroberta-base` with ONNX runtime and WASM to serve. Leave them a  ❤️️!
