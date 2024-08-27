@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "dwriter",
-    "version": "0.1.0"
+    "version": "0.0.2"
   },
   "tauri": {
     "allowlist": {
@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.dwriter",
+      "identifier": "com.tychola.dwriter",
       "longDescription": "",
       "shortDescription": "",
       "resources": [
@@ -40,7 +40,7 @@
         "exceptionDomain": "",
         "frameworks": [],
         "providerShortName": null,
-        "signingIdentity": null
+        "signingIdentity": "${APPLE_SIGNING_IDENTITY}"
       },
       "windows": {
         "certificateThumbprint": null,
