@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'  # This triggers the workflow for any version tag
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -29,4 +29,4 @@ jobs:
         with:
           files: src-tauri/target/release/bundle/dmg/*.dmg
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
