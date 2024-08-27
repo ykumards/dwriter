@@ -152,3 +152,12 @@ export const ToggleSwitch = styled.label`
     border-radius: 50%;
   }
 `;
+
+export const CenteredEmojiContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  pointer-events: none; // Prevents any interaction
+`;

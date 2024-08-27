@@ -1,5 +1,6 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
+import { motion } from 'framer-motion';
 import { formatDatetime } from '../uiUtils';
 import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
@@ -19,6 +20,8 @@ const Editor = ({ loading, progress, worker }) => {
   } = useContext(EditorContext);
   const textAreaRef = useRef(null);
   const [showEmoji, setShowEmoji] = useState(true);
+  const [triggerAnimation, setTriggerAnimation] = useState(false);
+  const [showCenteredEmoji, setShowCenteredEmoji] = useState(false);
 
   const handleTextChange = (e) => {
     const newText = e.target.value;
@@ -46,7 +49,6 @@ const Editor = ({ loading, progress, worker }) => {
     surprise: '😲'
   };
 
-  // Debounce function to check text
   const debouncedCheckText = useCallback(
     debounce((newText) => {
       if (worker.current) {
@@ -56,22 +58,29 @@ const Editor = ({ loading, progress, worker }) => {
     [worker]
   );
 
-  // Listen to the worker's messages
   useEffect(() => {
     if (worker.current) {
       worker.current.onmessage = (event) => {
         if (event.data.status === 'complete') {
-          console.log('Received classification output:', event.data.output);
           const output = event.data.output[0];
           setResultText(output.label);
-          setEmoji(emojiMap[output.label.toLowerCase()] || '😐'); // Default to neutral if not found
+          setEmoji(emojiMap[output.label.toLowerCase()] || '😐');
         }
       };
     }
   }, [worker, setResultText, setEmoji, loading]);
 
-  useShortcut('ctrl+enter', saveToLocalStorage);
-  useShortcut('cmd+enter', saveToLocalStorage);
+  const triggerEmojiAnimation = () => {
+    setTriggerAnimation(true);
+    setShowCenteredEmoji(true); // Show centered emoji
+    setTimeout(() => {
+      setTriggerAnimation(false);
+      setShowCenteredEmoji(false); // Hide centered emoji after animation
+    }, 1000); // Matches the duration of the animation
+  };
+
+  useShortcut('ctrl+enter', () => saveToLocalStorage(triggerEmojiAnimation));
+  useShortcut('cmd+enter', () => saveToLocalStorage(triggerEmojiAnimation));
 
   return (
     <Styles.EditorContainer>
@@ -94,7 +103,9 @@ const Editor = ({ loading, progress, worker }) => {
         <>
           <Styles.Header>
             <Styles.EntryDatetime>{formatDatetime(entryDatetime)}</Styles.EntryDatetime>
-            {showEmoji && <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>}
+            {showEmoji && (
+              <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>
+            )}
           </Styles.Header>
           <Styles.TextAreaContainer>
             <Styles.TextArea
@@ -107,6 +118,17 @@ const Editor = ({ loading, progress, worker }) => {
             />
           </Styles.TextAreaContainer>
         </>
+      )}
+
+      {showCenteredEmoji && (
+        <Styles.CenteredEmojiContainer>
+          <motion.div
+            animate={{ scale: [1, 1.5, 1], opacity: [1, 0.8, 1] }}
+            transition={{ duration: 0.5 }}
+          >
+            <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>
+          </motion.div>
+        </Styles.CenteredEmojiContainer>
       )}
     </Styles.EditorContainer>
   );

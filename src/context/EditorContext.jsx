@@ -19,15 +19,20 @@ export const EditorProvider = ({ children }) => {
     setEntryDatetime(new Date());
   };
 
-  const saveToLocalStorage = () => {
-    const datetime = formatDatetime(entryDatetime);
-    const newEntry = { datetime, emoji };
+  const saveToLocalStorage = (triggerAnimation) => {
+    triggerAnimation();
 
-    const existingEntries = JSON.parse(localStorage.getItem('entries')) || [];
-    const updatedEntries = [...existingEntries, newEntry];
+    // Delay the reset to allow the animation to complete
+    setTimeout(() => {
+      const datetime = formatDatetime(entryDatetime);
+      const newEntry = { datetime, emoji };
 
-    localStorage.setItem('entries', JSON.stringify(updatedEntries));
-    resetEditor();
+      const existingEntries = JSON.parse(localStorage.getItem('entries')) || [];
+      const updatedEntries = [...existingEntries, newEntry];
+
+      localStorage.setItem('entries', JSON.stringify(updatedEntries));
+      resetEditor();
+    }, 500); // Adjust the delay to match the duration of the animation
   };
 
   return (
