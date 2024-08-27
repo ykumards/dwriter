@@ -68,7 +68,7 @@ const Editor = ({ loading, progress, worker }) => {
         }
       };
     }
-  }, [worker, setResultText, setEmoji, loading]);
+  }, [worker, setResultText, setEmoji]);
 
   const triggerEmojiAnimation = () => {
     setTriggerAnimation(true);
@@ -79,8 +79,16 @@ const Editor = ({ loading, progress, worker }) => {
     }, 1000); // Matches the duration of the animation
   };
 
-  useShortcut('ctrl+enter', () => saveToLocalStorage(triggerEmojiAnimation));
-  useShortcut('cmd+enter', () => saveToLocalStorage(triggerEmojiAnimation));
+  const handleSaveAndAnimate = () => {
+    // Trigger the animation first, then save and reset
+    triggerEmojiAnimation();
+    setTimeout(() => {
+      saveToLocalStorage(); // Save after the animation
+    }, 1000);
+  };
+
+  useShortcut('ctrl+enter', handleSaveAndAnimate);
+  useShortcut('cmd+enter', handleSaveAndAnimate);
 
   return (
     <Styles.EditorContainer>
