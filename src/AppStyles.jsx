@@ -7,9 +7,12 @@ export const AppContainer = styled.div`
   justify-content: center;
   height: 100vh;
   width: 100vw;
+  min-width: 500px;
+  max-width: 1200px;
   background-color: #242424;
   color: rgba(255, 255, 255, 0.87);
   position: relative;
+  overflow-x: hidden;
 `;
 
 export const HamburgerIcon = styled(motion.div)`

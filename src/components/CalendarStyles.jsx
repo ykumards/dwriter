@@ -12,10 +12,12 @@ export const CalendarPageContainer = styled.div`
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
   width: 100%;
-  height: 100vh; /* Full height of the viewport */
+  height: 100vh;
   padding: 20px;
   box-sizing: border-box;
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const CalendarContainer = styled.div`

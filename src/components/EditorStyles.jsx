@@ -18,6 +18,7 @@ export const EditorContainer = styled.div`
   align-items: center;
   height: 100%;
   width: 80%;
+  min-width: 500px;
   background-color: #f5f5f5;
   margin: 0;
 `;

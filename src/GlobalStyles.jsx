@@ -31,8 +31,10 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     display: flex;
     place-items: center;
-    min-width: 320px;
+    min-width: 500px;
     min-height: 100vh;
+    max-width: 1200px;
+    overflow-x: hidden;
   }
 
   h1 {
