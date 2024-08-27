@@ -151,6 +151,39 @@ export const ToggleSwitch = styled.label`
   & .slider.round:before {
     border-radius: 50%;
   }
+
+  .tooltip {
+    visibility: hidden;
+    width: 100px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 110%;
+    left: 20%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    top: -5px; /* Arrow at the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+
+  &:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
 `;
 
 export const CenteredEmojiContainer = styled.div`

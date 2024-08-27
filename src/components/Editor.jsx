@@ -15,11 +15,11 @@ const Editor = ({ loading, progress, worker }) => {
     resultText,
     setResultText,
     entryDatetime,
-    setEntryDatetime,
     saveToLocalStorage,
+    showEmoji,
+    setShowEmoji,
   } = useContext(EditorContext);
   const textAreaRef = useRef(null);
-  const [showEmoji, setShowEmoji] = useState(true);
   const [triggerAnimation, setTriggerAnimation] = useState(false);
   const [showCenteredEmoji, setShowCenteredEmoji] = useState(false);
 
@@ -46,7 +46,7 @@ const Editor = ({ loading, progress, worker }) => {
     joy: '😀',
     neutral: '😐',
     sadness: '😭',
-    surprise: '😲'
+    surprise: '😲',
   };
 
   const debouncedCheckText = useCallback(
@@ -92,6 +92,7 @@ const Editor = ({ loading, progress, worker }) => {
             onChange={() => setShowEmoji(!showEmoji)}
           />
           <span className="slider round"></span>
+          <span className="tooltip">Toggle Live Emotion Emoji</span>
         </Styles.ToggleSwitch>
       </Styles.ToggleContainer>
       {loading ? (

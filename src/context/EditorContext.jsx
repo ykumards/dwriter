@@ -1,7 +1,5 @@
 // src/context/EditorContext.jsx
-import React, { createContext, useState } from 'react';
-
-import { formatDatetime } from '../uiUtils';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const EditorContext = createContext();
 
@@ -10,8 +8,21 @@ export const EditorProvider = ({ children }) => {
   const [emoji, setEmoji] = useState('😐');
   const [resultText, setResultText] = useState('');
   const [entryDatetime, setEntryDatetime] = useState(new Date());
+  const [showEmoji, setShowEmoji] = useState(true);
 
-  // Reset editor state
+  // Load the persisted showEmoji state from localStorage when the component mounts
+  useEffect(() => {
+    const savedShowEmoji = localStorage.getItem('showEmoji');
+    if (savedShowEmoji !== null) {
+      setShowEmoji(JSON.parse(savedShowEmoji));
+    }
+  }, []);
+
+  // Save the showEmoji state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('showEmoji', JSON.stringify(showEmoji));
+  }, [showEmoji]);
+
   const resetEditor = () => {
     setText('');
     setEmoji('😐');
@@ -19,20 +30,19 @@ export const EditorProvider = ({ children }) => {
     setEntryDatetime(new Date());
   };
 
-  const saveToLocalStorage = (triggerAnimation) => {
-    triggerAnimation();
+  const saveToLocalStorage = (callback) => {
+    const datetime = entryDatetime.toLocaleString();
+    const newEntry = { datetime, emoji };
 
-    // Delay the reset to allow the animation to complete
-    setTimeout(() => {
-      const datetime = formatDatetime(entryDatetime);
-      const newEntry = { datetime, emoji };
+    const existingEntries = JSON.parse(localStorage.getItem('entries')) || [];
+    const updatedEntries = [...existingEntries, newEntry];
 
-      const existingEntries = JSON.parse(localStorage.getItem('entries')) || [];
-      const updatedEntries = [...existingEntries, newEntry];
+    localStorage.setItem('entries', JSON.stringify(updatedEntries));
+    resetEditor();
 
-      localStorage.setItem('entries', JSON.stringify(updatedEntries));
-      resetEditor();
-    }, 500); // Adjust the delay to match the duration of the animation
+    if (callback) {
+      callback();
+    }
   };
 
   return (
@@ -46,7 +56,9 @@ export const EditorProvider = ({ children }) => {
         setResultText,
         entryDatetime,
         setEntryDatetime,
-        saveToLocalStorage
+        saveToLocalStorage,
+        showEmoji,
+        setShowEmoji,
       }}
     >
       {children}
