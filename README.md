@@ -10,7 +10,7 @@
 
 DoomsWriter (DW) is a minimalistic journal app that destroys the text and retains the emotion.
 
-It started as a way for me to learn React but I extended it a bit to embed small [DistilRoberta model](https://huggingface.co/j-hartmann/emotion-english-distilroberta-base) to do real-time emotion detection. The app is completely secure because it uses [transformers.js](https://huggingface.co/docs/transformers.js/index) to serve the model using ONNX Runtime and WASM.
+It started as a way for me to learn React but I extended it a bit to embed small [DistilRoberta model](https://huggingface.co/j-hartmann/emotion-english-distilroberta-base) to do real-time emotion detection. The app uses [transformers.js](https://huggingface.co/docs/transformers.js/index) to serve the model on the edge using ONNX Runtime and WASM so nothing leaves your system.
 
 
 ## Features
