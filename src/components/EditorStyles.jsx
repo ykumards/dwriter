@@ -98,6 +98,10 @@ export const ToggleContainer = styled.div`
   top: 20px;
   right: 20px;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 `;
 
 export const ToggleSwitch = styled.label`
@@ -158,6 +162,7 @@ export const ToggleSwitch = styled.label`
     background-color: black;
     color: #fff;
     text-align: center;
+    font-size: 0.9rem;
     border-radius: 3px;
     padding: 5px;
     position: absolute;
@@ -183,6 +188,23 @@ export const ToggleSwitch = styled.label`
   &:hover .tooltip {
     visibility: visible;
     opacity: 1;
+  }
+`;
+
+
+export const SaveButton = styled.button`
+  background-color: #312f2f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin: 10px 0;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 1.1em;
+  &:hover {
+    background-color: #535353;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
 `;
 

@@ -91,8 +91,11 @@ const Editor = ({ loading, progress, worker }) => {
             onChange={() => setShowEmoji(!showEmoji)}
           />
           <span className="slider round"></span>
-          <span className="tooltip">Toggle Live Emotion Emoji</span>
+          <span className="tooltip">Toggle live emotion</span>
         </Styles.ToggleSwitch>
+        <Styles.SaveButton onClick={handleSaveAndAnimate}>
+          Save
+        </Styles.SaveButton>
       </Styles.ToggleContainer>
       {loading ? (
         <Styles.LoadingMessage>
