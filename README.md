@@ -55,7 +55,7 @@ The frontend is written in plain-ol Javascript and React. I took a gamble and us
 
 #### MacOS
 
-You can download the `.dmg` from the releases. If you find this sus, you can also build from source.
+You can download the `.dmg` from the [releases](https://github.com/ykumards/dwriter/releases). If you find this sus, you can also build from source.
 
 ## Building from source
 
