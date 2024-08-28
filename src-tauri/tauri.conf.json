@@ -1,71 +1,90 @@
 {
-  "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:5173",
-    "distDir": "../dist"
-  },
-  "package": {
-    "productName": "dwriter",
-    "version": "0.0.2"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": false
+    "build": {
+        "beforeBuildCommand": "npm run build",
+        "beforeDevCommand": "npm run dev",
+        "devPath": "http://localhost:5173",
+        "distDir": "../dist"
     },
-    "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
-      "deb": {
-        "depends": []
-      },
-      "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "com.tychola.dwriter",
-      "longDescription": "",
-      "shortDescription": "",
-      "resources": [
-        "../dist/assets"
-      ],
-      "targets": ["dmg", "app", "msi", "nsis"],
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": "${APPLE_SIGNING_IDENTITY}"
-      },
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
-      }
+    "package": {
+        "productName": "dwriter",
+        "version": "0.0.2"
     },
-    "security": {
-      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
-    },
-    "updater": {
-      "active": false
-    },
-    "windows": [
-      {
-        "fullscreen": false,
-        "resizable": true,
-        "title": "Dooms Writer",
-        "height": 1000,
-        "width": 800,
-        "minWidth": 800,
-        "minHeight": 600,
-        "maxWidth": 1200,
-        "maxHeight": 1200
-      }
-    ]
-  }
+    "tauri": {
+        "allowlist": {
+            "fs": {
+                "scope": ["$APPLOCALDATA/*"],
+                "readFile": false,
+                "writeFile": true,
+                "readDir": false,
+                "copyFile": false,
+                "createDir": false,
+                "removeDir": false,
+                "removeFile": false,
+                "renameFile": false,
+                "exists": false
+            },
+            "path": {
+                "all": true
+            },
+            "dialog": {
+                "save": true,
+                "ask": false,
+                "confirm": false
+            }
+        },
+        "bundle": {
+            "active": true,
+            "category": "DeveloperTool",
+            "copyright": "",
+            "deb": {
+                "depends": []
+            },
+            "externalBin": [],
+            "icon": [
+                "icons/32x32.png",
+                "icons/128x128.png",
+                "icons/128x128@2x.png",
+                "icons/icon.icns",
+                "icons/icon.ico"
+            ],
+            "identifier": "com.tychola.dwriter",
+            "longDescription": "",
+            "shortDescription": "",
+            "resources": [
+                "../dist/assets"
+            ],
+            "targets": ["dmg", "app", "msi", "nsis"],
+            "macOS": {
+                "entitlements": null,
+                "exceptionDomain": "",
+                "frameworks": [],
+                "providerShortName": null,
+                "signingIdentity": "${APPLE_SIGNING_IDENTITY}"
+            },
+            "windows": {
+                "certificateThumbprint": null,
+                "digestAlgorithm": "sha256",
+                "timestampUrl": ""
+            }
+        },
+        "security": {
+            "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+        },
+        "updater": {
+            "active": false
+        },
+        "windows": [
+            {
+                "fullscreen": false,
+                "resizable": true,
+                "title": "Dooms Writer",
+                "height": 1000,
+                "width": 800,
+                "minWidth": 800,
+                "minHeight": 600,
+                "maxWidth": 1200,
+                "maxHeight": 1200
+            }
+        ]
+    }
 }

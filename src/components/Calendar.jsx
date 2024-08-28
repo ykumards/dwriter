@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 
+import { writeTextFile } from '@tauri-apps/api/fs';
+import { save } from '@tauri-apps/api/dialog';
 import { getMostFrequentEmoji, getEmotionByEmoji } from '../uiUtils';
 import * as Styles from './CalendarStyles';
 
@@ -31,17 +33,34 @@ const CalendarComponent = () => {
         setActiveStartDate(activeStartDate);
     };
 
-    const handleExportClick = () => {
-        const storedEntries = JSON.parse(localStorage.getItem('entries')) || [];
-        const dataStr = JSON.stringify(storedEntries, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `emotion-entries-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    const handleExportClick = async () => {
+        try {
+            console.log('Exporting entries...');
+            const storedEntries = localStorage.getItem('entries');
+            if (storedEntries) {
+                // Open a save dialog and let the user choose where to save the file
+                const currentDate = new Date().toISOString().split('T')[0];
+                const defaultFileName = `emotion-entries-${currentDate}.json`;
+                const filePath = await save({
+                defaultPath: defaultFileName,
+                filters: [{
+                    name: 'JSON Files',
+                    extensions: ['json']
+                }]
+            });
+
+            if (filePath) {
+                await writeTextFile(filePath, storedEntries);
+                console.log(`File saved as ${filePath}`);
+            } else {
+                console.log('Save operation was cancelled.');
+            }
+            } else {
+                console.log('No entries found to export.');
+            }
+        } catch (error) {
+            console.error('Failed to export emotions:', error);
+        }
     };
 
     const filteredEntries = entries.filter(
