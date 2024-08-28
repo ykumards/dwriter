@@ -200,7 +200,7 @@ export const SaveButton = styled.button`
     margin: 10px 0;
     margin-top: 10px;
     cursor: pointer;
-    font-size: 1.1em;
+    font-size: 1em;
     &:hover {
         background-color: #535353;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
