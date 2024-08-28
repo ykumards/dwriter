@@ -118,7 +118,7 @@ export const TodayButton = styled.button`
 export const ExportButton = styled.button`
     position: absolute;
     top: 20px;
-    right: 20px;
+    right: 70px;
     background-color: #312f2f;
     color: white;
     border: none;
