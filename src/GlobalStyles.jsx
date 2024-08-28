@@ -5,27 +5,27 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
     @font-face {
         font-family: 'Open Sans';
-        src: url('/assets/fonts/static/OpenSans-Regular.ttf') format('truetype');
+        src: url('/assets/fonts/Open_Sans/static/OpenSans-Regular.ttf') format('truetype');
         font-weight: 400;
         font-style: normal;
     }
 
     @font-face {
         font-family: 'Open Sans';
-        src: url('/assets/fonts/static/OpenSans-Bold.ttf') format('truetype');
+        src: url('/assets/fonts/Open_Sans/static/OpenSans-Bold.ttf') format('truetype');
         font-weight: 700;
         font-style: normal;
     }
 
     @font-face {
         font-family: 'Open Sans';
-        src: url('/assets/fonts/static/OpenSans-Italic.ttf') format('truetype');
+        src: url('/assets/fonts/Open_Sans/static/OpenSans-Italic.ttf') format('truetype');
         font-weight: 400;
         font-style: italic;
     }
 
     :root {
-        font-family: 'Open Sans', 'Menlo', sans-serif;
+        font-family: 'Open Sans';
         line-height: 1.5;
         font-weight: 400;
 
