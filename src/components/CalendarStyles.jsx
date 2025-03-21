@@ -2,23 +2,53 @@
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
 
 export const CalendarPageContainer = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: flex-start; /* Align items to the top */
-    color: ${props => props.theme === 'light' ? '#242424' : 'rgba(255, 255, 255, 0.87)'};
-    background-color: ${props => props.theme === 'light' ? '#ffffff' : '#242424'};
+    height: 100%;
     width: 100%;
-    height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
-    max-width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    transition: background-color 0.3s, color 0.3s;
+    min-width: 500px;
+    background-color: var(--background-dark);
+    margin: 0;
+    position: relative;
+`;
+
+export const PaperContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    max-width: 90%;
+    height: 85%;
+    margin: 60px auto 0;
+    background-color: var(--background-light);
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease, background-color 0.3s;
+    animation: ${fadeIn} 0.5s ease;
+`;
+
+export const PaperContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
 `;
 
 export const CalendarContainer = styled.div`
@@ -26,15 +56,20 @@ export const CalendarContainer = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 20px;
+    max-width: 380px;
+    margin: 0 auto;
 `;
 
 export const CustomCalendar = styled(Calendar)`
-    background-color: ${props => props.theme === 'light' ? '#fdfdfd' : '#1e1e1e'}; /* Light for light mode, dark for dark mode */
-    color: ${props => props.theme === 'light' ? '#4a4a4a' : '#e0e0e0'}; /* Darker gray for light mode, light gray for dark mode */
+    background-color: ${props => props.theme === 'light' ? '#fdfdfd' : '#1e1e1e'};
+    color: ${props => props.theme === 'light' ? '#4a4a4a' : '#e0e0e0'};
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: none; /* Remove border */
+    border: none;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    
     .react-calendar__tile {
         background: ${props => props.theme === 'light' ? '#fdfdfd' : '#2a2a2a'};
         color: ${props => props.theme === 'light' ? '#4a4a4a' : '#e0e0e0'};
@@ -115,7 +150,7 @@ export const TodayButton = styled.button`
     border-radius: 18px;
     padding: 0 20px;
     height: 36px;
-    margin: 10px 0;
+    margin: 0 0 15px;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
@@ -156,35 +191,39 @@ export const ExportButton = styled.button`
 `;
 
 export const EntriesContainer = styled.div`
-    margin-top: 20px; /* Ensure spacing between calendar and entries */
     width: 100%;
-    max-width: 300px;
+    max-width: 380px;
+    margin: 0 auto;
 `;
 
 export const EntriesHeader = styled.h3`
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     text-align: center;
     color: ${props => props.theme === 'light' ? '#343a40' : 'inherit'};
+    font-size: 0.95rem;
 `;
 
 export const EntriesList = styled.ul`
     list-style-type: none;
     padding: 0;
     margin: 0;
-    height: 200px; /* Set a fixed height */
-    overflow-y: auto; /* Enable vertical scrolling */
+    height: auto;
+    max-height: 180px;
+    overflow-y: auto;
 `;
 
 export const OverallEntry = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 12px 15px;
     background-color: ${props => props.theme === 'light' ? '#f8f9fa' : '#3a3a3a'};
     border: ${props => props.theme === 'light' ? '1px solid #dee2e6' : 'none'};
     border-radius: 8px;
     font-size: 1.1em;
-    margin-bottom: 20px;
+    margin: 0 auto 12px;
+    max-width: 340px;
+    width: 90%;
     transition: background-color 0.3s;
 `;
 
@@ -194,12 +233,12 @@ export const EntryItem = styled.li`
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid ${props => props.theme === 'light' ? '#dee2e6' : '#444'};
-    font-size: 0.7em;
+    font-size: 0.9em;
     width: 90%;
     margin: 0 auto;
     color: ${props => props.theme === 'light' ? '#6c757d' : '#aaa'};
     transition: border-color 0.3s, color 0.3s;
-    position: relative; /* Added for absolute positioning of the delete button */
+    position: relative;
     
     &:hover {
         .delete-button {
@@ -219,7 +258,7 @@ export const EntryTime = styled.span`
 export const EmojiSpan = styled.span`
     font-size: 1.5em;
     transition: transform 0.2s ease-in-out;
-    margin-left: auto; /* Push to the right side */
+    margin-left: auto;
     
     &.emoji-span {
         transform: translateX(0);
@@ -231,7 +270,7 @@ export const DeleteButton = styled.button`
     border: none;
     color: ${props => props.theme === 'light' ? '#dc3545' : '#ff6b6b'};
     cursor: pointer;
-    opacity: 0; /* Hidden by default */
+    opacity: 0;
     transition: opacity 0.2s, background-color 0.2s;
     padding: 4px;
     display: flex;
@@ -246,7 +285,6 @@ export const DeleteButton = styled.button`
         background-color: ${props => props.theme === 'light' ? 'rgba(220, 53, 69, 0.1)' : 'rgba(255, 107, 107, 0.2)'};
     }
     
-    /* This class is used to target the button from the parent hover */
     &.delete-button {
         opacity: 0;
     }

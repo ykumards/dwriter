@@ -107,57 +107,62 @@ const CalendarComponent = () => {
 
     return (
         <Styles.CalendarPageContainer theme={theme}>
-            <Styles.CalendarContainer>
-                <Styles.CustomCalendar
-                    onChange={handleDateChange}
-                    value={date}
-                    activeStartDate={activeStartDate}
-                    onActiveStartDateChange={handleActiveStartDateChange}
-                    theme={theme}
-                />
-                <Styles.TodayButton onClick={handleTodayClick} theme={theme}>Today</Styles.TodayButton>
-            </Styles.CalendarContainer>
-            <Styles.EntriesContainer>
-                <Styles.EntriesHeader theme={theme}>
-                    Entries for {date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
-                </Styles.EntriesHeader>
-                {isLoading ? (
-                    <Styles.NoEntriesMessage theme={theme}>Loading entries...</Styles.NoEntriesMessage>
-                ) : filteredEntries.length > 0 ? (
-                    <>
-                        <Styles.OverallEntry theme={theme}>
-                            <Styles.EntryTime>Overall</Styles.EntryTime>
-                            <Styles.EmojiSpan title={getEmotionByEmoji(mostFrequentEmoji)}>{mostFrequentEmoji}</Styles.EmojiSpan>
-                        </Styles.OverallEntry>
-                        <Styles.EntriesList>
-                            {filteredEntries.map((entry, index) => (
-                                <Styles.EntryItem key={entry.id || index} theme={theme}>
-                                    <Styles.EntryTime>
-                                        {new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </Styles.EntryTime>
-                                    <Styles.EmojiSpan 
-                                        title={getEmotionByEmoji(entry.emoji)}
-                                        className="emoji-span"
-                                        style={{ marginRight: '8px' }}
-                                    >
-                                        {entry.emoji}
-                                    </Styles.EmojiSpan>
-                                    <Styles.DeleteButton 
-                                        onClick={() => handleDeleteClick(entry)}
-                                        theme={theme}
-                                        title="Delete this entry"
-                                        className="delete-button"
-                                    >
-                                        <FaTrash size={14} />
-                                    </Styles.DeleteButton>
-                                </Styles.EntryItem>
-                            ))}
-                        </Styles.EntriesList>
-                    </>
-                ) : (
-                    <Styles.NoEntriesMessage theme={theme}>No entries for this date.</Styles.NoEntriesMessage>
-                )}
-            </Styles.EntriesContainer>
+            <Styles.PaperContainer>
+                <Styles.PaperContent>
+                    <Styles.CalendarContainer>
+                        <Styles.CustomCalendar
+                            onChange={handleDateChange}
+                            value={date}
+                            activeStartDate={activeStartDate}
+                            onActiveStartDateChange={handleActiveStartDateChange}
+                            theme={theme}
+                        />
+                        <Styles.TodayButton onClick={handleTodayClick} theme={theme}>Today</Styles.TodayButton>
+                    </Styles.CalendarContainer>
+                    
+                    <Styles.EntriesContainer>
+                        <Styles.EntriesHeader theme={theme}>
+                            Entries for {date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
+                        </Styles.EntriesHeader>
+                        {isLoading ? (
+                            <Styles.NoEntriesMessage theme={theme}>Loading entries...</Styles.NoEntriesMessage>
+                        ) : filteredEntries.length > 0 ? (
+                            <>
+                                <Styles.OverallEntry theme={theme}>
+                                    <Styles.EntryTime>Overall</Styles.EntryTime>
+                                    <Styles.EmojiSpan title={getEmotionByEmoji(mostFrequentEmoji)}>{mostFrequentEmoji}</Styles.EmojiSpan>
+                                </Styles.OverallEntry>
+                                <Styles.EntriesList>
+                                    {filteredEntries.map((entry, index) => (
+                                        <Styles.EntryItem key={entry.id || index} theme={theme}>
+                                            <Styles.EntryTime>
+                                                {new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            </Styles.EntryTime>
+                                            <Styles.EmojiSpan 
+                                                title={getEmotionByEmoji(entry.emoji)}
+                                                className="emoji-span"
+                                                style={{ marginRight: '8px' }}
+                                            >
+                                                {entry.emoji}
+                                            </Styles.EmojiSpan>
+                                            <Styles.DeleteButton 
+                                                onClick={() => handleDeleteClick(entry)}
+                                                theme={theme}
+                                                title="Delete this entry"
+                                                className="delete-button"
+                                            >
+                                                <FaTrash size={14} />
+                                            </Styles.DeleteButton>
+                                        </Styles.EntryItem>
+                                    ))}
+                                </Styles.EntriesList>
+                            </>
+                        ) : (
+                            <Styles.NoEntriesMessage theme={theme}>No entries for this date.</Styles.NoEntriesMessage>
+                        )}
+                    </Styles.EntriesContainer>
+                </Styles.PaperContent>
+            </Styles.PaperContainer>
             
             {/* Delete Confirmation Modal */}
             {showDeleteConfirm && (
