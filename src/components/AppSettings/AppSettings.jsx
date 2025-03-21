@@ -54,6 +54,8 @@ const AppSettings = ({ onClose }) => {
             <Styles.SettingRow>
               <Styles.SettingLabel>Font Family</Styles.SettingLabel>
               <Styles.Select value={fontFamily} onChange={handleFontFamilyChange}>
+                <option value="Open Sans">Open Sans</option>
+                <option value="Merriweather">Merriweather</option>
                 <option value="Georgia">Georgia</option>
                 <option value="Arial">Arial</option>
                 <option value="Verdana">Verdana</option>

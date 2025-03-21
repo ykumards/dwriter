@@ -5,23 +5,50 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
     @font-face {
         font-family: 'Open Sans';
-        src: url('/assets/fonts/Open_Sans/static/OpenSans-Regular.ttf') format('truetype');
+        src: url('/dwriter/assets/fonts/Open_Sans/static/OpenSans-Regular.ttf') format('woff2');
         font-weight: 400;
         font-style: normal;
+        font-display: swap;
     }
 
     @font-face {
         font-family: 'Open Sans';
-        src: url('/assets/fonts/Open_Sans/static/OpenSans-Bold.ttf') format('truetype');
+        src: url('/dwriter/assets/fonts/Open_Sans/static/OpenSans-Bold.ttf') format('woff2');
         font-weight: 700;
         font-style: normal;
+        font-display: swap;
     }
 
     @font-face {
         font-family: 'Open Sans';
-        src: url('/assets/fonts/Open_Sans/static/OpenSans-Italic.ttf') format('truetype');
+        src: url('/dwriter/assets/fonts/Open_Sans/static/OpenSans-Italic.ttf') format('woff2');
         font-weight: 400;
         font-style: italic;
+        font-display: swap;
+    }
+    
+    @font-face {
+        font-family: 'Merriweather';
+        src: url('/dwriter/assets/fonts/Merriweather/Merriweather-Regular.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+    }
+    
+    @font-face {
+        font-family: 'Merriweather';
+        src: url('/dwriter/assets/fonts/Merriweather/Merriweather-Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+    }
+    
+    @font-face {
+        font-family: 'Merriweather';
+        src: url('/dwriter/assets/fonts/Merriweather/Merriweather-Italic.woff2') format('woff2');
+        font-weight: 400;
+        font-style: italic;
+        font-display: swap;
     }
 
     :root {
@@ -63,7 +90,7 @@ const GlobalStyles = createGlobalStyle`
         --calendar-emotion-mixed: rgba(255, 255, 255, 0.08);
         
         /* Typography variables */
-        --font-family: 'Georgia';
+        --font-family: 'Open Sans';
         --font-size: 16px;
 
         /* Theme */

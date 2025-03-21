@@ -10,7 +10,7 @@ export const EditorProvider = ({ children }) => {
     const [entryDatetime, setEntryDatetime] = useState(new Date());
     const [showEmoji, setShowEmoji] = useState(true);
     const [theme, setTheme] = useState('light'); // Default theme is light
-    const [fontFamily, setFontFamily] = useState('Georgia'); // Default font family
+    const [fontFamily, setFontFamily] = useState('Open Sans'); // Default font family
     const [fontSize, setFontSize] = useState('medium'); // Default font size
 
     // Load the persisted states from localStorage when the component mounts
