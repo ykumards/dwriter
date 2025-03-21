@@ -32,12 +32,19 @@ const emojiMap = {
   disgust: '🤢',
   fear: '😨',
   joy: '😀',
-  neutral: '😐',
   sadness: '😭',
   surprise: '😲',
+  POSITIVE: '😀',
+  NEGATIVE: '😞',
+  NEUTRAL: '😐',
+  positive: '😀',
+  negative: '😞',
 };
 
-export const getEmojiByEmotion = (emotion) => emojiMap[emotion.toLowerCase()] || '😐';
+export const getEmojiByEmotion = (emotion) => {
+  const normalizedEmotion = typeof emotion === 'string' ? emotion.toLowerCase() : 'neutral';
+  return emojiMap[normalizedEmotion] || '😐';
+};
 
 export const getEmotionByEmoji = (emoji) => {
   return Object.keys(emojiMap).find((key) => emojiMap[key] === emoji) || 'neutral';

@@ -6,7 +6,7 @@ import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
 import * as Styles from './EditorStyles';
 
-const Editor = ({ loading, progress, worker }) => {
+const Editor = ({ loading, progress, worker, modelError }) => {
     const {
         text,
         setText,
@@ -52,9 +52,23 @@ const Editor = ({ loading, progress, worker }) => {
         if (worker.current) {
             worker.current.onmessage = (event) => {
                 if (event.data.status === 'complete') {
-                    const output = event.data.output[0];
-                    setResultText(output.label);
-                    setEmoji(getEmojiByEmotion(output.label));
+                    // Handle both old and new model output formats
+                    const output = event.data.output;
+                    let label;
+                    
+                    if (Array.isArray(output) && output.length > 0) {
+                        // Standard format (array of predictions)
+                        label = output[0].label;
+                    } else if (output && typeof output === 'object') {
+                        // Possible alternative format
+                        label = output.label || 'neutral';
+                    } else {
+                        // Fallback
+                        label = 'neutral';
+                    }
+                    
+                    setResultText(label);
+                    setEmoji(getEmojiByEmotion(label));
                 }
             };
         }
@@ -98,8 +112,10 @@ const Editor = ({ loading, progress, worker }) => {
             </Styles.ToggleContainer>
             {loading ? (
                 <Styles.LoadingMessage>
-                    <Styles.LoadingText>Loading Model</Styles.LoadingText>
-                    <Styles.RotatingCircle />
+                    <Styles.LoadingText>
+                        {modelError ? `Error: ${modelError}` : 'Loading Model'}
+                    </Styles.LoadingText>
+                    {!modelError && <Styles.RotatingCircle />}
                 </Styles.LoadingMessage>
             ) : (
                 <>

@@ -16,6 +16,7 @@ const App = () => {
     const [loading, setLoading] = useState(true);
     const [progress, setProgress] = useState(0);
     const [classification, setClassification] = useState(null);
+    const [modelError, setModelError] = useState(null);
     const workerRef = useRef(null);
 
     useEffect(() => {
@@ -34,14 +35,16 @@ const App = () => {
                     console.log('Model loaded successfully');
                     setLoading(false);
                     setProgress(100);
+                    setModelError(null);
                     break;
                 case 'complete':
                     setClassification(event.data.output[0].label);
                     break;
                 case 'error':
-                    console.error('Error loading model:', event.data.error);
+                    console.error('Error with model:', event.data.error);
                     setLoading(false);
                     setProgress(0);
+                    setModelError(event.data.error);
                     break;
                 default:
                     console.log('Worker message:', event.data);
@@ -114,6 +117,7 @@ const App = () => {
                         loading={loading}
                         progress={progress}
                         worker={workerRef}
+                        modelError={modelError}
                     />
                 )}
                 {currentComponent === 'calendar' && <Calendar />}
