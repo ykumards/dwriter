@@ -9,8 +9,8 @@ export const CalendarPageContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; /* Align items to the top */
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
+    color: ${props => props.theme === 'light' ? '#242424' : 'rgba(255, 255, 255, 0.87)'};
+    background-color: ${props => props.theme === 'light' ? '#ffffff' : '#242424'};
     width: 100%;
     height: 100vh;
     padding: 20px;
@@ -18,6 +18,7 @@ export const CalendarPageContainer = styled.div`
     max-width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
 `;
 
 export const CalendarContainer = styled.div`
@@ -30,88 +31,97 @@ export const CalendarContainer = styled.div`
 
 export const CustomCalendar = styled(Calendar)`
     border: none;
-    background-color: #2b2b2b;
-    color: #fff;
+    background-color: ${props => props.theme === 'light' ? '#f8f9fa' : '#2b2b2b'};
+    color: ${props => props.theme === 'light' ? '#242424' : '#fff'};
     border-radius: 10px;
     padding: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: ${props => props.theme === 'light' 
+        ? '0 4px 8px rgba(0, 0, 0, 0.1)' 
+        : '0 4px 8px rgba(0, 0, 0, 0.3)'};
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 
     .react-calendar__navigation button {
-    color: white;
-    &:hover {
-        background-color: #3a3a3a; /* Subtle gray hover highlight */
-    }
+        color: ${props => props.theme === 'light' ? '#242424' : 'white'};
+        &:hover {
+            background-color: ${props => props.theme === 'light' ? '#e9ecef' : '#3a3a3a'};
+        }
     }
 
     .react-calendar__tile {
-    border-radius: 5px;
-    &:hover {
-        background-color: #3a3a3a;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    }
+        border-radius: 5px;
+        &:hover {
+            background-color: ${props => props.theme === 'light' ? '#e9ecef' : '#3a3a3a'};
+            box-shadow: ${props => props.theme === 'light' 
+                ? '0 0 5px rgba(0, 0, 0, 0.2)' 
+                : '0 0 5px rgba(0, 0, 0, 0.5)'};
+        }
     }
 
     .react-calendar__tile--active {
-    background-color: #646cff;
-    color: white;
-    border-radius: 5px;
-    border: 2px solid #535ac8; /* Different border for selected date */
+        background-color: #646cff;
+        color: white;
+        border-radius: 5px;
+        border: 2px solid #535ac8; /* Different border for selected date */
     }
 
     .react-calendar__tile--now {
-    background-color: transparent; /* Remove existing highlight */
-    color: white;
-    border: 2px solid #ffc107; /* Add a box around the current date */
-    border-radius: 5px; /* Rounded corners for the box */
+        background-color: transparent; /* Remove existing highlight */
+        color: ${props => props.theme === 'light' ? '#242424' : 'white'};
+        border: 2px solid #ffc107; /* Add a box around the current date */
+        border-radius: 5px; /* Rounded corners for the box */
     }
 
     .react-calendar__month-view__days__day--neighboringMonth {
-    color: #555 !important; /* Darker color for days from neighboring months */
+        color: ${props => props.theme === 'light' ? '#adb5bd' : '#555'} !important;
     }
 
     .react-calendar__tile--active:enabled:hover,
     .react-calendar__tile--active:enabled:focus {
-    background-color: #3a3a3a;
+        background-color: ${props => props.theme === 'light' ? '#535ac8' : '#3a3a3a'};
     }
 
     .react-calendar__navigation button[disabled] {
-    background-color: #444;
+        background-color: ${props => props.theme === 'light' ? '#dee2e6' : '#444'};
     }
 
     /* Custom styles for weekends and weekdays within the current month */
     .react-calendar__month-view__days__day--weekend {
-    color: #ff6961; /* Adjusted red color for weekends */
+        color: ${props => props.theme === 'light' ? '#d63031' : '#ff6961'};
     }
 
     .react-calendar__month-view__days__day {
-    &.react-calendar__month-view__days__day--weekend {
-        color: #ff6961;
-    }
-    &:not(.react-calendar__month-view__days__day--weekend) {
-        color: #dcdcdc; /* Light gray color for weekdays */
-    }
+        &.react-calendar__month-view__days__day--weekend {
+            color: ${props => props.theme === 'light' ? '#d63031' : '#ff6961'};
+        }
+        &:not(.react-calendar__month-view__days__day--weekend) {
+            color: ${props => props.theme === 'light' ? '#343a40' : '#dcdcdc'};
+        }
     }
 
     .react-calendar__month-view__weekdays__weekday abbr {
-    font-family: 'Arial', sans-serif; /* Change to your desired font */
-    font-weight: bold; /* Make the font bold */
-    font-size: 0.875em; /* Adjust the size as needed */
-    text-decoration: none; /* Remove underline */
+        font-family: 'Arial', sans-serif;
+        font-weight: bold;
+        font-size: 0.875em;
+        text-decoration: none;
+        color: ${props => props.theme === 'light' ? '#6c757d' : '#dcdcdc'};
     }
 `;
 
 export const TodayButton = styled.button`
-    background-color: #312f2f;
-    color: white;
-    border: none;
+    background-color: ${props => props.theme === 'light' ? '#e9ecef' : '#312f2f'};
+    color: ${props => props.theme === 'light' ? '#343a40' : 'white'};
+    border: ${props => props.theme === 'light' ? '1px solid #ced4da' : 'none'};
     border-radius: 4px;
     padding: 10px 20px;
     margin: 10px 0;
     cursor: pointer;
     font-size: 1em;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
     &:hover {
-    background-color: #535353;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        background-color: ${props => props.theme === 'light' ? '#dee2e6' : '#535353'};
+        box-shadow: ${props => props.theme === 'light' 
+            ? '0 0 5px rgba(0, 0, 0, 0.2)' 
+            : '0 0 5px rgba(0, 0, 0, 0.5)'};
     }
 `;
 
@@ -119,16 +129,17 @@ export const ExportButton = styled.button`
     position: absolute;
     top: 20px;
     right: 70px;
-    background-color: #312f2f;
-    color: white;
-    border: none;
+    background-color: ${props => props.theme === 'light' ? '#e9ecef' : '#312f2f'};
+    color: ${props => props.theme === 'light' ? '#343a40' : 'white'};
+    border: ${props => props.theme === 'light' ? '1px solid #ced4da' : 'none'};
     border-radius: 4px;
     padding: 10px 20px;
     cursor: pointer;
     font-size: 0.8em;
     z-index: 10;
+    transition: background-color 0.3s, color 0.3s;
     &:hover {
-    background-color: #535353;
+        background-color: ${props => props.theme === 'light' ? '#dee2e6' : '#535353'};
     }
 `;
 
@@ -141,6 +152,7 @@ export const EntriesContainer = styled.div`
 export const EntriesHeader = styled.h3`
     margin-bottom: 10px;
     text-align: center;
+    color: ${props => props.theme === 'light' ? '#343a40' : 'inherit'};
 `;
 
 export const EntriesList = styled.ul`
@@ -154,10 +166,12 @@ export const OverallEntry = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background-color: #3a3a3a;
+    background-color: ${props => props.theme === 'light' ? '#f8f9fa' : '#3a3a3a'};
+    border: ${props => props.theme === 'light' ? '1px solid #dee2e6' : 'none'};
     border-radius: 8px;
     font-size: 1.1em;
     margin-bottom: 20px;
+    transition: background-color 0.3s;
 `;
 
 export const EntryItem = styled.li`
@@ -165,11 +179,12 @@ export const EntryItem = styled.li`
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px solid #444; /* Cleaner underline */
+    border-bottom: 1px solid ${props => props.theme === 'light' ? '#dee2e6' : '#444'};
     font-size: 0.7em;
     width: 80%;
     margin: 0 auto;
-    color: #aaa;
+    color: ${props => props.theme === 'light' ? '#6c757d' : '#aaa'};
+    transition: border-color 0.3s, color 0.3s;
 `;
 
 export const EntryTime = styled.span`
@@ -183,5 +198,6 @@ export const EmojiSpan = styled.span`
 export const NoEntriesMessage = styled.p`
     margin-top: 20px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.7);
+    color: ${props => props.theme === 'light' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.7)'};
+    transition: color 0.3s;
 `;
