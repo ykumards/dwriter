@@ -159,6 +159,8 @@ export const EntriesList = styled.ul`
     list-style-type: none;
     padding: 0;
     margin: 0;
+    height: 200px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
 `;
 
 export const OverallEntry = styled.div`
