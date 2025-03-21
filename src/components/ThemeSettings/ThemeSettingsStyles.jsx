@@ -77,16 +77,16 @@ export const ThemeOption = styled.button`
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background-color: ${props => props.isActive ? 'var(--primary)' : 'var(--button-bg)'};
-  color: ${props => props.isActive ? 'white' : 'var(--text-dark)'};
-  border: 1px solid ${props => props.isActive ? 'transparent' : 'var(--border)'};
+  background-color: ${props => props.$isActive ? 'var(--primary)' : 'var(--button-bg)'};
+  color: ${props => props.$isActive ? 'white' : 'var(--text-dark)'};
+  border: 1px solid ${props => props.$isActive ? 'transparent' : 'var(--border)'};
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.2s ease;
   
   &:hover {
-    background-color: ${props => props.isActive ? 'var(--primary-hover)' : 'var(--button-hover)'};
+    background-color: ${props => props.$isActive ? 'var(--primary-hover)' : 'var(--button-hover)'};
   }
 `;
 

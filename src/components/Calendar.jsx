@@ -2,13 +2,9 @@
 
 import { useState, useEffect, useContext } from 'react';
 import 'react-calendar/dist/Calendar.css';
-
-import { writeTextFile } from '@tauri-apps/api/fs';
-import { save } from '@tauri-apps/api/dialog';
 import { getMostFrequentEmoji, getEmotionByEmoji } from '../uiUtils';
 import * as Styles from './CalendarStyles';
 import { EditorContext } from '../context/EditorContext';
-
 
 const CalendarComponent = () => {
     const [date, setDate] = useState(new Date());
@@ -35,36 +31,6 @@ const CalendarComponent = () => {
         setActiveStartDate(activeStartDate);
     };
 
-    const handleExportClick = async () => {
-        try {
-            console.log('Exporting entries...');
-            const storedEntries = localStorage.getItem('entries');
-            if (storedEntries) {
-                // Open a save dialog and let the user choose where to save the file
-                const currentDate = new Date().toISOString().split('T')[0];
-                const defaultFileName = `emotion-entries-${currentDate}.json`;
-                const filePath = await save({
-                defaultPath: defaultFileName,
-                filters: [{
-                    name: 'JSON Files',
-                    extensions: ['json']
-                }]
-            });
-
-            if (filePath) {
-                await writeTextFile(filePath, storedEntries);
-                console.log(`File saved as ${filePath}`);
-            } else {
-                console.log('Save operation was cancelled.');
-            }
-            } else {
-                console.log('No entries found to export.');
-            }
-        } catch (error) {
-            console.error('Failed to export emotions:', error);
-        }
-    };
-
     const filteredEntries = entries.filter(
         (entry) => new Date(entry.datetime).toDateString() === date.toDateString()
     );
@@ -82,9 +48,6 @@ const CalendarComponent = () => {
                     theme={theme}
                 />
                 <Styles.TodayButton onClick={handleTodayClick} theme={theme}>Today</Styles.TodayButton>
-                <Styles.ExportButton onClick={handleExportClick} theme={theme}>
-                    Export
-                </Styles.ExportButton>
             </Styles.CalendarContainer>
             <Styles.EntriesContainer>
                 <Styles.EntriesHeader theme={theme}>

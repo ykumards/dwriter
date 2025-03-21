@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { motion } from 'framer-motion';
+import { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import * as Styles from './ThemeSettingsStyles';
 import { EditorContext } from '../../context/EditorContext';
@@ -33,7 +33,7 @@ const ThemeSettings = ({ onClose }) => {
         <Styles.ModalBody>
           <Styles.ThemeOptions>
             <Styles.ThemeOption 
-              isActive={theme === 'light'} 
+              $isActive={theme === 'light'} 
               onClick={() => handleThemeChange('light')}
             >
               <FaSun style={{ marginRight: '8px' }} />
@@ -41,7 +41,7 @@ const ThemeSettings = ({ onClose }) => {
             </Styles.ThemeOption>
             
             <Styles.ThemeOption 
-              isActive={theme === 'dark'} 
+              $isActive={theme === 'dark'} 
               onClick={() => handleThemeChange('dark')}
             >
               <FaMoon style={{ marginRight: '8px' }} />
@@ -52,6 +52,10 @@ const ThemeSettings = ({ onClose }) => {
       </Styles.ModalContent>
     </Styles.ModalOverlay>
   );
+};
+
+ThemeSettings.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export default ThemeSettings;
