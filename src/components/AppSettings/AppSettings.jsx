@@ -55,15 +55,13 @@ const AppSettings = ({ onClose }) => {
               <Styles.SettingLabel>Font Family</Styles.SettingLabel>
               <Styles.Select value={fontFamily} onChange={handleFontFamilyChange}>
                 <option value="Georgia">Georgia</option>
-                <option value="Palatino">Palatino</option>
-                <option value="Baskerville">Baskerville</option>
-                <option value="Garamond">Garamond</option>
-                <option value="Cambria">Cambria</option>
-                <option value="Helvetica">Helvetica</option>
                 <option value="Arial">Arial</option>
                 <option value="Verdana">Verdana</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+                <option value="Times New Roman">Times New Roman</option>
                 <option value="Courier New">Courier New</option>
-                <option value="Menlo">Menlo</option>
+                <option value="Lucida Sans">Lucida Sans</option>
               </Styles.Select>
             </Styles.SettingRow>
             

@@ -133,7 +133,7 @@ const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
         overflow-x: hidden;
         background-color: var(--background-dark);
-        font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        font-family: var(--font-family), Arial, Helvetica, sans-serif;
         font-size: var(--font-size);
         line-height: 1.6;
     }
@@ -160,7 +160,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     button {
-        font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        font-family: var(--font-family), Arial, Helvetica, sans-serif;
         border-radius: 6px;
         border: 1px solid transparent;
         padding: 0.6em 1.2em;
@@ -183,7 +183,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     input, textarea, select {
-        font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        font-family: var(--font-family), Arial, Helvetica, sans-serif;
         font-size: var(--font-size);
     }
 
