@@ -30,21 +30,21 @@ export const CalendarContainer = styled.div`
 `;
 
 export const CustomCalendar = styled(Calendar)`
-    background-color: #fdfdfd; /* Light neutral background */
-    color: #4a4a4a; /* Darker gray text */
+    background-color: ${props => props.theme === 'light' ? '#fdfdfd' : '#1e1e1e'}; /* Light for light mode, dark for dark mode */
+    color: ${props => props.theme === 'light' ? '#4a4a4a' : '#e0e0e0'}; /* Darker gray for light mode, light gray for dark mode */
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     border: none; /* Remove border */
     .react-calendar__tile {
-        background: #fdfdfd;
-        color: #4a4a4a;
+        background: ${props => props.theme === 'light' ? '#fdfdfd' : '#2a2a2a'};
+        color: ${props => props.theme === 'light' ? '#4a4a4a' : '#e0e0e0'};
         &:hover {
-            background: #f0f0f0;
+            background: ${props => props.theme === 'light' ? '#f0f0f0' : '#3a3a3a'};
         }
     }
     .react-calendar__tile--active {
-        background: #dcdcdc;
-        color: #333333;
+        background: ${props => props.theme === 'light' ? '#dcdcdc' : '#444444'};
+        color: ${props => props.theme === 'light' ? '#333333' : '#ffffff'};
     }
 
     .react-calendar__navigation button {
@@ -96,7 +96,7 @@ export const CustomCalendar = styled(Calendar)`
     }
 
     .react-calendar__month-view__days__day--neighboringMonth {
-        color: ${props => props.theme === 'light' ? '#c0c0c0' : '#555'} !important;
+        color: ${props => props.theme === 'light' ? '#c0c0c0' : '#555555'} !important;
     }
 `;
 
