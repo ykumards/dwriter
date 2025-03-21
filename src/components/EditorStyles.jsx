@@ -107,6 +107,14 @@ export const TextAreaContainer = styled.div`
     justify-content: center;
     align-items: flex-start;
     overflow: hidden;
+    background-image: repeating-linear-gradient(
+        transparent,
+        transparent calc(1.8rem - 1px),
+        var(--border) calc(1.8rem - 1px),
+        var(--border) 1.8rem
+    );
+    background-size: 100% 1.8rem;
+    transition: background-image 0.3s;
 `;
 
 export const TextArea = styled.textarea`
@@ -115,19 +123,17 @@ export const TextArea = styled.textarea`
     border: none;
     outline: none;
     font-size: 1.3rem;
-    line-height: 1.8;
+    line-height: 1.8rem;
     background: transparent;
     resize: none;
     overflow-y: auto;
     color: var(--text-dark);
-    background-image: ${props => `linear-gradient(transparent, transparent calc(1.8rem - 1px), var(--border) 0px)`};
-    background-size: 100% 1.8rem;
     caret-color: var(--primary);
     padding: 0;
     transition: color 0.3s;
 
     &::placeholder {
-        color: ${props => `rgba(${props.theme === 'dark' ? '255, 255, 255' : '0, 0, 0'}, 0.2)`};
+        color: ${props => props.theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'};
     }
 
     &:focus {
