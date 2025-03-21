@@ -260,7 +260,7 @@ export const ToggleButton = styled.button`
 export const TimelineContainer = styled.div`
     position: relative;
     overflow: hidden;
-    max-height: ${props => props.$isExpanded ? '180px' : '0'};
+    max-height: ${props => props.$isExpanded ? '250px' : '0'};
     transition: max-height 0.3s ease;
 `;
 
@@ -288,33 +288,28 @@ export const EntriesList = styled.ul`
     padding: 0;
     margin: 0;
     height: auto;
-    max-height: 180px;
+    max-height: 250px;
     overflow-y: auto;
 `;
 
 export const EntryItem = styled.li`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 8px 10px 8px 15px;
-    background-color: ${props => props.theme === 'light' ? '#f0f0f0' : '#2a2a2a'};
-    border-radius: 4px;
-    margin-bottom: 10px;
+    padding: 12px 10px 12px 15px;
+    background-color: transparent;
+    margin-bottom: 12px;
     position: relative;
     
     &:hover {
         .delete-button {
             opacity: 0.6;
         }
-        
-        .emoji-span {
-            transform: translateX(-20px);
-        }
     }
 `;
 
 export const EntryTime = styled.span`
-    margin-right: 20px;
+    margin-right: 60px;
     font-size: 14px;
     color: ${props => props.theme === 'light' ? '#6c757d' : '#aaa'};
 `;
@@ -322,7 +317,9 @@ export const EntryTime = styled.span`
 export const EmojiSpan = styled.span`
     font-size: 22px;
     transition: transform 0.2s ease-in-out;
-    margin-left: auto;
+    margin-left: 60px;
+    display: flex;
+    align-items: center;
     
     &.emoji-span {
         transform: translateX(0);
@@ -341,8 +338,7 @@ export const DeleteButton = styled.button`
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    position: absolute;
-    right: 8px;
+    margin-left: 15px;
     
     &:hover {
         opacity: 1 !important;

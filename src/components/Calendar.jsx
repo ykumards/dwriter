@@ -173,15 +173,15 @@ const CalendarComponent = () => {
                                                 className="emoji-span"
                                             >
                                                 {entry.emoji}
+                                                <Styles.DeleteButton 
+                                                    onClick={() => handleDeleteClick(entry)}
+                                                    theme={theme}
+                                                    title="Delete this entry"
+                                                    className="delete-button"
+                                                >
+                                                    <FaTrash size={14} />
+                                                </Styles.DeleteButton>
                                             </Styles.EmojiSpan>
-                                            <Styles.DeleteButton 
-                                                onClick={() => handleDeleteClick(entry)}
-                                                theme={theme}
-                                                title="Delete this entry"
-                                                className="delete-button"
-                                            >
-                                                <FaTrash size={14} />
-                                            </Styles.DeleteButton>
                                         </Styles.EntryItem>
                                     ))}
                                 </Styles.EntriesList>
