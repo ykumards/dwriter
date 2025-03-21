@@ -1,7 +1,7 @@
 // src/components/Calendar.jsx
-
 import { useState, useEffect, useContext } from 'react';
 import 'react-calendar/dist/Calendar.css';
+import { FaTrash } from 'react-icons/fa';
 import { getMostFrequentEmoji, getEmotionByEmoji } from '../uiUtils';
 import * as Styles from './CalendarStyles';
 import { EditorContext } from '../context/EditorContext';
@@ -12,24 +12,27 @@ const CalendarComponent = () => {
     const [entries, setEntries] = useState([]);
     const [activeStartDate, setActiveStartDate] = useState(new Date());
     const [isLoading, setIsLoading] = useState(true);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [entryToDelete, setEntryToDelete] = useState(null);
     const { theme } = useContext(EditorContext);
 
     // Load entries from PouchDB
-    useEffect(() => {
-        const loadEntries = async () => {
-            try {
-                setIsLoading(true);
-                const storage = getStorage();
-                await storage.initialize();
-                const allEntries = await storage.getEntries();
-                setEntries(allEntries);
-            } catch (error) {
-                console.error('Error loading entries:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    const loadEntries = async () => {
+        try {
+            setIsLoading(true);
+            const storage = getStorage();
+            await storage.initialize();
+            const allEntries = await storage.getEntries();
+            setEntries(allEntries);
+        } catch (error) {
+            console.error('Error loading entries:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
+    // Initial load of entries
+    useEffect(() => {
         loadEntries();
 
         // Set up a listener to reload entries when storage changes
@@ -58,6 +61,36 @@ const CalendarComponent = () => {
 
     const handleActiveStartDateChange = ({ activeStartDate }) => {
         setActiveStartDate(activeStartDate);
+    };
+
+    const handleDeleteClick = (entry) => {
+        setEntryToDelete(entry);
+        setShowDeleteConfirm(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!entryToDelete) return;
+        
+        try {
+            const storage = getStorage();
+            await storage.deleteEntry(entryToDelete.id);
+            
+            // Reload entries
+            await loadEntries();
+            
+            // Dispatch event to notify other components
+            window.dispatchEvent(new CustomEvent('storage-changed'));
+        } catch (error) {
+            console.error('Error deleting entry:', error);
+        } finally {
+            setShowDeleteConfirm(false);
+            setEntryToDelete(null);
+        }
+    };
+
+    const cancelDelete = () => {
+        setShowDeleteConfirm(false);
+        setEntryToDelete(null);
     };
 
     // Filter entries for the selected date
@@ -102,7 +135,21 @@ const CalendarComponent = () => {
                                     <Styles.EntryTime>
                                         {new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </Styles.EntryTime>
-                                    <Styles.EmojiSpan title={getEmotionByEmoji(entry.emoji)}>{entry.emoji}</Styles.EmojiSpan>
+                                    <Styles.EmojiSpan 
+                                        title={getEmotionByEmoji(entry.emoji)}
+                                        className="emoji-span"
+                                        style={{ marginRight: '8px' }}
+                                    >
+                                        {entry.emoji}
+                                    </Styles.EmojiSpan>
+                                    <Styles.DeleteButton 
+                                        onClick={() => handleDeleteClick(entry)}
+                                        theme={theme}
+                                        title="Delete this entry"
+                                        className="delete-button"
+                                    >
+                                        <FaTrash size={14} />
+                                    </Styles.DeleteButton>
                                 </Styles.EntryItem>
                             ))}
                         </Styles.EntriesList>
@@ -111,6 +158,29 @@ const CalendarComponent = () => {
                     <Styles.NoEntriesMessage theme={theme}>No entries for this date.</Styles.NoEntriesMessage>
                 )}
             </Styles.EntriesContainer>
+            
+            {/* Delete Confirmation Modal */}
+            {showDeleteConfirm && (
+                <Styles.ConfirmDialog theme={theme}>
+                    <Styles.ConfirmContent>
+                        <h3>Delete Entry</h3>
+                        <p>Are you sure you want to delete this entry?</p>
+                        <p>
+                            <strong>Time:</strong> {entryToDelete && new Date(entryToDelete.datetime).toLocaleTimeString()}
+                            <br />
+                            <strong>Emotion:</strong> {entryToDelete && entryToDelete.emoji} {entryToDelete && getEmotionByEmoji(entryToDelete.emoji)}
+                        </p>
+                        <Styles.ButtonContainer>
+                            <Styles.CancelButton onClick={cancelDelete} theme={theme}>
+                                Cancel
+                            </Styles.CancelButton>
+                            <Styles.DeleteConfirmButton onClick={confirmDelete} theme={theme}>
+                                Delete
+                            </Styles.DeleteConfirmButton>
+                        </Styles.ButtonContainer>
+                    </Styles.ConfirmContent>
+                </Styles.ConfirmDialog>
+            )}
         </Styles.CalendarPageContainer>
     );
 };

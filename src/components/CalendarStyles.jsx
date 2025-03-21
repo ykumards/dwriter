@@ -1,4 +1,4 @@
-// src/components/Calendar.styles.js
+// src/components/CalendarStyles.jsx
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -195,10 +195,21 @@ export const EntryItem = styled.li`
     padding: 10px 0;
     border-bottom: 1px solid ${props => props.theme === 'light' ? '#dee2e6' : '#444'};
     font-size: 0.7em;
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     color: ${props => props.theme === 'light' ? '#6c757d' : '#aaa'};
     transition: border-color 0.3s, color 0.3s;
+    position: relative; /* Added for absolute positioning of the delete button */
+    
+    &:hover {
+        .delete-button {
+            opacity: 0.6;
+        }
+        
+        .emoji-span {
+            transform: translateX(-20px);
+        }
+    }
 `;
 
 export const EntryTime = styled.span`
@@ -207,6 +218,38 @@ export const EntryTime = styled.span`
 
 export const EmojiSpan = styled.span`
     font-size: 1.5em;
+    transition: transform 0.2s ease-in-out;
+    margin-left: auto; /* Push to the right side */
+    
+    &.emoji-span {
+        transform: translateX(0);
+    }
+`;
+
+export const DeleteButton = styled.button`
+    background: none;
+    border: none;
+    color: ${props => props.theme === 'light' ? '#dc3545' : '#ff6b6b'};
+    cursor: pointer;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.2s, background-color 0.2s;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    
+    &:hover {
+        opacity: 1 !important;
+        background-color: ${props => props.theme === 'light' ? 'rgba(220, 53, 69, 0.1)' : 'rgba(255, 107, 107, 0.2)'};
+    }
+    
+    /* This class is used to target the button from the parent hover */
+    &.delete-button {
+        opacity: 0;
+    }
 `;
 
 export const NoEntriesMessage = styled.p`
@@ -214,4 +257,70 @@ export const NoEntriesMessage = styled.p`
     text-align: center;
     color: ${props => props.theme === 'light' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.7)'};
     transition: color 0.3s;
+`;
+
+// Confirmation Dialog Styles
+export const ConfirmDialog = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+`;
+
+export const ConfirmContent = styled.div`
+    background-color: ${props => props.theme === 'light' ? 'white' : '#333'};
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    h3 {
+        margin-top: 0;
+        color: ${props => props.theme === 'light' ? '#dc3545' : '#ff6b6b'};
+    }
+
+    p {
+        margin-bottom: 20px;
+        color: ${props => props.theme === 'light' ? '#333' : '#eee'};
+    }
+`;
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+`;
+
+export const CancelButton = styled.button`
+    padding: 8px 15px;
+    background-color: ${props => props.theme === 'light' ? '#6c757d' : '#555'};
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: ${props => props.theme === 'light' ? '#5a6268' : '#444'};
+    }
+`;
+
+export const DeleteConfirmButton = styled.button`
+    padding: 8px 15px;
+    background-color: ${props => props.theme === 'light' ? '#dc3545' : '#c82333'};
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: ${props => props.theme === 'light' ? '#c82333' : '#bd2130'};
+    }
 `;

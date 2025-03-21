@@ -123,6 +123,25 @@ export default class BrowserStorage extends StorageInterface {
     return id;
   }
   
+  async deleteEntry(id) {
+    if (!this.isInitialized) {
+      await this.initialize();
+    }
+    
+    try {
+      // First, get the document to retrieve its _rev value
+      const doc = await this.entriesDB.get(id);
+      
+      // Then delete it
+      await this.entriesDB.remove(doc);
+      
+      return true;
+    } catch (error) {
+      console.error(`Error deleting entry with id ${id}:`, error);
+      throw error;
+    }
+  }
+  
   async getSettings() {
     if (!this.isInitialized) {
       await this.initialize();

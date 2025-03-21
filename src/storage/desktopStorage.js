@@ -62,6 +62,12 @@ export default class DesktopStorage extends StorageInterface {
     return 'mock-id';
   }
   
+  async deleteEntry(id) {
+    // This will be implemented when we integrate with Tauri
+    console.log('Would delete entry with ID:', id);
+    return true;
+  }
+  
   async getSettings() {
     // This will be implemented when we integrate with Tauri
     return {

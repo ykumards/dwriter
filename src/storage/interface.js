@@ -14,6 +14,10 @@ export class StorageInterface {
     throw new Error('Not implemented');
   }
   
+  async deleteEntry(id) {
+    throw new Error('Not implemented');
+  }
+  
   async getSettings() {
     throw new Error('Not implemented');
   }
