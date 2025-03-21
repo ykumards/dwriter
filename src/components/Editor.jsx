@@ -18,7 +18,7 @@ const Editor = ({ loading, progress, worker }) => {
         resultText,
         setResultText,
         entryDatetime,
-        saveToLocalStorage,
+        saveEntry, // Updated from saveToLocalStorage to saveEntry
         showEmoji,
         setShowEmoji,
         theme,
@@ -93,7 +93,7 @@ const Editor = ({ loading, progress, worker }) => {
         // Trigger the animation with the current emoji before resetting the editor
         triggerEmojiAnimation(emoji);
         setTimeout(() => {
-            saveToLocalStorage(); // Save and reset after the animation
+            saveEntry(); // Updated from saveToLocalStorage to saveEntry
         }, 1000); // Delay save to match animation duration
     };
 

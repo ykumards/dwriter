@@ -1,5 +1,6 @@
 // src/context/EditorContext.jsx
 import React, { createContext, useState, useEffect } from 'react';
+import { getStorage } from '../storage';
 
 export const EditorContext = createContext();
 
@@ -12,49 +13,112 @@ export const EditorProvider = ({ children }) => {
     const [theme, setTheme] = useState('light'); // Default theme is light
     const [fontFamily, setFontFamily] = useState('Open Sans'); // Default font family
     const [fontSize, setFontSize] = useState('medium'); // Default font size
+    const [isInitialized, setIsInitialized] = useState(false);
 
-    // Load the persisted states from localStorage when the component mounts
+    // Initialize storage and load settings
     useEffect(() => {
-        const savedShowEmoji = localStorage.getItem('showEmoji');
-        if (savedShowEmoji !== null) {
-            setShowEmoji(JSON.parse(savedShowEmoji));
-        }
+        const initializeStorage = async () => {
+            try {
+                const storage = getStorage();
+                await storage.initialize();
+                
+                // Load settings
+                const settings = await storage.getSettings();
+                
+                if (settings.showEmoji !== undefined) {
+                    setShowEmoji(settings.showEmoji);
+                }
+                
+                if (settings.theme) {
+                    setTheme(settings.theme);
+                    document.documentElement.setAttribute('data-theme', settings.theme);
+                }
+                
+                if (settings.fontFamily) {
+                    setFontFamily(settings.fontFamily);
+                    document.documentElement.style.setProperty('--font-family', settings.fontFamily);
+                }
+                
+                if (settings.fontSize) {
+                    setFontSize(settings.fontSize);
+                    document.documentElement.style.setProperty('--font-size', getFontSizeValue(settings.fontSize));
+                }
+                
+                setIsInitialized(true);
+            } catch (error) {
+                console.error('Error initializing storage:', error);
+            }
+        };
         
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme !== null) {
-            setTheme(savedTheme);
-        }
-        
-        const savedFontFamily = localStorage.getItem('fontFamily');
-        if (savedFontFamily !== null) {
-            setFontFamily(savedFontFamily);
-        }
-        
-        const savedFontSize = localStorage.getItem('fontSize');
-        if (savedFontSize !== null) {
-            setFontSize(savedFontSize);
-        }
+        initializeStorage();
     }, []);
 
-    // Save states to localStorage whenever they change
+    // Update settings in storage when they change
     useEffect(() => {
-        localStorage.setItem('showEmoji', JSON.stringify(showEmoji));
-    }, [showEmoji]);
+        if (!isInitialized) return;
+        
+        const updateSetting = async () => {
+            try {
+                const storage = getStorage();
+                await storage.updateSettings({ showEmoji });
+            } catch (error) {
+                console.error('Error saving showEmoji setting:', error);
+            }
+        };
+        
+        updateSetting();
+    }, [showEmoji, isInitialized]);
     
     useEffect(() => {
-        localStorage.setItem('theme', theme);
+        if (!isInitialized) return;
+        
         document.documentElement.setAttribute('data-theme', theme);
-    }, [theme]);
+        
+        const updateSetting = async () => {
+            try {
+                const storage = getStorage();
+                await storage.updateSettings({ theme });
+            } catch (error) {
+                console.error('Error saving theme setting:', error);
+            }
+        };
+        
+        updateSetting();
+    }, [theme, isInitialized]);
     
     useEffect(() => {
-        localStorage.setItem('fontFamily', fontFamily);
+        if (!isInitialized) return;
+        
         document.documentElement.style.setProperty('--font-family', fontFamily);
-    }, [fontFamily]);
+        
+        const updateSetting = async () => {
+            try {
+                const storage = getStorage();
+                await storage.updateSettings({ fontFamily });
+            } catch (error) {
+                console.error('Error saving fontFamily setting:', error);
+            }
+        };
+        
+        updateSetting();
+    }, [fontFamily, isInitialized]);
     
     useEffect(() => {
-        localStorage.setItem('fontSize', fontSize);
+        if (!isInitialized) return;
+        
         document.documentElement.style.setProperty('--font-size', getFontSizeValue(fontSize));
-    }, [fontSize]);
+        
+        const updateSetting = async () => {
+            try {
+                const storage = getStorage();
+                await storage.updateSettings({ fontSize });
+            } catch (error) {
+                console.error('Error saving fontSize setting:', error);
+            }
+        };
+        
+        updateSetting();
+    }, [fontSize, isInitialized]);
     
     // Convert fontSize option to actual CSS value
     const getFontSizeValue = (size) => {
@@ -73,18 +137,29 @@ export const EditorProvider = ({ children }) => {
         setEntryDatetime(new Date());
     };
 
-    const saveToLocalStorage = (callback) => {
-        const datetime = entryDatetime.toLocaleString();
-        const newEntry = { datetime, emoji };
-
-        const existingEntries = JSON.parse(localStorage.getItem('entries')) || [];
-        const updatedEntries = [...existingEntries, newEntry];
-
-        localStorage.setItem('entries', JSON.stringify(updatedEntries));
-        resetEditor();
-
-        if (callback) {
-            callback();
+    const saveEntry = async (callback) => {
+        try {
+            const storage = getStorage();
+            const datetime = entryDatetime.toLocaleString();
+            const newEntry = { 
+                datetime, 
+                emoji,
+                text,
+                resultText 
+            };
+            
+            await storage.saveEntry(newEntry);
+            
+            // Dispatch an event to notify other components (like Calendar) that storage has changed
+            window.dispatchEvent(new CustomEvent('storage-changed'));
+            
+            resetEditor();
+            
+            if (callback) {
+                callback();
+            }
+        } catch (error) {
+            console.error('Error saving entry:', error);
         }
     };
 
@@ -99,7 +174,7 @@ export const EditorProvider = ({ children }) => {
                 setResultText,
                 entryDatetime,
                 setEntryDatetime,
-                saveToLocalStorage,
+                saveEntry,
                 showEmoji,
                 setShowEmoji,
                 theme,
