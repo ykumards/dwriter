@@ -16,6 +16,9 @@ export default defineConfig({
       }
     }
   },
+  optimizeDeps: {
+    exclude: ['onnxruntime-web'], // Exclude onnxruntime-web from optimization to avoid eval warnings
+  },
   resolve: {
     alias: {
       'transformers': '@xenova/transformers',
