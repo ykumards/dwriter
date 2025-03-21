@@ -98,6 +98,14 @@ export const CustomCalendar = styled(Calendar)`
     .react-calendar__month-view__days__day--neighboringMonth {
         color: ${props => props.theme === 'light' ? '#c0c0c0' : '#555555'} !important;
     }
+
+    .react-calendar__navigation {
+        background-color: ${props => props.theme === 'light' ? '#f0f0f0' : 'inherit'};
+    }
+
+    .react-calendar__month-view__weekdays {
+        background-color: ${props => props.theme === 'light' ? '#f0f0f0' : 'inherit'};
+    }
 `;
 
 export const TodayButton = styled.button`
