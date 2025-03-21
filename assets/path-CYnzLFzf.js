@@ -1,0 +1,1 @@
+import{i as r,B as i}from"./index-QS7isnY3.js";import"./tf-models-Cpj98o6Y.js";function a(){return navigator.appVersion.includes("Win")}async function e(){return r({__tauriModule:"Path",message:{cmd:"resolvePath",path:"",directory:i.AppLocalData}})}a();a();export{i as BaseDirectory,e as appLocalDataDir};
