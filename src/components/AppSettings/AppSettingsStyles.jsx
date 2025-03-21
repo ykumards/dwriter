@@ -107,3 +107,70 @@ export const SectionTitle = styled.h3`
   margin: 0 0 12px 0;
   color: var(--text-dark);
 `;
+
+export const SettingRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+export const SettingLabel = styled.span`
+  color: var(--text-dark);
+  font-size: 0.9rem;
+`;
+
+export const ThemeToggle = styled.button`
+  background: none;
+  border: none;
+  color: var(--text-dark);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 36px;
+  height: 36px;
+  
+  &:hover {
+    background-color: var(--accent);
+  }
+  
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+`;
+
+export const Select = styled.select`
+  background-color: var(--button-bg);
+  color: var(--text-dark);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  
+  &:hover {
+    border-color: var(--primary);
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  
+  option {
+    background-color: var(--background-light);
+    color: var(--text-dark);
+  }
+`;

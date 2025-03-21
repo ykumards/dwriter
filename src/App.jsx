@@ -14,7 +14,7 @@ import { save } from '@tauri-apps/api/dialog';
 import Editor from './components/Editor';
 import Calendar from './components/Calendar';
 import BottomToolbar from './components/BottomToolbar';
-import ThemeSettings from './components/ThemeSettings';
+import AppSettings from './components/AppSettings';
 import useToggleShortcut from './hooks/useToggleShortcut';
 import { EditorContext } from './context/EditorContext';
 import * as Styles from './AppStyles';
@@ -152,7 +152,7 @@ const App = () => {
             
             <AnimatePresence>
                 {showSettings && (
-                    <ThemeSettings onClose={() => setShowSettings(false)} />
+                    <AppSettings onClose={() => setShowSettings(false)} />
                 )}
             </AnimatePresence>
         </Styles.AppContainer>
