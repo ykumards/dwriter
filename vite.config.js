@@ -17,7 +17,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    exclude: ['onnxruntime-web'], // Exclude onnxruntime-web from optimization to avoid eval warnings
+    exclude: [], // Remove the exclusion for onnxruntime-web
   },
   resolve: {
     alias: {

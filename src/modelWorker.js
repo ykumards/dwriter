@@ -3,9 +3,9 @@ import { pipeline, env } from "@xenova/transformers";
 // Force remote models only - disable local model loading
 env.allowLocalModels = false;
 env.allowRemoteModels = true;
-// Local paths not needed when using remote models
-// env.localModelPath = '/assets/ml_models/';
-// env.backends.onnx.wasm.wasmPaths = '/assets/wasm/';
+// Configure WASM paths for ONNX runtime
+env.localModelPath = '/dwriter/assets/ml_models/';
+env.backends.onnx.wasm.wasmPaths = '/dwriter/assets/wasm/';
 
 class PipelineSingleton {
   static task = 'sentiment-analysis';
