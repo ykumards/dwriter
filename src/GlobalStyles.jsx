@@ -25,15 +25,81 @@ const GlobalStyles = createGlobalStyle`
     }
 
     :root {
-        /* Color palette - light theme (default) */
-        --background-dark: #242424;
-        --background-light: #fcfcfa; /* Subtle cream color for paper-like feel */
-        --text-dark: #333333;
+        /* Dark theme variables (default) */
+        --background-dark: #121212;
+        --background-light: #1e1e1e;
+        --text-dark: rgba(255, 255, 255, 0.87);
         --text-light: rgba(255, 255, 255, 0.87);
-        --text-muted: #888888;
+        --text-muted: rgba(255, 255, 255, 0.6);
         --primary: #646cff;
         --primary-hover: #535bf2;
-        --accent: rgba(100, 108, 255, 0.08);
+        --accent: rgba(100, 108, 255, 0.15);
+        --border: rgba(255, 255, 255, 0.1);
+        --shadow: rgba(0, 0, 0, 0.3);
+        --toolbar-bg: #242424;
+        --toolbar-border: #333333;
+        --button-bg: #333333;
+        --button-hover: #404040;
+        --button-text: rgba(255, 255, 255, 0.87);
+        --button-border: #444444;
+        --tooltip-bg: rgba(0, 0, 0, 0.8);
+        --tooltip-text: white;
+        
+        /* Calendar dark theme variables */
+        --calendar-bg: rgba(36, 36, 36, 0.9);
+        --calendar-border: rgba(255, 255, 255, 0.05);
+        --calendar-text: rgba(255, 255, 255, 0.87);
+        --calendar-muted: rgba(255, 255, 255, 0.6);
+        --calendar-tile-hover: rgba(255, 255, 255, 0.08);
+        --calendar-tile-active: var(--primary);
+        --calendar-tile-now: rgba(100, 108, 255, 0.2);
+        --calendar-emotion-joy: rgba(255, 220, 0, 0.2);
+        --calendar-emotion-sadness: rgba(0, 112, 192, 0.2);
+        --calendar-emotion-anger: rgba(192, 0, 0, 0.2);
+        --calendar-emotion-fear: rgba(112, 48, 160, 0.2);
+        --calendar-emotion-disgust: rgba(0, 176, 80, 0.2);
+        --calendar-emotion-surprise: rgba(255, 153, 0, 0.2);
+        --calendar-emotion-neutral: rgba(166, 166, 166, 0.2);
+        --calendar-emotion-mixed: rgba(255, 255, 255, 0.08);
+        
+        /* Typography */
+        font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        line-height: 1.6;
+        font-weight: 400;
+        font-size: 16px;
+
+        /* Theme */
+        color-scheme: dark;
+        color: var(--text-light);
+        background-color: var(--background-dark);
+
+        /* Font rendering */
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        
+        /* Transitions */
+        --transition-standard: 0.2s ease;
+    }
+
+    a {
+        font-weight: 500;
+        color: var(--primary);
+        text-decoration: none;
+        transition: color var(--transition-standard);
+    }
+    a:hover {
+        color: var(--primary-hover);
+    }
+
+    /* Light theme variables */
+    [data-theme="light"] {
+        --background-dark: #fcfcfa;
+        --background-light: #ffffff;
+        --text-dark: #333333;
+        --text-light: #333333;
+        --text-muted: #888888;
         --border: rgba(0, 0, 0, 0.1);
         --shadow: rgba(0, 0, 0, 0.1);
         --toolbar-bg: #fafafa;
@@ -42,8 +108,6 @@ const GlobalStyles = createGlobalStyle`
         --button-hover: #eaeaea;
         --button-text: #666;
         --button-border: #e0e0e0;
-        --tooltip-bg: rgba(0, 0, 0, 0.8);
-        --tooltip-text: white;
         
         /* Calendar light theme variables */
         --calendar-bg: rgba(255, 255, 255, 0.9);
@@ -61,87 +125,23 @@ const GlobalStyles = createGlobalStyle`
         --calendar-emotion-surprise: rgba(255, 153, 0, 0.15);
         --calendar-emotion-neutral: rgba(166, 166, 166, 0.15);
         --calendar-emotion-mixed: rgba(0, 0, 0, 0.05);
-        
-        /* Typography */
-        font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-        line-height: 1.6;
-        font-weight: 400;
-        font-size: 16px;
+    }
 
-        /* Theme */
-        color-scheme: light dark;
-        color: var(--text-dark);
+    body {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        min-width: 500px;
+        min-height: 100vh;
+        overflow-x: hidden;
         background-color: var(--background-dark);
-
-        /* Font rendering */
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        
-        /* Transitions */
-        --transition-standard: 0.2s ease;
     }
 
-    /* Paper texture (subtle) */
-    .paper-texture {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-        background-repeat: repeat;
+    #root {
+        width: 100%;
+        background-color: var(--background-dark);
+        color: var(--text-light);
     }
-
-    a {
-        font-weight: 500;
-        color: var(--primary);
-        text-decoration: none;
-        transition: color var(--transition-standard);
-    }
-    a:hover {
-        color: var(--primary-hover);
-    }
-
-    /* Dark theme variables */
-[data-theme="dark"] {
-    --background-dark: #121212;
-    --background-light: #242424;
-    --text-dark: rgba(255, 255, 255, 0.87);
-    --text-light: rgba(255, 255, 255, 0.87);
-    --text-muted: rgba(255, 255, 255, 0.6);
-    --border: rgba(255, 255, 255, 0.1);
-    --shadow: rgba(0, 0, 0, 0.3);
-    --toolbar-bg: #242424;
-    --toolbar-border: #333333;
-    --button-bg: #333333;
-    --button-hover: #404040;
-    --button-text: rgba(255, 255, 255, 0.87);
-    --button-border: #444444;
-    
-    /* Calendar dark theme variables */
-    --calendar-bg: rgba(36, 36, 36, 0.9);
-    --calendar-border: rgba(255, 255, 255, 0.05);
-    --calendar-text: rgba(255, 255, 255, 0.87);
-    --calendar-muted: rgba(255, 255, 255, 0.6);
-    --calendar-tile-hover: rgba(255, 255, 255, 0.08);
-    --calendar-tile-active: var(--primary);
-    --calendar-tile-now: rgba(100, 108, 255, 0.2);
-    --calendar-emotion-joy: rgba(255, 220, 0, 0.2);
-    --calendar-emotion-sadness: rgba(0, 112, 192, 0.2);
-    --calendar-emotion-anger: rgba(192, 0, 0, 0.2);
-    --calendar-emotion-fear: rgba(112, 48, 160, 0.2);
-    --calendar-emotion-disgust: rgba(0, 176, 80, 0.2);
-    --calendar-emotion-surprise: rgba(255, 153, 0, 0.2);
-    --calendar-emotion-neutral: rgba(166, 166, 166, 0.2);
-    --calendar-emotion-mixed: rgba(255, 255, 255, 0.08);
-}
-
-body {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    min-width: 500px;
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-color: var(--background-dark);
-}
 
     h1, h2, h3, h4 {
         font-weight: 700;
@@ -164,14 +164,15 @@ body {
         padding: 0.6em 1.2em;
         font-size: 1em;
         font-weight: 500;
-        background-color: #f0f0f0;
+        background-color: var(--button-bg);
+        color: var(--button-text);
         cursor: pointer;
         transition: all var(--transition-standard);
         box-shadow: 0 1px 2px var(--shadow);
     }
     
     button:hover {
-        background-color: #e8e8e8;
+        background-color: var(--button-hover);
     }
     
     button:focus {
@@ -215,7 +216,7 @@ body {
     .SwitchRoot {
         width: 46px;
         height: 26px;
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.1);
         border-radius: 9999px;
         position: relative;
         box-shadow: 0 2px 5px var(--shadow);
@@ -269,9 +270,9 @@ body {
     }
 
     .ToastRoot {
-        background-color: white;
+        background-color: #2d2d2d;
         border-radius: 8px;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.08);
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
         padding: 15px;
         display: flex;
         justify-content: space-between;
@@ -283,7 +284,7 @@ body {
 
     .ToastTitle {
         font-weight: 500;
-        color: var(--text-dark);
+        color: var(--text-light);
         font-size: 14px;
     }
 
