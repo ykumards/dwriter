@@ -5,10 +5,18 @@ import * as Styles from './AppSettingsStyles';
 import { EditorContext } from '../../context/EditorContext';
 
 const AppSettings = ({ onClose }) => {
-  const { theme, setTheme } = useContext(EditorContext);
+  const { theme, setTheme, fontFamily, setFontFamily, fontSize, setFontSize } = useContext(EditorContext);
 
   const handleThemeChange = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const handleFontFamilyChange = (e) => {
+    setFontFamily(e.target.value);
+  };
+
+  const handleFontSizeChange = (e) => {
+    setFontSize(e.target.value);
   };
 
   return (
@@ -45,17 +53,23 @@ const AppSettings = ({ onClose }) => {
             <Styles.SectionTitle>Typography</Styles.SectionTitle>
             <Styles.SettingRow>
               <Styles.SettingLabel>Font Family</Styles.SettingLabel>
-              <Styles.Select>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Arial">Arial</option>
+              <Styles.Select value={fontFamily} onChange={handleFontFamilyChange}>
+                <option value="Georgia">Georgia</option>
+                <option value="Palatino">Palatino</option>
+                <option value="Baskerville">Baskerville</option>
+                <option value="Garamond">Garamond</option>
+                <option value="Cambria">Cambria</option>
                 <option value="Helvetica">Helvetica</option>
-                <option value="Times New Roman">Times New Roman</option>
+                <option value="Arial">Arial</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Menlo">Menlo</option>
               </Styles.Select>
             </Styles.SettingRow>
             
             <Styles.SettingRow>
               <Styles.SettingLabel>Font Size</Styles.SettingLabel>
-              <Styles.Select>
+              <Styles.Select value={fontSize} onChange={handleFontSizeChange}>
                 <option value="small">Small</option>
                 <option value="medium">Medium</option>
                 <option value="large">Large</option>

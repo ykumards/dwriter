@@ -10,6 +10,8 @@ export const EditorProvider = ({ children }) => {
     const [entryDatetime, setEntryDatetime] = useState(new Date());
     const [showEmoji, setShowEmoji] = useState(true);
     const [theme, setTheme] = useState('light'); // Default theme is light
+    const [fontFamily, setFontFamily] = useState('Georgia'); // Default font family
+    const [fontSize, setFontSize] = useState('medium'); // Default font size
 
     // Load the persisted states from localStorage when the component mounts
     useEffect(() => {
@@ -22,6 +24,16 @@ export const EditorProvider = ({ children }) => {
         if (savedTheme !== null) {
             setTheme(savedTheme);
         }
+        
+        const savedFontFamily = localStorage.getItem('fontFamily');
+        if (savedFontFamily !== null) {
+            setFontFamily(savedFontFamily);
+        }
+        
+        const savedFontSize = localStorage.getItem('fontSize');
+        if (savedFontSize !== null) {
+            setFontSize(savedFontSize);
+        }
     }, []);
 
     // Save states to localStorage whenever they change
@@ -33,6 +45,26 @@ export const EditorProvider = ({ children }) => {
         localStorage.setItem('theme', theme);
         document.documentElement.setAttribute('data-theme', theme);
     }, [theme]);
+    
+    useEffect(() => {
+        localStorage.setItem('fontFamily', fontFamily);
+        document.documentElement.style.setProperty('--font-family', fontFamily);
+    }, [fontFamily]);
+    
+    useEffect(() => {
+        localStorage.setItem('fontSize', fontSize);
+        document.documentElement.style.setProperty('--font-size', getFontSizeValue(fontSize));
+    }, [fontSize]);
+    
+    // Convert fontSize option to actual CSS value
+    const getFontSizeValue = (size) => {
+        switch (size) {
+            case 'small': return '14px';
+            case 'large': return '18px';
+            case 'medium':
+            default: return '16px';
+        }
+    };
 
     const resetEditor = () => {
         setText('');
@@ -72,6 +104,10 @@ export const EditorProvider = ({ children }) => {
                 setShowEmoji,
                 theme,
                 setTheme,
+                fontFamily,
+                setFontFamily,
+                fontSize,
+                setFontSize,
             }}
         >
             {children}

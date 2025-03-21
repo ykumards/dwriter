@@ -62,11 +62,9 @@ const GlobalStyles = createGlobalStyle`
         --calendar-emotion-neutral: rgba(166, 166, 166, 0.2);
         --calendar-emotion-mixed: rgba(255, 255, 255, 0.08);
         
-        /* Typography */
-        font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-        line-height: 1.6;
-        font-weight: 400;
-        font-size: 16px;
+        /* Typography variables */
+        --font-family: 'Georgia';
+        --font-size: 16px;
 
         /* Theme */
         color-scheme: dark;
@@ -135,6 +133,9 @@ const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
         overflow-x: hidden;
         background-color: var(--background-dark);
+        font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        font-size: var(--font-size);
+        line-height: 1.6;
     }
 
     #root {
@@ -147,6 +148,7 @@ const GlobalStyles = createGlobalStyle`
         font-weight: 700;
         line-height: 1.2;
         margin-top: 0;
+        font-family: var(--font-family), serif;
     }
 
     h1 {
@@ -158,7 +160,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     button {
-        font-family: inherit;
+        font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
         border-radius: 6px;
         border: 1px solid transparent;
         padding: 0.6em 1.2em;
@@ -178,6 +180,11 @@ const GlobalStyles = createGlobalStyle`
     button:focus {
         outline: 2px solid var(--primary);
         outline-offset: 2px;
+    }
+
+    input, textarea, select {
+        font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        font-size: var(--font-size);
     }
 
     .visually-hidden {
