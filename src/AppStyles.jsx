@@ -4,61 +4,100 @@ import styled from 'styled-components';
 
 export const AppContainer = styled.div`
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     height: 100vh;
     width: 100vw;
     min-width: 500px;
     max-width: 1200px;
-    background-color: #242424;
-    color: rgba(255, 255, 255, 0.87);
+    background-color: var(--background-dark);
+    color: var(--text-light);
     position: relative;
     overflow-x: hidden;
 `;
 
+export const Sidebar = styled(motion.div)`
+    width: ${props => props.isOpen ? '220px' : '60px'};
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: ${props => props.isOpen ? 'flex-start' : 'center'};
+    padding-top: 20px;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
+`;
+
+export const SidebarHeader = styled.div`
+    padding: 0 20px;
+    margin-bottom: 30px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: ${props => props.isOpen ? 'space-between' : 'center'};
+`;
+
+export const Logo = styled.div`
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-light);
+    display: ${props => props.isOpen ? 'block' : 'none'};
+`;
+
 export const HamburgerIcon = styled(motion.div)`
-    position: absolute;
-    top: 20px;
-    left: 20px;
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.87);
-    font-size: 24px;
+    color: var(--text-light);
+    font-size: 20px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    
     &:hover {
-        color: #646cff;
+        background-color: rgba(255, 255, 255, 0.1);
     }
 `;
 
-export const FloatingNav = styled.nav`
-    position: absolute;
-    top: 20px;
-    left: 60px;
-    background-color: #1a1a1a;
-    padding: 5px;
-    border-radius: 10%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+export const NavItems = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 10px;
 `;
 
-export const StyledNavLink = styled(NavLink)`
-    display: block;
-    padding: 10px;
+export const StyledNavItem = styled.div`
+    display: flex;
+    align-items: center;
+    padding: ${props => props.isOpen ? '12px 15px' : '12px'};
     margin-bottom: 10px;
-    background-color: transparent;
-    color: rgba(255, 255, 255, 0.87);
+    color: var(--text-light);
     text-decoration: none;
-    border: none;
-    text-align: left;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 10%;
-
+    transition: background-color 0.2s ease;
+    
     &.active {
-        background-color: #1a1a1a;
-        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+        font-weight: 500;
     }
 
     &:hover {
-        background-color: #3a3a3a;
-        color: white;
+        background-color: rgba(255, 255, 255, 0.07);
+    }
+    
+    .nav-icon {
+        font-size: 20px;
+        margin-right: ${props => props.isOpen ? '12px' : '0'};
+    }
+    
+    .nav-text {
+        display: ${props => props.isOpen ? 'block' : 'none'};
+        white-space: nowrap;
     }
 `;
 
@@ -67,5 +106,32 @@ export const Content = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    height: 100vh;
+    position: relative;
+`;
+
+export const ShortcutHint = styled.div`
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+        opacity: 0.9;
+    }
+    
+    .shortcut-key {
+        display: inline-block;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin: 0 2px;
+    }
 `;

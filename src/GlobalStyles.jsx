@@ -1,4 +1,4 @@
-// src/GlobalStyles.js
+// src/GlobalStyles.jsx
 
 import { createGlobalStyle } from 'styled-components';
 
@@ -25,27 +25,53 @@ const GlobalStyles = createGlobalStyle`
     }
 
     :root {
-        font-family: 'Open Sans';
-        line-height: 1.5;
+        /* Color palette */
+        --background-dark: #242424;
+        --background-light: #fcfcfa; /* Subtle cream color for paper-like feel */
+        --text-dark: #333333;
+        --text-light: rgba(255, 255, 255, 0.87);
+        --text-muted: #888888;
+        --primary: #646cff;
+        --primary-hover: #535bf2;
+        --accent: rgba(100, 108, 255, 0.08);
+        --border: rgba(0, 0, 0, 0.1);
+        --shadow: rgba(0, 0, 0, 0.1);
+        
+        /* Typography */
+        font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        line-height: 1.6;
         font-weight: 400;
+        font-size: 16px;
 
-        color-scheme: light;
-        color: rgba(255, 255, 255, 0.87);
-        background-color: #242424;
+        /* Theme */
+        color-scheme: light dark;
+        color: var(--text-dark);
+        background-color: var(--background-dark);
 
+        /* Font rendering */
         font-synthesis: none;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        
+        /* Transitions */
+        --transition-standard: 0.2s ease;
+    }
+
+    /* Paper texture (subtle) */
+    .paper-texture {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        background-repeat: repeat;
     }
 
     a {
         font-weight: 500;
-        color: #646cff;
-        text-decoration: inherit;
+        color: var(--primary);
+        text-decoration: none;
+        transition: color var(--transition-standard);
     }
     a:hover {
-        color: #535bf2;
+        color: var(--primary-hover);
     }
 
     body {
@@ -58,40 +84,161 @@ const GlobalStyles = createGlobalStyle`
         overflow-x: hidden;
     }
 
+    h1, h2, h3, h4 {
+        font-weight: 700;
+        line-height: 1.2;
+        margin-top: 0;
+    }
+
     h1 {
-        font-size: 3.2em;
-        line-height: 1.1;
+        font-size: 2.5rem;
+    }
+
+    p {
+        margin: 0 0 1.5em 0;
     }
 
     button {
-        border-radius: 8px;
+        font-family: inherit;
+        border-radius: 6px;
         border: 1px solid transparent;
         padding: 0.6em 1.2em;
         font-size: 1em;
         font-weight: 500;
-        font-family: inherit;
-        background-color: #1a1a1a;
+        background-color: #f0f0f0;
         cursor: pointer;
-        transition: border-color 0.25s;
+        transition: all var(--transition-standard);
+        box-shadow: 0 1px 2px var(--shadow);
     }
+    
     button:hover {
-        border-color: #646cff;
+        background-color: #e8e8e8;
     }
-    button:focus,
-    button:focus-visible {
-        outline: 4px auto -webkit-focus-ring-color;
+    
+    button:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
     }
 
-    @media (prefers-color-scheme: light) {
-        :root {
-            color: #213547;
-            background-color: #ffffff;
+    .visually-hidden {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    /* Transitions */
+    .fade-enter {
+        opacity: 0;
+    }
+    .fade-enter-active {
+        opacity: 1;
+        transition: opacity 300ms;
+    }
+    .fade-exit {
+        opacity: 1;
+    }
+    .fade-exit-active {
+        opacity: 0;
+        transition: opacity 300ms;
+    }
+
+    ::selection {
+        background-color: var(--accent);
+        color: var(--primary);
+    }
+
+    /* Radix UI Switch styling */
+    .SwitchRoot {
+        width: 42px;
+        height: 25px;
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 9999px;
+        position: relative;
+        box-shadow: 0 2px 5px var(--shadow);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        cursor: pointer;
+        transition: all var(--transition-standard);
+    }
+
+    .SwitchRoot:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.3);
+    }
+
+    .SwitchRoot[data-state='checked'] {
+        background-color: var(--primary);
+    }
+
+    .SwitchThumb {
+        display: block;
+        width: 21px;
+        height: 21px;
+        background-color: white;
+        border-radius: 9999px;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+        transition: transform var(--transition-standard);
+        transform: translateX(2px);
+        will-change: transform;
+    }
+
+    .SwitchThumb[data-state='checked'] {
+        transform: translateX(19px);
+    }
+
+    /* Toast styling */
+    .ToastViewport {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 25px;
+        gap: 10px;
+        width: 390px;
+        max-width: 100vw;
+        margin: 0;
+        list-style: none;
+        z-index: 2147483647;
+        outline: none;
+    }
+
+    .ToastRoot {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.08);
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        border-left: 4px solid var(--primary);
+        animation: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .ToastTitle {
+        font-weight: 500;
+        color: var(--text-dark);
+        font-size: 14px;
+    }
+
+    .ToastAction {
+        flex-shrink: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(calc(100% + 25px));
         }
-        a:hover {
-            color: #747bff;
-        }
-        button {
-            background-color: #f9f9f9;
+        to {
+            transform: translateX(0);
         }
     }
 `;

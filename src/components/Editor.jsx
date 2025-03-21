@@ -1,12 +1,15 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaSave, FaKeyboard } from 'react-icons/fa';
+import * as Switch from '@radix-ui/react-switch';
+import * as Tooltip from '@radix-ui/react-tooltip';
 import { formatDatetime, getEmojiByEmotion, getEmotionByEmoji } from '../uiUtils';
 import { EditorContext } from '../context/EditorContext';
 import useShortcut from '../hooks/useShortcut';
 import * as Styles from './EditorStyles';
 
-const Editor = ({ loading, progress, worker, modelError }) => {
+const Editor = ({ loading, progress, worker }) => {
     const {
         text,
         setText,
@@ -22,6 +25,16 @@ const Editor = ({ loading, progress, worker, modelError }) => {
     const textAreaRef = useRef(null);
     const [triggerAnimation, setTriggerAnimation] = useState(false);
     const [showCenteredEmoji, setShowCenteredEmoji] = useState(false);
+    const [showKeyboardHint, setShowKeyboardHint] = useState(true);
+
+    // Hide keyboard hint after 5 seconds
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowKeyboardHint(false);
+        }, 5000);
+        
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleTextChange = (e) => {
         const newText = e.target.value;
@@ -35,7 +48,6 @@ const Editor = ({ loading, progress, worker, modelError }) => {
         if (textArea) {
             textArea.style.height = 'auto';
             textArea.style.height = `${textArea.scrollHeight}px`;
-            textArea.scrollTop = textArea.scrollHeight / 2 - textArea.clientHeight / 2;
         }
     };
 
@@ -52,27 +64,20 @@ const Editor = ({ loading, progress, worker, modelError }) => {
         if (worker.current) {
             worker.current.onmessage = (event) => {
                 if (event.data.status === 'complete') {
-                    // Handle both old and new model output formats
-                    const output = event.data.output;
-                    let label;
-                    
-                    if (Array.isArray(output) && output.length > 0) {
-                        // Standard format (array of predictions)
-                        label = output[0].label;
-                    } else if (output && typeof output === 'object') {
-                        // Possible alternative format
-                        label = output.label || 'neutral';
-                    } else {
-                        // Fallback
-                        label = 'neutral';
-                    }
-                    
-                    setResultText(label);
-                    setEmoji(getEmojiByEmotion(label));
+                    const output = event.data.output[0];
+                    setResultText(output.label);
+                    setEmoji(getEmojiByEmotion(output.label));
                 }
             };
         }
     }, [worker, setResultText, setEmoji, loading]);
+
+    // Auto-focus the textarea when the component mounts
+    useEffect(() => {
+        if (textAreaRef.current && !loading) {
+            textAreaRef.current.focus();
+        }
+    }, [loading]);
 
     const triggerEmojiAnimation = (currentEmoji) => {
         setTriggerAnimation(true);
@@ -96,58 +101,159 @@ const Editor = ({ loading, progress, worker, modelError }) => {
 
     return (
         <Styles.EditorContainer>
-            <Styles.ToggleContainer>
-                <Styles.ToggleSwitch>
-                    <input
-                        type="checkbox"
-                        checked={showEmoji}
-                        onChange={() => setShowEmoji(!showEmoji)}
-                    />
-                    <span className="slider round"></span>
-                    <span className="tooltip">Toggle live emotion</span>
-                </Styles.ToggleSwitch>
-                <Styles.SaveButton onClick={handleSaveAndAnimate}>
-                    Save
-                </Styles.SaveButton>
-            </Styles.ToggleContainer>
-            {loading ? (
-                <Styles.LoadingMessage>
-                    <Styles.LoadingText>
-                        {modelError ? `Error: ${modelError}` : 'Loading Model'}
-                    </Styles.LoadingText>
-                    {!modelError && <Styles.RotatingCircle />}
-                </Styles.LoadingMessage>
-            ) : (
-                <>
-                    <Styles.Header>
-                        <Styles.EntryDatetime>{formatDatetime(entryDatetime)}</Styles.EntryDatetime>
-                        {showEmoji && (
-                            <Styles.EmojiDisplay title={getEmotionByEmoji(emoji)}>{emoji}</Styles.EmojiDisplay>
-                        )}
-                    </Styles.Header>
-                    <Styles.TextAreaContainer>
-                        <Styles.TextArea
-                            ref={textAreaRef}
-                            value={text}
-                            onChange={handleTextChange}
-                            className="editor-textarea"
-                            placeholder="Start typing..."
-                            autoFocus
-                        />
-                    </Styles.TextAreaContainer>
-                </>
-            )}
+            <Tooltip.Provider delayDuration={300}>
+                <Styles.ToggleContainer>
+                    <Tooltip.Root>
+                        <Tooltip.Trigger asChild>
+                            <Styles.SwitchContainer>
+                                <Styles.SwitchLabel>Live Emotion</Styles.SwitchLabel>
+                                <Switch.Root 
+                                    className="SwitchRoot" 
+                                    checked={showEmoji} 
+                                    onCheckedChange={setShowEmoji}
+                                >
+                                    <Switch.Thumb className="SwitchThumb" />
+                                </Switch.Root>
+                            </Styles.SwitchContainer>
+                        </Tooltip.Trigger>
+                        <Tooltip.Portal>
+                            <Tooltip.Content 
+                                className="TooltipContent"
+                                sideOffset={5}
+                                style={{
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    color: 'white',
+                                    borderRadius: '4px',
+                                    padding: '8px 12px',
+                                    fontSize: '13px',
+                                    maxWidth: '180px',
+                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+                                }}
+                            >
+                                Show emotion in real-time as you type
+                                <Tooltip.Arrow style={{ fill: 'rgba(0, 0, 0, 0.8)' }} />
+                            </Tooltip.Content>
+                        </Tooltip.Portal>
+                    </Tooltip.Root>
 
-            {showCenteredEmoji && (
-                <Styles.CenteredEmojiContainer>
-                    <motion.div
-                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0.8, 1] }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <Styles.EmojiDisplay title={resultText}>{emoji}</Styles.EmojiDisplay>
-                    </motion.div>
-                </Styles.CenteredEmojiContainer>
-            )}
+                    <Tooltip.Root>
+                        <Tooltip.Trigger asChild>
+                            <Styles.SaveButton onClick={handleSaveAndAnimate}>
+                                <FaSave className="save-icon" />
+                                Save
+                            </Styles.SaveButton>
+                        </Tooltip.Trigger>
+                        <Tooltip.Portal>
+                            <Tooltip.Content 
+                                sideOffset={5}
+                                style={{
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    color: 'white',
+                                    borderRadius: '4px',
+                                    padding: '8px 12px',
+                                    fontSize: '13px',
+                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+                                }}
+                            >
+                                Shortcut: Cmd+Enter
+                                <Tooltip.Arrow style={{ fill: 'rgba(0, 0, 0, 0.8)' }} />
+                            </Tooltip.Content>
+                        </Tooltip.Portal>
+                    </Tooltip.Root>
+                </Styles.ToggleContainer>
+
+                {loading ? (
+                    <Styles.LoadingMessage>
+                        <Styles.LoadingText>Loading emotion model...</Styles.LoadingText>
+                        <Styles.RotatingCircle />
+                    </Styles.LoadingMessage>
+                ) : (
+                    <Styles.PaperContainer className="paper-texture">
+                        <Styles.PaperContent>
+                            <Styles.Header>
+                                <Styles.EntryDatetime>{formatDatetime(entryDatetime)}</Styles.EntryDatetime>
+                                {showEmoji && (
+                                    <Styles.EmojiDisplay title={getEmotionByEmoji(emoji)}>{emoji}</Styles.EmojiDisplay>
+                                )}
+                            </Styles.Header>
+                            <Styles.TextAreaContainer>
+                                <Styles.TextArea
+                                    ref={textAreaRef}
+                                    value={text}
+                                    onChange={handleTextChange}
+                                    className="editor-textarea"
+                                    placeholder="Start typing..."
+                                    autoFocus
+                                />
+                            </Styles.TextAreaContainer>
+                        </Styles.PaperContent>
+                    </Styles.PaperContainer>
+                )}
+
+                <AnimatePresence>
+                    {showCenteredEmoji && (
+                        <Styles.CenteredEmojiContainer>
+                            <Styles.AnimatedEmoji
+                                initial={{ scale: 0.5, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 1.5, opacity: 0 }}
+                                transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
+                                className="emoji"
+                            >
+                                {emoji}
+                            </Styles.AnimatedEmoji>
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ delay: 0.1 }}
+                                className="emotion-label"
+                            >
+                                {resultText}
+                            </motion.div>
+                        </Styles.CenteredEmojiContainer>
+                    )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                    {showKeyboardHint && (
+                        <motion.div
+                            style={{
+                                position: 'absolute',
+                                bottom: '20px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                color: 'white',
+                                padding: '8px 16px',
+                                borderRadius: '20px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                                fontSize: '0.9rem'
+                            }}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <FaKeyboard style={{ fontSize: '1rem' }} />
+                            <span>Press <kbd style={{ 
+                                backgroundColor: 'rgba(255, 255, 255, 0.2)', 
+                                padding: '2px 5px', 
+                                borderRadius: '4px', 
+                                margin: '0 2px' 
+                            }}>⌘</kbd> + <kbd style={{ 
+                                backgroundColor: 'rgba(255, 255, 255, 0.2)', 
+                                padding: '2px 5px', 
+                                borderRadius: '4px', 
+                                margin: '0 2px' 
+                            }}>;</kbd> to toggle Calendar view</span>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </Tooltip.Provider>
         </Styles.EditorContainer>
     );
 };
