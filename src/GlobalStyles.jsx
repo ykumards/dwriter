@@ -77,11 +77,11 @@ const GlobalStyles = createGlobalStyle`
     body {
         margin: 0;
         display: flex;
-        place-items: center;
+        justify-content: center;
         min-width: 500px;
         min-height: 100vh;
-        max-width: 1200px;
         overflow-x: hidden;
+        background-color: var(--background-dark);
     }
 
     h1, h2, h3, h4 {
@@ -154,8 +154,8 @@ const GlobalStyles = createGlobalStyle`
 
     /* Radix UI Switch styling */
     .SwitchRoot {
-        width: 42px;
-        height: 25px;
+        width: 46px;
+        height: 26px;
         background-color: rgba(0, 0, 0, 0.1);
         border-radius: 9999px;
         position: relative;
@@ -163,6 +163,7 @@ const GlobalStyles = createGlobalStyle`
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         cursor: pointer;
         transition: all var(--transition-standard);
+        border: 1px solid transparent;
     }
 
     .SwitchRoot:focus {
@@ -176,18 +177,19 @@ const GlobalStyles = createGlobalStyle`
 
     .SwitchThumb {
         display: block;
-        width: 21px;
-        height: 21px;
+        width: 20px;
+        height: 20px;
         background-color: white;
         border-radius: 9999px;
-        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         transition: transform var(--transition-standard);
-        transform: translateX(2px);
+        transform: translateX(3px);
         will-change: transform;
+        margin-top: 2px;
     }
 
     .SwitchThumb[data-state='checked'] {
-        transform: translateX(19px);
+        transform: translateX(22px);
     }
 
     /* Toast styling */
@@ -240,6 +242,22 @@ const GlobalStyles = createGlobalStyle`
         to {
             transform: translateX(0);
         }
+    }
+
+    /* Tooltip styling */
+    .TooltipContent {
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 13px;
+        max-width: 180px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    .TooltipContent .Tooltip-arrow {
+        fill: rgba(0, 0, 0, 0.8);
     }
 `;
 

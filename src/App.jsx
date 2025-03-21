@@ -1,20 +1,27 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { 
     FaBars, 
     FaEdit, 
     FaCalendarAlt, 
     FaChevronLeft,
-    FaChevronRight
+    FaChevronRight,
+    FaFileExport
 } from 'react-icons/fa';
+import { writeTextFile } from '@tauri-apps/api/fs';
+import { save } from '@tauri-apps/api/dialog';
 
 import Editor from './components/Editor';
 import Calendar from './components/Calendar';
+import BottomToolbar from './components/BottomToolbar';
 import useToggleShortcut from './hooks/useToggleShortcut';
+import { EditorContext } from './context/EditorContext';
 import * as Styles from './AppStyles';
 
 const App = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [currentComponent, setCurrentComponent] = useState('editor');
+    const [isExporting, setIsExporting] = useState(false);
+    const { showEmoji, setShowEmoji, saveToLocalStorage } = useContext(EditorContext);
 
     // Model-related states
     const [loading, setLoading] = useState(true);
@@ -71,43 +78,49 @@ const App = () => {
         setCurrentComponent((prevComponent) => (prevComponent === 'editor' ? 'calendar' : 'editor'));
     });
 
+    const handleSaveClick = () => {
+        saveToLocalStorage();
+    };
+
+    const handleExportClick = async () => {
+        try {
+            setIsExporting(true);
+            console.log('Exporting entries...');
+            const storedEntries = localStorage.getItem('entries');
+            if (storedEntries) {
+                // Open a save dialog and let the user choose where to save the file
+                const currentDate = new Date().toISOString().split('T')[0];
+                const defaultFileName = `emotion-entries-${currentDate}.json`;
+                const filePath = await save({
+                    defaultPath: defaultFileName,
+                    filters: [{
+                        name: 'JSON Files',
+                        extensions: ['json']
+                    }]
+                });
+
+                if (filePath) {
+                    await writeTextFile(filePath, storedEntries);
+                    console.log(`File saved as ${filePath}`);
+                } else {
+                    console.log('Save operation was cancelled.');
+                }
+            } else {
+                console.log('No entries found to export.');
+            }
+        } catch (error) {
+            console.error('Failed to export emotions:', error);
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
     return (
         <Styles.AppContainer>
-            <Styles.Sidebar
-                isOpen={sidebarOpen}
-                initial={false}
-                animate={{ width: sidebarOpen ? '220px' : '60px' }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
-                <Styles.SidebarHeader isOpen={sidebarOpen}>
-                    {sidebarOpen && <Styles.Logo>DWriter</Styles.Logo>}
-                    <Styles.HamburgerIcon onClick={toggleSidebar}>
-                        {sidebarOpen ? <FaChevronLeft /> : <FaChevronRight />}
-                    </Styles.HamburgerIcon>
-                </Styles.SidebarHeader>
-                
-                <Styles.NavItems>
-                    <Styles.StyledNavItem 
-                        isOpen={sidebarOpen}
-                        className={currentComponent === 'editor' ? 'active' : ''}
-                        onClick={() => handleNavClick('editor')}
-                    >
-                        <FaEdit className="nav-icon" />
-                        <span className="nav-text">Editor</span>
-                    </Styles.StyledNavItem>
-                    
-                    <Styles.StyledNavItem 
-                        isOpen={sidebarOpen}
-                        className={currentComponent === 'calendar' ? 'active' : ''}
-                        onClick={() => handleNavClick('calendar')}
-                    >
-                        <FaCalendarAlt className="nav-icon" />
-                        <span className="nav-text">Calendar</span>
-                    </Styles.StyledNavItem>
-                </Styles.NavItems>
-            </Styles.Sidebar>
+            {/* Removed sidebar since we're using the bottom toolbar */}
+            {/* </Styles.Sidebar> */}
             
-            <Styles.Content>
+            <Styles.ContentFullWidth>
                 {currentComponent === 'editor' && (
                     <Editor
                         loading={loading}
@@ -116,11 +129,18 @@ const App = () => {
                     />
                 )}
                 {currentComponent === 'calendar' && <Calendar />}
-                
-                <Styles.ShortcutHint>
-                    Switch views: <span className="shortcut-key">⌘</span>+<span className="shortcut-key">;</span>
-                </Styles.ShortcutHint>
-            </Styles.Content>
+                {/* Removed shortcut hint as it's no longer needed with the bottom toolbar */}
+            </Styles.ContentFullWidth>
+            
+            <BottomToolbar 
+                currentComponent={currentComponent}
+                onNavClick={handleNavClick}
+                showEmoji={showEmoji}
+                setShowEmoji={setShowEmoji}
+                onSave={handleSaveClick}
+                onExport={handleExportClick}
+                isExporting={isExporting}
+            />
         </Styles.AppContainer>
     );
 };

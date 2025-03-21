@@ -102,65 +102,7 @@ const Editor = ({ loading, progress, worker }) => {
     return (
         <Styles.EditorContainer>
             <Tooltip.Provider delayDuration={300}>
-                <Styles.ToggleContainer>
-                    <Tooltip.Root>
-                        <Tooltip.Trigger asChild>
-                            <Styles.SwitchContainer>
-                                <Styles.SwitchLabel>Live Emotion</Styles.SwitchLabel>
-                                <Switch.Root 
-                                    className="SwitchRoot" 
-                                    checked={showEmoji} 
-                                    onCheckedChange={setShowEmoji}
-                                >
-                                    <Switch.Thumb className="SwitchThumb" />
-                                </Switch.Root>
-                            </Styles.SwitchContainer>
-                        </Tooltip.Trigger>
-                        <Tooltip.Portal>
-                            <Tooltip.Content 
-                                className="TooltipContent"
-                                sideOffset={5}
-                                style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                    color: 'white',
-                                    borderRadius: '4px',
-                                    padding: '8px 12px',
-                                    fontSize: '13px',
-                                    maxWidth: '180px',
-                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-                                }}
-                            >
-                                Show emotion in real-time as you type
-                                <Tooltip.Arrow style={{ fill: 'rgba(0, 0, 0, 0.8)' }} />
-                            </Tooltip.Content>
-                        </Tooltip.Portal>
-                    </Tooltip.Root>
-
-                    <Tooltip.Root>
-                        <Tooltip.Trigger asChild>
-                            <Styles.SaveButton onClick={handleSaveAndAnimate}>
-                                <FaSave className="save-icon" />
-                                Save
-                            </Styles.SaveButton>
-                        </Tooltip.Trigger>
-                        <Tooltip.Portal>
-                            <Tooltip.Content 
-                                sideOffset={5}
-                                style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                    color: 'white',
-                                    borderRadius: '4px',
-                                    padding: '8px 12px',
-                                    fontSize: '13px',
-                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-                                }}
-                            >
-                                Shortcut: Cmd+Enter
-                                <Tooltip.Arrow style={{ fill: 'rgba(0, 0, 0, 0.8)' }} />
-                            </Tooltip.Content>
-                        </Tooltip.Portal>
-                    </Tooltip.Root>
-                </Styles.ToggleContainer>
+                {/* Removed top toolbar since we're using bottom toolbar */}
 
                 {loading ? (
                     <Styles.LoadingMessage>
@@ -231,7 +173,8 @@ const Editor = ({ loading, progress, worker }) => {
                                 alignItems: 'center',
                                 gap: '8px',
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                                fontSize: '0.9rem'
+                                fontSize: '0.9rem',
+                                zIndex: 5
                             }}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}

@@ -8,24 +8,51 @@ export const CalendarPageContainer = styled.div`
     justify-content: flex-start;
     width: 100%;
     height: 100%;
+    max-width: 900px;
+    margin: 0 auto;
     padding: 20px;
+    padding-top: 20px;
     overflow-y: auto;
-    background-color: var(--background-dark);
     color: var(--text-light);
+    position: relative;
 
     @media (min-width: 768px) {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         gap: 30px;
     }
+`;
+
+export const Toolbar = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 20px;
+    z-index: 20;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+`;
+
+export const ToolbarTitle = styled.div`
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 500;
 `;
 
 export const CalendarContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     margin-bottom: 20px;
     background-color: rgba(255, 255, 255, 0.03);
     border-radius: 12px;
@@ -33,8 +60,8 @@ export const CalendarContainer = styled.div`
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 
     @media (min-width: 768px) {
-        width: 45%;
-        margin-bottom: 0;
+        width: 100%;
+        margin-bottom: 30px;
     }
 `;
 
@@ -43,6 +70,8 @@ export const CustomCalendar = styled(ReactCalendar)`
     background-color: transparent;
     border: none;
     padding: 10px;
+    font-family: var(--font-family);
+    color: var(--text-light);
     
     /* Navigation styles */
     .react-calendar__navigation {
@@ -80,11 +109,19 @@ export const CustomCalendar = styled(ReactCalendar)`
         font-weight: 600;
         font-size: 0.8em;
         margin-bottom: 8px;
+        display: flex;
         
         abbr {
             text-decoration: none;
             color: var(--text-muted);
+            flex: 1;
+            padding: 5px 0;
         }
+    }
+
+    .react-calendar__month-view__days {
+        display: grid !important;
+        grid-template-columns: repeat(7, 1fr);
     }
     
     /* Tile styles */
@@ -97,6 +134,10 @@ export const CustomCalendar = styled(ReactCalendar)`
         color: var(--text-light);
         position: relative;
         overflow: visible;
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         
         &:enabled:hover, &:enabled:focus {
             background-color: rgba(255, 255, 255, 0.08);
@@ -204,6 +245,9 @@ export const TodayButton = styled.button`
     cursor: pointer;
     font-size: 0.9em;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     
     &:hover {
         background-color: rgba(255, 255, 255, 0.15);
@@ -220,6 +264,9 @@ export const ExportButton = styled.button`
     font-size: 0.9em;
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(100, 108, 255, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
     
     &:hover {
         background-color: var(--primary-hover);
@@ -238,15 +285,14 @@ export const EntriesContainer = styled.div`
     border-radius: 12px;
     padding: 20px;
     height: fit-content;
-    min-height: 400px;
+    min-height: 200px;
     width: 100%;
-    max-width: 400px;
-    margin-bottom: 20px;
+    max-width: 600px;
+    margin-bottom: 80px; /* Space for bottom toolbar */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 
     @media (min-width: 768px) {
-        width: 45%;
-        margin-bottom: 0;
+        width: 100%;
     }
 `;
 

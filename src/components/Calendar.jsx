@@ -106,6 +106,8 @@ const CalendarComponent = () => {
     return (
         <Tooltip.Provider delayDuration={300}>
             <Styles.CalendarPageContainer>
+                {/* Removed top toolbar since we're using bottom toolbar */}
+
                 <motion.div
                     initial="hidden"
                     animate="visible"
@@ -141,38 +143,6 @@ const CalendarComponent = () => {
                                         }}
                                     >
                                         Jump to today's date
-                                        <Tooltip.Arrow style={{ fill: 'rgba(0, 0, 0, 0.8)' }} />
-                                    </Tooltip.Content>
-                                </Tooltip.Portal>
-                            </Tooltip.Root>
-
-                            <Tooltip.Root>
-                                <Tooltip.Trigger asChild>
-                                    <Styles.ExportButton 
-                                        onClick={handleExportClick}
-                                        disabled={isLoading || entries.length === 0}
-                                        style={{ 
-                                            opacity: entries.length === 0 ? 0.6 : 1,
-                                            cursor: entries.length === 0 ? 'not-allowed' : 'pointer'
-                                        }}
-                                    >
-                                        <FaFileExport style={{ marginRight: '6px' }} />
-                                        Export
-                                    </Styles.ExportButton>
-                                </Tooltip.Trigger>
-                                <Tooltip.Portal>
-                                    <Tooltip.Content
-                                        sideOffset={5}
-                                        style={{
-                                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                            color: 'white',
-                                            borderRadius: '4px',
-                                            padding: '8px 12px',
-                                            fontSize: '13px',
-                                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-                                        }}
-                                    >
-                                        Export all your emotions as JSON
                                         <Tooltip.Arrow style={{ fill: 'rgba(0, 0, 0, 0.8)' }} />
                                     </Tooltip.Content>
                                 </Tooltip.Portal>

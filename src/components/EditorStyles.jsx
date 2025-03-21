@@ -34,11 +34,30 @@ export const EditorContainer = styled.div`
     position: relative;
 `;
 
+// New toolbar component at the top of the editor
+export const Toolbar = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 20px;
+    z-index: 20;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+`;
+
 export const PaperContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 800px;
+    max-width: 90%;
     height: 85%;
+    margin: 60px auto 0;
     background-color: var(--background-light);
     border-radius: 8px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
@@ -144,21 +163,9 @@ export const RotatingCircle = styled.div`
 `;
 
 export const ToggleContainer = styled.div`
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 10;
     display: flex;
     gap: 15px;
     align-items: center;
-`;
-
-export const ToolbarContainer = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    justify-content: space-between;
-    width: 100%;
 `;
 
 export const SwitchContainer = styled.div`
@@ -168,9 +175,10 @@ export const SwitchContainer = styled.div`
 `;
 
 export const SwitchLabel = styled.span`
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 0.9rem;
     font-weight: 500;
+    user-select: none;
 `;
 
 export const SaveButton = styled.button`

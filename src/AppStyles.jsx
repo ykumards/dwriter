@@ -4,15 +4,16 @@ import styled from 'styled-components';
 
 export const AppContainer = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: 100vh;
-    width: 100vw;
-    min-width: 500px;
+    width: 100%;
     max-width: 1200px;
+    min-width: 500px;
     background-color: var(--background-dark);
     color: var(--text-light);
     position: relative;
     overflow-x: hidden;
+    margin: 0 auto;
 `;
 
 export const Sidebar = styled(motion.div)`
@@ -108,6 +109,19 @@ export const Content = styled.div`
     align-items: center;
     height: 100vh;
     position: relative;
+`;
+
+export const ContentFullWidth = styled.div`
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px); /* Adjust for bottom toolbar */
+    width: 100%;
+    position: relative;
+    overflow: auto;
+    padding-bottom: 60px; /* Match the height of the bottom toolbar */
+    box-sizing: border-box;
 `;
 
 export const ShortcutHint = styled.div`
