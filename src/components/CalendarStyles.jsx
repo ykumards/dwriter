@@ -109,20 +109,24 @@ export const CustomCalendar = styled(Calendar)`
 `;
 
 export const TodayButton = styled.button`
-    background-color: ${props => props.theme === 'light' ? '#e9ecef' : '#312f2f'};
-    color: ${props => props.theme === 'light' ? '#343a40' : 'white'};
-    border: ${props => props.theme === 'light' ? '1px solid #ced4da' : 'none'};
-    border-radius: 4px;
-    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    padding: 0 20px;
+    height: 36px;
     margin: 10px 0;
     cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
     &:hover {
-        background-color: ${props => props.theme === 'light' ? '#dee2e6' : '#535353'};
-        box-shadow: ${props => props.theme === 'light' 
-            ? '0 0 5px rgba(0, 0, 0, 0.2)' 
-            : '0 0 5px rgba(0, 0, 0, 0.5)'};
+        background: var(--primary-hover);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 `;
 
@@ -130,17 +134,24 @@ export const ExportButton = styled.button`
     position: absolute;
     top: 20px;
     right: 70px;
-    background-color: ${props => props.theme === 'light' ? '#e9ecef' : '#312f2f'};
-    color: ${props => props.theme === 'light' ? '#343a40' : 'white'};
-    border: ${props => props.theme === 'light' ? '1px solid #ced4da' : 'none'};
-    border-radius: 4px;
-    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    padding: 0 20px;
+    height: 36px;
     cursor: pointer;
-    font-size: 0.8em;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.2s ease;
     &:hover {
-        background-color: ${props => props.theme === 'light' ? '#dee2e6' : '#535353'};
+        background: var(--primary-hover);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 `;
 
