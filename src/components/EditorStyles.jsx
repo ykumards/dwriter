@@ -63,7 +63,7 @@ export const PaperContainer = styled.div`
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     overflow: hidden;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, background-color 0.3s;
     animation: ${fadeIn} 0.5s ease;
 `;
 
@@ -120,13 +120,14 @@ export const TextArea = styled.textarea`
     resize: none;
     overflow-y: auto;
     color: var(--text-dark);
-    background-image: linear-gradient(transparent, transparent calc(1.8rem - 1px), rgba(0, 0, 0, 0.05) 0px);
+    background-image: ${props => `linear-gradient(transparent, transparent calc(1.8rem - 1px), var(--border) 0px)`};
     background-size: 100% 1.8rem;
     caret-color: var(--primary);
     padding: 0;
+    transition: color 0.3s;
 
     &::placeholder {
-        color: rgba(0, 0, 0, 0.2);
+        color: ${props => `rgba(${props.theme === 'dark' ? '255, 255, 255' : '0, 0, 0'}, 0.2)`};
     }
 
     &:focus {
@@ -223,11 +224,12 @@ export const CenteredEmojiContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--calendar-bg);
     border-radius: 100%;
     width: 120px;
     height: 120px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
     
     .emoji {
         font-size: 4rem;

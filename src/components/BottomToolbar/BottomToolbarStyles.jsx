@@ -7,8 +7,8 @@ const Container = styled.div`
   left: 0;
   right: 0;
   height: 60px;
-  background: #fafafa;
-  border-top: 1px solid #e0e0e0;
+  background: var(--toolbar-bg);
+  border-top: 1px solid var(--toolbar-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,6 +16,7 @@ const Container = styled.div`
   z-index: 100;
   overflow: visible; /* Ensure tooltips aren't cut off */
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s, border-color 0.3s;
 `;
 
 const ToolbarContent = styled.div`
@@ -55,9 +56,9 @@ const IconButton = styled(motion.button)`
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: ${props => props.isActive ? '#6b7ff7' : '#f5f5f5'};
-  color: ${props => props.isActive ? '#fff' : '#666'};
-  border: 1px solid ${props => props.isActive ? 'transparent' : '#e0e0e0'};
+  background: ${props => props.isActive ? 'var(--primary)' : 'var(--button-bg)'};
+  color: ${props => props.isActive ? '#fff' : 'var(--button-text)'};
+  border: 1px solid ${props => props.isActive ? 'transparent' : 'var(--button-border)'};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,21 +74,22 @@ const IconButton = styled(motion.button)`
   }
   
   &:hover {
-    background: ${props => props.isActive ? '#6b7ff7' : '#eaeaea'};
+    background: ${props => props.isActive ? 'var(--primary-hover)' : 'var(--button-hover)'};
   }
 `;
 
 const Label = styled.span`
   font-size: 14px;
-  color: #555;
+  color: var(--button-text);
   font-weight: 500;
   white-space: nowrap;
+  transition: color 0.3s;
 `;
 
 const ToggleButton = styled(motion.button)`
   height: 36px;
-  background: ${props => props.isActive ? '#6b7ff7' : '#f0f0f0'};
-  color: ${props => props.isActive ? 'white' : '#555'};
+  background: ${props => props.isActive ? 'var(--primary)' : 'var(--button-bg)'};
+  color: ${props => props.isActive ? 'white' : 'var(--button-text)'};
   border: none;
   border-radius: 18px;
   padding: 0 15px;
@@ -101,13 +103,13 @@ const ToggleButton = styled(motion.button)`
   transition: all 0.2s ease;
   
   &:hover {
-    background: ${props => props.isActive ? '#586ce0' : '#e4e4e4'};
+    background: ${props => props.isActive ? 'var(--primary-hover)' : 'var(--button-hover)'};
   }
 `;
 
 const SaveButton = styled(motion.button)`
   height: 36px;
-  background: #6b7ff7;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 18px;
@@ -122,7 +124,7 @@ const SaveButton = styled(motion.button)`
   transition: all 0.2s ease;
   
   &:hover {
-    background: #586ce0;
+    background: var(--primary-hover);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
   

@@ -9,19 +9,30 @@ export const EditorProvider = ({ children }) => {
     const [resultText, setResultText] = useState('');
     const [entryDatetime, setEntryDatetime] = useState(new Date());
     const [showEmoji, setShowEmoji] = useState(true);
+    const [theme, setTheme] = useState('light'); // Default theme is light
 
-    // Load the persisted showEmoji state from localStorage when the component mounts
+    // Load the persisted states from localStorage when the component mounts
     useEffect(() => {
         const savedShowEmoji = localStorage.getItem('showEmoji');
         if (savedShowEmoji !== null) {
             setShowEmoji(JSON.parse(savedShowEmoji));
         }
+        
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme !== null) {
+            setTheme(savedTheme);
+        }
     }, []);
 
-    // Save the showEmoji state to localStorage whenever it changes
+    // Save states to localStorage whenever they change
     useEffect(() => {
         localStorage.setItem('showEmoji', JSON.stringify(showEmoji));
     }, [showEmoji]);
+    
+    useEffect(() => {
+        localStorage.setItem('theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+    }, [theme]);
 
     const resetEditor = () => {
         setText('');
@@ -59,6 +70,8 @@ export const EditorProvider = ({ children }) => {
                 saveToLocalStorage,
                 showEmoji,
                 setShowEmoji,
+                theme,
+                setTheme,
             }}
         >
             {children}

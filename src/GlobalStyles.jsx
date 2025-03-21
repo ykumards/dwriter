@@ -25,7 +25,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     :root {
-        /* Color palette */
+        /* Color palette - light theme (default) */
         --background-dark: #242424;
         --background-light: #fcfcfa; /* Subtle cream color for paper-like feel */
         --text-dark: #333333;
@@ -36,6 +36,31 @@ const GlobalStyles = createGlobalStyle`
         --accent: rgba(100, 108, 255, 0.08);
         --border: rgba(0, 0, 0, 0.1);
         --shadow: rgba(0, 0, 0, 0.1);
+        --toolbar-bg: #fafafa;
+        --toolbar-border: #e0e0e0;
+        --button-bg: #f5f5f5;
+        --button-hover: #eaeaea;
+        --button-text: #666;
+        --button-border: #e0e0e0;
+        --tooltip-bg: rgba(0, 0, 0, 0.8);
+        --tooltip-text: white;
+        
+        /* Calendar light theme variables */
+        --calendar-bg: rgba(255, 255, 255, 0.9);
+        --calendar-border: rgba(0, 0, 0, 0.05);
+        --calendar-text: #333333;
+        --calendar-muted: #888888;
+        --calendar-tile-hover: rgba(0, 0, 0, 0.05);
+        --calendar-tile-active: var(--primary);
+        --calendar-tile-now: rgba(100, 108, 255, 0.1);
+        --calendar-emotion-joy: rgba(255, 220, 0, 0.15);
+        --calendar-emotion-sadness: rgba(0, 112, 192, 0.15);
+        --calendar-emotion-anger: rgba(192, 0, 0, 0.15);
+        --calendar-emotion-fear: rgba(112, 48, 160, 0.15);
+        --calendar-emotion-disgust: rgba(0, 176, 80, 0.15);
+        --calendar-emotion-surprise: rgba(255, 153, 0, 0.15);
+        --calendar-emotion-neutral: rgba(166, 166, 166, 0.15);
+        --calendar-emotion-mixed: rgba(0, 0, 0, 0.05);
         
         /* Typography */
         font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
@@ -74,15 +99,49 @@ const GlobalStyles = createGlobalStyle`
         color: var(--primary-hover);
     }
 
-    body {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        min-width: 500px;
-        min-height: 100vh;
-        overflow-x: hidden;
-        background-color: var(--background-dark);
-    }
+    /* Dark theme variables */
+[data-theme="dark"] {
+    --background-dark: #121212;
+    --background-light: #242424;
+    --text-dark: rgba(255, 255, 255, 0.87);
+    --text-light: rgba(255, 255, 255, 0.87);
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --border: rgba(255, 255, 255, 0.1);
+    --shadow: rgba(0, 0, 0, 0.3);
+    --toolbar-bg: #242424;
+    --toolbar-border: #333333;
+    --button-bg: #333333;
+    --button-hover: #404040;
+    --button-text: rgba(255, 255, 255, 0.87);
+    --button-border: #444444;
+    
+    /* Calendar dark theme variables */
+    --calendar-bg: rgba(36, 36, 36, 0.9);
+    --calendar-border: rgba(255, 255, 255, 0.05);
+    --calendar-text: rgba(255, 255, 255, 0.87);
+    --calendar-muted: rgba(255, 255, 255, 0.6);
+    --calendar-tile-hover: rgba(255, 255, 255, 0.08);
+    --calendar-tile-active: var(--primary);
+    --calendar-tile-now: rgba(100, 108, 255, 0.2);
+    --calendar-emotion-joy: rgba(255, 220, 0, 0.2);
+    --calendar-emotion-sadness: rgba(0, 112, 192, 0.2);
+    --calendar-emotion-anger: rgba(192, 0, 0, 0.2);
+    --calendar-emotion-fear: rgba(112, 48, 160, 0.2);
+    --calendar-emotion-disgust: rgba(0, 176, 80, 0.2);
+    --calendar-emotion-surprise: rgba(255, 153, 0, 0.2);
+    --calendar-emotion-neutral: rgba(166, 166, 166, 0.2);
+    --calendar-emotion-mixed: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    min-width: 500px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: var(--background-dark);
+}
 
     h1, h2, h3, h4 {
         font-weight: 700;

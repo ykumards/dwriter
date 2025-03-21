@@ -21,6 +21,7 @@ const Editor = ({ loading, progress, worker }) => {
         saveToLocalStorage,
         showEmoji,
         setShowEmoji,
+        theme,
     } = useContext(EditorContext);
     const textAreaRef = useRef(null);
     const [triggerAnimation, setTriggerAnimation] = useState(false);
@@ -126,6 +127,7 @@ const Editor = ({ loading, progress, worker }) => {
                                     className="editor-textarea"
                                     placeholder="Start typing..."
                                     autoFocus
+                                    theme={theme}
                                 />
                             </Styles.TextAreaContainer>
                         </Styles.PaperContent>

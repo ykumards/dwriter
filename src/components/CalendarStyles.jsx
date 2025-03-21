@@ -54,10 +54,11 @@ export const CalendarContainer = styled.div`
     width: 100%;
     max-width: 600px;
     margin-bottom: 20px;
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--calendar-bg);
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s;
 
     @media (min-width: 768px) {
         width: 100%;
@@ -71,7 +72,8 @@ export const CustomCalendar = styled(ReactCalendar)`
     border: none;
     padding: 10px;
     font-family: var(--font-family);
-    color: var(--text-light);
+    color: var(--calendar-text);
+    transition: color 0.3s;
     
     /* Navigation styles */
     .react-calendar__navigation {
@@ -82,13 +84,14 @@ export const CustomCalendar = styled(ReactCalendar)`
             min-width: 44px;
             background: none;
             font-size: 16px;
-            color: var(--text-light);
+            color: var(--calendar-text);
             border-radius: 8px;
             padding: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--calendar-border);
+            transition: color 0.3s, border-color 0.3s;
             
             &:enabled:hover, &:enabled:focus {
-                background-color: rgba(255, 255, 255, 0.1);
+                background-color: var(--calendar-tile-hover);
             }
             
             &[disabled] {
@@ -113,9 +116,10 @@ export const CustomCalendar = styled(ReactCalendar)`
         
         abbr {
             text-decoration: none;
-            color: var(--text-muted);
+            color: var(--calendar-muted);
             flex: 1;
             padding: 5px 0;
+            transition: color 0.3s;
         }
     }
 
@@ -131,16 +135,17 @@ export const CustomCalendar = styled(ReactCalendar)`
         text-align: center;
         line-height: 18px;
         border-radius: 8px;
-        color: var(--text-light);
+        color: var(--calendar-text);
         position: relative;
         overflow: visible;
         aspect-ratio: 1/1;
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: color 0.3s, background-color 0.3s;
         
         &:enabled:hover, &:enabled:focus {
-            background-color: rgba(255, 255, 255, 0.08);
+            background-color: var(--calendar-tile-hover);
         }
         
         &--active, &--active:enabled:hover, &--active:enabled:focus {
@@ -149,10 +154,11 @@ export const CustomCalendar = styled(ReactCalendar)`
         }
         
         &--now {
-            background-color: rgba(100, 108, 255, 0.1);
+            background-color: var(--calendar-tile-now);
             
             &:enabled:hover, &:enabled:focus {
-                background-color: rgba(100, 108, 255, 0.2);
+                background-color: var(--calendar-tile-now);
+                filter: brightness(1.1);
             }
         }
         
@@ -183,35 +189,35 @@ export const CustomCalendar = styled(ReactCalendar)`
         
         /* Neutral, specific emotion, or multi-emotion colors */
         &.emotion-joy {
-            background-color: rgba(255, 220, 0, 0.15);
+            background-color: var(--calendar-emotion-joy);
         }
         
         &.emotion-sadness {
-            background-color: rgba(0, 112, 192, 0.15);
+            background-color: var(--calendar-emotion-sadness);
         }
         
         &.emotion-anger {
-            background-color: rgba(192, 0, 0, 0.15);
+            background-color: var(--calendar-emotion-anger);
         }
         
         &.emotion-fear {
-            background-color: rgba(112, 48, 160, 0.15);
+            background-color: var(--calendar-emotion-fear);
         }
         
         &.emotion-disgust {
-            background-color: rgba(0, 176, 80, 0.15);
+            background-color: var(--calendar-emotion-disgust);
         }
         
         &.emotion-surprise {
-            background-color: rgba(255, 153, 0, 0.15);
+            background-color: var(--calendar-emotion-surprise);
         }
         
         &.emotion-neutral {
-            background-color: rgba(166, 166, 166, 0.15);
+            background-color: var(--calendar-emotion-neutral);
         }
         
         &.emotion-mixed {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--calendar-emotion-mixed);
             
             &::before {
                 content: "";
@@ -221,7 +227,7 @@ export const CustomCalendar = styled(ReactCalendar)`
                 position: absolute;
                 top: 10%;
                 left: 10%;
-                border: 1px dashed rgba(255, 255, 255, 0.3);
+                border: 1px dashed var(--calendar-border);
                 border-radius: 6px;
                 z-index: 0;
             }
@@ -237,20 +243,20 @@ export const ButtonsContainer = styled.div`
 `;
 
 export const TodayButton = styled.button`
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--text-light);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
     border-radius: 6px;
     padding: 8px 16px;
     cursor: pointer;
     font-size: 0.9em;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease, background-color 0.3s, color 0.3s, border-color 0.3s;
     display: flex;
     align-items: center;
     gap: 6px;
     
     &:hover {
-        background-color: rgba(255, 255, 255, 0.15);
+        background-color: var(--button-hover);
     }
 `;
 
@@ -281,7 +287,7 @@ export const ExportButton = styled.button`
 `;
 
 export const EntriesContainer = styled.div`
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--calendar-bg);
     border-radius: 12px;
     padding: 20px;
     height: fit-content;
@@ -290,6 +296,7 @@ export const EntriesContainer = styled.div`
     max-width: 600px;
     margin-bottom: 80px; /* Space for bottom toolbar */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s;
 
     @media (min-width: 768px) {
         width: 100%;
@@ -300,8 +307,9 @@ export const EntriesHeader = styled.h2`
     font-size: 1.2rem;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-light);
+    border-bottom: 1px solid var(--calendar-border);
+    color: var(--calendar-text);
+    transition: color 0.3s, border-color 0.3s;
 `;
 
 export const OverallEntry = styled.div`
@@ -310,9 +318,10 @@ export const OverallEntry = styled.div`
     align-items: center;
     padding: 12px 16px;
     margin-bottom: 20px;
-    background-color: rgba(100, 108, 255, 0.08);
+    background-color: var(--calendar-tile-now);
     border-radius: 8px;
     border-left: 3px solid var(--primary);
+    transition: background-color 0.3s;
 `;
 
 export const EntriesList = styled.div`
@@ -346,11 +355,11 @@ export const EntryItem = styled.div`
     padding: 12px 16px;
     margin-bottom: 8px;
     border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.05);
-    transition: all 0.2s ease;
+    background-color: var(--calendar-tile-hover);
+    transition: all 0.2s ease, background-color 0.3s;
     
     &:hover {
-        background-color: rgba(255, 255, 255, 0.08);
+        background-color: var(--calendar-emotion-mixed);
         transform: translateY(-1px);
     }
     
@@ -361,7 +370,8 @@ export const EntryItem = styled.div`
 
 export const EntryTime = styled.div`
     font-size: 0.9rem;
-    color: var(--text-muted);
+    color: var(--calendar-muted);
+    transition: color 0.3s;
 `;
 
 export const EmojiSpan = styled.span`
@@ -373,8 +383,8 @@ export const EmojiSpan = styled.span`
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.05);
-    transition: transform 0.2s ease;
+    background-color: var(--calendar-tile-hover);
+    transition: transform 0.2s ease, background-color 0.3s;
     
     &:hover {
         transform: scale(1.1);
@@ -384,6 +394,7 @@ export const EmojiSpan = styled.span`
 export const NoEntriesMessage = styled.div`
     text-align: center;
     padding: 40px 0;
-    color: var(--text-muted);
+    color: var(--calendar-muted);
     font-style: italic;
+    transition: color 0.3s;
 `;

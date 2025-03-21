@@ -7,12 +7,14 @@ import {
     FaChevronRight,
     FaFileExport
 } from 'react-icons/fa';
+import { AnimatePresence } from 'framer-motion';
 import { writeTextFile } from '@tauri-apps/api/fs';
 import { save } from '@tauri-apps/api/dialog';
 
 import Editor from './components/Editor';
 import Calendar from './components/Calendar';
 import BottomToolbar from './components/BottomToolbar';
+import ThemeSettings from './components/ThemeSettings';
 import useToggleShortcut from './hooks/useToggleShortcut';
 import { EditorContext } from './context/EditorContext';
 import * as Styles from './AppStyles';
@@ -21,7 +23,8 @@ const App = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [currentComponent, setCurrentComponent] = useState('editor');
     const [isExporting, setIsExporting] = useState(false);
-    const { showEmoji, setShowEmoji, saveToLocalStorage } = useContext(EditorContext);
+    const [showSettings, setShowSettings] = useState(false);
+    const { showEmoji, setShowEmoji, saveToLocalStorage, theme } = useContext(EditorContext);
 
     // Model-related states
     const [loading, setLoading] = useState(true);
@@ -71,7 +74,11 @@ const App = () => {
     };
 
     const handleNavClick = (component) => {
-        setCurrentComponent(component);
+        if (component === 'settings') {
+            setShowSettings(true);
+        } else {
+            setCurrentComponent(component);
+        }
     };
 
     useToggleShortcut(';', () => {
@@ -140,7 +147,14 @@ const App = () => {
                 onSave={handleSaveClick}
                 onExport={handleExportClick}
                 isExporting={isExporting}
+                theme={theme}
             />
+            
+            <AnimatePresence>
+                {showSettings && (
+                    <ThemeSettings onClose={() => setShowSettings(false)} />
+                )}
+            </AnimatePresence>
         </Styles.AppContainer>
     );
 };
