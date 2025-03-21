@@ -30,15 +30,22 @@ export const CalendarContainer = styled.div`
 `;
 
 export const CustomCalendar = styled(Calendar)`
-    border: none;
-    background-color: ${props => props.theme === 'light' ? '#f8f9fa' : '#2b2b2b'};
-    color: ${props => props.theme === 'light' ? '#242424' : '#fff'};
+    background-color: #fdfdfd; /* Light neutral background */
+    color: #4a4a4a; /* Darker gray text */
     border-radius: 10px;
-    padding: 10px;
-    box-shadow: ${props => props.theme === 'light' 
-        ? '0 4px 8px rgba(0, 0, 0, 0.1)' 
-        : '0 4px 8px rgba(0, 0, 0, 0.3)'};
-    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: none; /* Remove border */
+    .react-calendar__tile {
+        background: #fdfdfd;
+        color: #4a4a4a;
+        &:hover {
+            background: #f0f0f0;
+        }
+    }
+    .react-calendar__tile--active {
+        background: #dcdcdc;
+        color: #333333;
+    }
 
     .react-calendar__navigation button {
         color: ${props => props.theme === 'light' ? '#242424' : 'white'};
@@ -55,24 +62,6 @@ export const CustomCalendar = styled(Calendar)`
                 ? '0 0 5px rgba(0, 0, 0, 0.2)' 
                 : '0 0 5px rgba(0, 0, 0, 0.5)'};
         }
-    }
-
-    .react-calendar__tile--active {
-        background-color: #646cff;
-        color: white;
-        border-radius: 5px;
-        border: 2px solid #535ac8; /* Different border for selected date */
-    }
-
-    .react-calendar__tile--now {
-        background-color: transparent; /* Remove existing highlight */
-        color: ${props => props.theme === 'light' ? '#242424' : 'white'};
-        border: 2px solid #ffc107; /* Add a box around the current date */
-        border-radius: 5px; /* Rounded corners for the box */
-    }
-
-    .react-calendar__month-view__days__day--neighboringMonth {
-        color: ${props => props.theme === 'light' ? '#adb5bd' : '#555'} !important;
     }
 
     .react-calendar__tile--active:enabled:hover,
@@ -104,6 +93,10 @@ export const CustomCalendar = styled(Calendar)`
         font-size: 0.875em;
         text-decoration: none;
         color: ${props => props.theme === 'light' ? '#6c757d' : '#dcdcdc'};
+    }
+
+    .react-calendar__month-view__days__day--neighboringMonth {
+        color: ${props => props.theme === 'light' ? '#c0c0c0' : '#555'} !important;
     }
 `;
 
