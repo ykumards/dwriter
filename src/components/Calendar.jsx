@@ -1,7 +1,7 @@
 // src/components/Calendar.jsx
 import { useState, useEffect, useContext } from 'react';
 import 'react-calendar/dist/Calendar.css';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { getMostFrequentEmoji, getEmotionByEmoji } from '../uiUtils';
 import * as Styles from './CalendarStyles';
 import { EditorContext } from '../context/EditorContext';
@@ -14,6 +14,7 @@ const CalendarComponent = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [entryToDelete, setEntryToDelete] = useState(null);
+    const [showEntries, setShowEntries] = useState(false);
     const { theme } = useContext(EditorContext);
 
     // Load entries from PouchDB
@@ -51,12 +52,14 @@ const CalendarComponent = () => {
 
     const handleDateChange = (newDate) => {
         setDate(newDate);
+        setShowEntries(true); // Automatically expand entries when a new date is selected
     };
 
     const handleTodayClick = () => {
         const today = new Date();
         setDate(today);
         setActiveStartDate(today);
+        setShowEntries(true); // Automatically expand entries when Today is clicked
     };
 
     const handleActiveStartDateChange = ({ activeStartDate }) => {
@@ -93,6 +96,11 @@ const CalendarComponent = () => {
         setEntryToDelete(null);
     };
 
+    // Toggle entries visibility
+    const toggleEntries = () => {
+        setShowEntries(!showEntries);
+    };
+
     // Filter entries for the selected date
     const filteredEntries = entries.filter(entry => {
         // Handle both string datetime and Date objects
@@ -104,6 +112,11 @@ const CalendarComponent = () => {
     });
 
     const mostFrequentEmoji = getMostFrequentEmoji(filteredEntries);
+    const formattedDate = date.toLocaleDateString('en-GB', { 
+        day: '2-digit', 
+        month: 'long', 
+        year: 'numeric' 
+    });
 
     return (
         <Styles.CalendarPageContainer theme={theme}>
@@ -121,27 +134,43 @@ const CalendarComponent = () => {
                     </Styles.CalendarContainer>
                     
                     <Styles.EntriesContainer>
-                        <Styles.EntriesHeader theme={theme}>
-                            Entries for {date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
-                        </Styles.EntriesHeader>
-                        {isLoading ? (
-                            <Styles.NoEntriesMessage theme={theme}>Loading entries...</Styles.NoEntriesMessage>
-                        ) : filteredEntries.length > 0 ? (
-                            <>
-                                <Styles.OverallEntry theme={theme}>
-                                    <Styles.EntryTime>Overall</Styles.EntryTime>
-                                    <Styles.EmojiSpan title={getEmotionByEmoji(mostFrequentEmoji)}>{mostFrequentEmoji}</Styles.EmojiSpan>
-                                </Styles.OverallEntry>
+                        {/* New header card with date and large emoji */}
+                        <Styles.HeaderCard theme={theme}>
+                            <Styles.DateSection>
+                                <Styles.DateText theme={theme}>{formattedDate}</Styles.DateText>
+                                <Styles.EntryCountText theme={theme}>
+                                    {filteredEntries.length} {filteredEntries.length === 1 ? 'entry' : 'entries'}
+                                </Styles.EntryCountText>
+                            </Styles.DateSection>
+                            <Styles.HeaderEmoji title={getEmotionByEmoji(mostFrequentEmoji)}>
+                                {mostFrequentEmoji}
+                            </Styles.HeaderEmoji>
+                        </Styles.HeaderCard>
+                        
+                        {/* Toggle button */}
+                        <Styles.ToggleButton onClick={toggleEntries}>
+                            {showEntries ? (
+                                <>Hide Details <FaChevronUp style={{ marginLeft: '5px' }} /></>
+                            ) : (
+                                <>View Details <FaChevronDown style={{ marginLeft: '5px' }} /></>
+                            )}
+                        </Styles.ToggleButton>
+                        
+                        {/* Timeline entries section */}
+                        <Styles.TimelineContainer $isExpanded={showEntries}>
+                            
+                            {isLoading ? (
+                                <Styles.NoEntriesMessage theme={theme}>Loading entries...</Styles.NoEntriesMessage>
+                            ) : filteredEntries.length > 0 ? (
                                 <Styles.EntriesList>
                                     {filteredEntries.map((entry, index) => (
                                         <Styles.EntryItem key={entry.id || index} theme={theme}>
-                                            <Styles.EntryTime>
+                                            <Styles.EntryTime theme={theme}>
                                                 {new Date(entry.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </Styles.EntryTime>
                                             <Styles.EmojiSpan 
                                                 title={getEmotionByEmoji(entry.emoji)}
                                                 className="emoji-span"
-                                                style={{ marginRight: '8px' }}
                                             >
                                                 {entry.emoji}
                                             </Styles.EmojiSpan>
@@ -156,10 +185,10 @@ const CalendarComponent = () => {
                                         </Styles.EntryItem>
                                     ))}
                                 </Styles.EntriesList>
-                            </>
-                        ) : (
-                            <Styles.NoEntriesMessage theme={theme}>No entries for this date.</Styles.NoEntriesMessage>
-                        )}
+                            ) : (
+                                <Styles.NoEntriesMessage theme={theme}>No entries for this date.</Styles.NoEntriesMessage>
+                            )}
+                        </Styles.TimelineContainer>
                     </Styles.EntriesContainer>
                 </Styles.PaperContent>
             </Styles.PaperContainer>
