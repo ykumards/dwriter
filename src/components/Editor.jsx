@@ -158,46 +158,6 @@ const Editor = ({ loading, progress, worker }) => {
                         </Styles.CenteredEmojiContainer>
                     )}
                 </AnimatePresence>
-
-                <AnimatePresence>
-                    {showKeyboardHint && (
-                        <motion.div
-                            style={{
-                                position: 'absolute',
-                                bottom: '20px',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                color: 'white',
-                                padding: '8px 16px',
-                                borderRadius: '20px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                                fontSize: '0.9rem',
-                                zIndex: 5
-                            }}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <FaKeyboard style={{ fontSize: '1rem' }} />
-                            <span>Press <kbd style={{ 
-                                backgroundColor: 'rgba(255, 255, 255, 0.2)', 
-                                padding: '2px 5px', 
-                                borderRadius: '4px', 
-                                margin: '0 2px' 
-                            }}>⌘</kbd> + <kbd style={{ 
-                                backgroundColor: 'rgba(255, 255, 255, 0.2)', 
-                                padding: '2px 5px', 
-                                borderRadius: '4px', 
-                                margin: '0 2px' 
-                            }}>;</kbd> to toggle Calendar view</span>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
             </Tooltip.Provider>
         </Styles.EditorContainer>
     );
